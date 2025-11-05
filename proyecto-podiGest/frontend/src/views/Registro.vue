@@ -22,7 +22,7 @@
             id="nombre"
             v-model="registration.nombre"
             required
-            placeholder="Tu nombre"
+            placeholder="Ingrese su Nombre"
             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
         </div>
@@ -35,7 +35,7 @@
             id="apellido"
             v-model="registration.apellido"
             required
-            placeholder="Tu apellido"
+            placeholder="Ingrese su Apellido"
             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
         </div>
@@ -48,7 +48,7 @@
             id="cedula"
             v-model="registration.cedula"
             required
-            placeholder="Ej: V-12345678"
+            placeholder="Ingrese su Cedula Ej:(V-12345678)"
             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
         </div>
@@ -61,7 +61,7 @@
             id="email"
             v-model="registration.correoElectronico"
             required
-            placeholder="ejemplo@gmail.com"
+            placeholder="Ingrese su Correo Electronico Ej:(ejemplo@gmail.com)"
             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
         </div>

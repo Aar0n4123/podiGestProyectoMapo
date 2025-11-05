@@ -13,7 +13,7 @@
             id="email"
             v-model="credentials.email"
             required
-            placeholder="ejemplo@gmail.com"
+            placeholder="Ingrese Correo Ej:(ejemplo@gmail.com)"
             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
         </div>
