@@ -1,5 +1,5 @@
 <template>
-  <div class="register-container flex items-center justify-center min-h-screen w-250 bg-amber-100/50">
+  <div class="register-container flex items-center justify-center min-h-screen w-250 bg-amber-100/50 rounded-lg">
 
     <div class="register-box bg-white p-8 rounded-xl shadow-2xl shadow-amber-300 w-full max-w-xl">
       <h2 class="text-2xl font-semibold text-center text-gray-800 border-b-2 border-amber-500 pb-2 mb-6">

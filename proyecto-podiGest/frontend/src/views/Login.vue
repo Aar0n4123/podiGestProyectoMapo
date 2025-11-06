@@ -1,5 +1,5 @@
 <template>
-  <div class="login-container flex items-center justify-center min-h-screen w-150 bg-amber-100/50">
+  <div class="login-container flex items-center justify-center min-h-screen w-150 bg-amber-100/50 rounded-lg">
 
     <div class="login-box bg-white p-8 rounded-xl shadow-2xl shadow-amber-300 w-full max-w-md">
       <h2 class="text-2xl font-semibold text-center text-gray-800 border-b-2 border-amber-500 pb-2 mb-6">
@@ -40,7 +40,7 @@
           {{ successMessage }}
         </div>
         
-        <button type="submit" class="login-button w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-lg">
+        <button type="submit" class="login-button w-full py-2 px-4 bg-amber-500 text-white rounded-md hover:bg-amber-700 transition-colors text-lg">
           Iniciar Sesión
         </button>
       </form>
