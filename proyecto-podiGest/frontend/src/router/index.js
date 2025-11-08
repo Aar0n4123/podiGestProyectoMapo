@@ -5,7 +5,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../views/Login.vue'
 import Registro from '../views/Registro.vue'
 import MainPage from '../views/MainPage.vue'
-import Profile from '../views/Profile.vue'
+import Perfil from '../views/Perfil.vue'
 import Notifications from '../views/Notifications.vue'
 import Information from '../views/Information.vue'
 import Appointments from '../views/Appointments.vue'
@@ -35,7 +35,7 @@ const routes = [
     {
         path: '/profile',
         name: 'profile',
-        component: Profile
+        component: Perfil
     },
     {
         path: '/notifications',
