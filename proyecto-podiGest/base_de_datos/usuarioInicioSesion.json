@@ -1,0 +1,8 @@
+[ {
+  "cedula" : "24456098",
+  "nombre" : "petronilo",
+  "apellido" : "aguilar",
+  "fechaNacimiento" : [ 2003, 1, 7 ],
+  "correoElectronico" : "petronilo@gmail.com",
+  "contrasenia" : "cc123"
+} ]

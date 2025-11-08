@@ -34,17 +34,17 @@
   "correoElectronico" : "petronilo@gmail.com",
   "contrasenia" : "cc123"
 }, {
-  "cedula" : "20300400",
-  "nombre" : "Julian",
-  "apellido" : "Alves",
-  "fechaNacimiento" : [ 2000, 12, 12 ],
-  "correoElectronico" : "julian@gmail.com",
-  "contrasenia" : "admin"
+  "cedula" : "2345678",
+  "nombre" : "Carol",
+  "apellido" : "Montinos",
+  "fechaNacimiento" : [ 2001, 2, 8 ],
+  "correoElectronico" : "carol@gmail.com",
+  "contrasenia" : "carol123"
 }, {
-  "cedula" : "22333444",
-  "nombre" : "Pepito",
-  "apellido" : "Gomez",
-  "fechaNacimiento" : [ 2000, 12, 12 ],
-  "correoElectronico" : "pepito@gmail.com",
-  "contrasenia" : "admin"
+  "cedula" : "9409456",
+  "nombre" : "thamara",
+  "apellido" : "avila",
+  "fechaNacimiento" : [ 1992, 3, 8 ],
+  "correoElectronico" : "tam@gmail.com",
+  "contrasenia" : "tam123"
 } ]

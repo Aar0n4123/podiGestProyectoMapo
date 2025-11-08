@@ -23,6 +23,7 @@ public class CrearUsuarioService {
 
     private List<Usuario> listaUsuarios;
     private static final String USUARIOS_JSON_FILE = "usuarios.json";
+    private static final String USUARIO_SESION_JSON_FILE = "usuarioInicioSesion.json";
     private final ObjectMapper mapper;
 
     public CrearUsuarioService() {
@@ -73,14 +74,20 @@ public class CrearUsuarioService {
 
     private Path resolveWritablePath(String fileName) {
         Path workingDir = Paths.get(System.getProperty("user.dir"));
+
         if (workingDir.getFileName() != null && workingDir.getFileName().toString().equals("backend")) {
-            return workingDir.resolve("src").resolve("main").resolve("resources").resolve(fileName);
+            workingDir = workingDir.getParent();
         }
-        Path backendDir = workingDir.resolve("backend");
-        if (Files.exists(backendDir)) {
-            return backendDir.resolve("src").resolve("main").resolve("resources").resolve(fileName);
+        Path dataDir = workingDir.resolve("base_de_datos");
+
+        try {
+            if (!Files.exists(dataDir)) {
+                Files.createDirectories(dataDir);
+            }
+        } catch (IOException e) {
+            System.err.println("ERROR: No se pudo crear la carpeta 'base_de_datos': " + e.getMessage());
         }
-        return workingDir.resolve(fileName);
+        return dataDir.resolve(fileName);
     }
 
 
@@ -125,4 +132,30 @@ public class CrearUsuarioService {
         }
         return Optional.empty();
     }
+
+    /**
+     * Guarda el usuario que acaba de iniciar sesión en un archivo JSON separado.
+     * Este método SOBRESCRIBE el contenido del archivo cada vez que se llama.
+     * @param usuario El usuario que ha iniciado sesión.
+     */
+    public void guardarUsuarioSesion(Usuario usuario) {
+        List<Usuario> listaUsuarioSesion = new ArrayList<>();
+        listaUsuarioSesion.add(usuario);
+
+        try {
+
+            Path path = resolveWritablePath(USUARIO_SESION_JSON_FILE);
+
+            if (path.getParent() != null) {
+                Files.createDirectories(path.getParent());
+            }
+            mapper.writerWithDefaultPrettyPrinter().writeValue(path.toFile(), listaUsuarioSesion);
+
+            System.out.println("INFO: Usuario de sesión guardado en " + USUARIO_SESION_JSON_FILE);
+
+        } catch (IOException e) {
+            System.err.println("ERROR: No se pudo guardar el archivo de sesión del usuario: " + e.getMessage());
+        }
+    }
+
 }

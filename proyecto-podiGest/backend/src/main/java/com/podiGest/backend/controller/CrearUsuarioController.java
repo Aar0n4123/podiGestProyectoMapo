@@ -69,7 +69,11 @@ public class CrearUsuarioController {
         Optional<Usuario> usuarioEncontrado = usuarioService.validarUsuarioExiste(correoAcceso, contrasenaAcceso);
 
         if (usuarioEncontrado.isPresent()) {
-            return ResponseEntity.ok(usuarioEncontrado.get());
+
+            Usuario usuario = usuarioEncontrado.get();
+            usuarioService.guardarUsuarioSesion(usuario);
+            return ResponseEntity.ok(usuario);
+
         } else {
 
             return ResponseEntity
