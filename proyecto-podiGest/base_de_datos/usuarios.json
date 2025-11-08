@@ -4,47 +4,77 @@
   "apellido" : "Pérez",
   "fechaNacimiento" : [ 1980, 10, 25 ],
   "correoElectronico" : "juan.perez@ejemplo.com",
-  "contrasenia" : "clave123"
+  "contrasenia" : "clave123",
+  "rol":"paciente"
 }, {
   "cedula" : "E-87654321",
   "nombre" : "María",
   "apellido" : "Gómez",
   "fechaNacimiento" : [ 1995, 5, 15 ],
   "correoElectronico" : "maria.gomez@ejemplo.com",
-  "contrasenia" : "secreto456"
+  "contrasenia" : "secreto456",
+  "rol":"paciente"
 }, {
   "cedula" : "30 902794",
   "nombre" : "victoria",
   "apellido" : "carmona",
   "fechaNacimiento" : [ 2025, 11, 3 ],
   "correoElectronico" : "viki@ejemplo.com",
-  "contrasenia" : "viki123"
+  "contrasenia" : "viki123",
+  "rol":"paciente"
 }, {
   "cedula" : "10903447",
   "nombre" : "victoria",
   "apellido" : "castillo",
   "fechaNacimiento" : [ 2004, 1, 8 ],
   "correoElectronico" : "castillo@gmail.com",
-  "contrasenia" : "castillo1234"
+  "contrasenia" : "castillo1234",
+  "rol":"paciente"
 }, {
   "cedula" : "24456098",
   "nombre" : "petronilo",
   "apellido" : "aguilar",
   "fechaNacimiento" : [ 2003, 1, 7 ],
   "correoElectronico" : "petronilo@gmail.com",
-  "contrasenia" : "cc123"
+  "contrasenia" : "cc123",
+  "rol":"paciente"
 }, {
   "cedula" : "2345678",
   "nombre" : "Carol",
   "apellido" : "Montinos",
   "fechaNacimiento" : [ 2001, 2, 8 ],
   "correoElectronico" : "carol@gmail.com",
-  "contrasenia" : "carol123"
+  "contrasenia" : "carol123",
+  "rol":"paciente"
 }, {
   "cedula" : "9409456",
   "nombre" : "thamara",
   "apellido" : "avila",
   "fechaNacimiento" : [ 1992, 3, 8 ],
   "correoElectronico" : "tam@gmail.com",
-  "contrasenia" : "tam123"
-} ]
+  "contrasenia" : "tam123",
+  "rol":"paciente"
+},{
+  "cedula" : "93078890",
+  "nombre" : "Elsee",
+  "apellido" : "Aguilar",
+  "fechaNacimiento" : [ 1968, 8, 28 ],
+  "correoElectronico" : "elsee@gmail.com",
+  "contrasenia" : "elsee123",
+  "rol":"especialista"
+},{
+  "cedula" : "94196030",
+  "nombre" : "Marelyn",
+  "apellido" : "Escalona",
+  "fechaNacimiento" : [ 1968, 3, 2 ],
+  "correoElectronico" : "marelyn@gmail.com",
+  "contrasenia" : "marelyn123",
+  "rol":"especialista"},
+{
+  "cedula" : "9329570",
+  "nombre" : "Alyska",
+  "apellido" : "Bastardo",
+  "fechaNacimiento" : [ 1968, 6, 12 ],
+  "correoElectronico" : "alyska@gmail.com",
+  "contrasenia" : "alyska123",
+  "rol":"especialista"} ]

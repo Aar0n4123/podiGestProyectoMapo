@@ -1,8 +1,9 @@
 [ {
-  "cedula" : "24456098",
-  "nombre" : "petronilo",
-  "apellido" : "aguilar",
-  "fechaNacimiento" : [ 2003, 1, 7 ],
-  "correoElectronico" : "petronilo@gmail.com",
-  "contrasenia" : "cc123"
+  "cedula" : "V-12345678",
+  "nombre" : "Juan",
+  "apellido" : "Pérez",
+  "fechaNacimiento" : [ 1980, 10, 25 ],
+  "correoElectronico" : "juan.perez@ejemplo.com",
+  "contrasenia" : "clave123",
+  "rol" : "paciente"
 } ]

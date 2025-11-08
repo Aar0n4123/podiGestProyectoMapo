@@ -14,6 +14,7 @@ public class Usuario {
     private LocalDate fechaNacimiento; // ¡Cambiamos a LocalDate!
     private String correoElectronico;
     private String contrasenia;
+    private String rol;
 
     public Usuario(String cedula, String nombre, String apellido, LocalDate fechaNacimiento, String correoElectronico, String contrasenia, String rol) {
         this.cedula = cedula;
@@ -22,6 +23,7 @@ public class Usuario {
         this.fechaNacimiento = fechaNacimiento;
         this.correoElectronico = correoElectronico;
         this.contrasenia = contrasenia;
+        this.rol= rol;
 
     }
 
@@ -53,5 +55,7 @@ public class Usuario {
         return contrasenia;
     }
 
-
+    public String getRol() {
+        return rol;
+    }
 }

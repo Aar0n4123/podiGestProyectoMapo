@@ -112,6 +112,7 @@ public class CrearUsuarioService {
 
             throw new IllegalArgumentException("El usuario debe ser mayor de edad (18 años) para registrarse.");
         }
+        nuevoUsuario.setRol("paciente");
         listaUsuarios.add(nuevoUsuario);
         guardarUsuariosAJson(listaUsuarios, USUARIOS_JSON_FILE);
 
