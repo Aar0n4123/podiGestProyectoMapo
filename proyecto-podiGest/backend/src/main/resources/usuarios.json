@@ -49,7 +49,7 @@
     "apellido" : "Carmona",
     "fechaNacimiento" : [ 1999, 9, 27 ],
     "correoElectronico" : "victoria@gmail.com",
-    "contrasenia" : "123",
+    "contrasenia" : "v123",
     "rol" : "paciente"
   },
   {

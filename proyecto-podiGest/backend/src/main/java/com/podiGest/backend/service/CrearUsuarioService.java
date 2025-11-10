@@ -44,9 +44,11 @@ public class CrearUsuarioService {
         } catch (IOException e) {
             System.err.println("ERROR: No se pudo leer el archivo JSON en: " + path);
         }
+        // Intenta cargar desde el classpath (ej: src/main/resources) si el archivo externo no existe o está vacío
         List<Usuario> usuarios = cargarDesdeClasspath(fileName);
         if (!usuarios.isEmpty()) {
             try {
+                // Si encontró usuarios en el classpath, los guarda en la carpeta externa
                 guardarUsuariosAJson(usuarios, fileName);
             } catch (IOException e) {
                 System.err.println("ERROR: No se pudo inicializar el archivo JSON en: " + path);
@@ -59,6 +61,7 @@ public class CrearUsuarioService {
         try (InputStream inputStream = new ClassPathResource(resourceName).getInputStream()) {
             return mapper.readValue(inputStream, new TypeReference<List<Usuario>>() {});
         } catch (IOException e) {
+            // No es un error grave, solo significa que no hay un archivo de "semilla" en resources
             return new ArrayList<>();
         }
     }
@@ -72,23 +75,28 @@ public class CrearUsuarioService {
         mapper.writerWithDefaultPrettyPrinter().writeValue(path.toFile(), usuarios);
     }
 
-    private Path resolveWritablePath(String fileName) {
-        Path workingDir = Paths.get(System.getProperty("user.dir"));
 
-        if (workingDir.getFileName() != null && workingDir.getFileName().toString().equals("backend")) {
-            workingDir = workingDir.getParent();
-        }
-        Path dataDir = workingDir.resolve("base_de_datos");
+    private Path resolveWritablePath(String fileName) {
+        // Obtenemos la carpeta "Home" del usuario (ej: C:/Users/TuNombre)
+        // Esto es consistente en CUALQUIER máquina (Windows, Mac, Linux)
+        Path userHome = Paths.get(System.getProperty("user.home"));
+
+        // Creamos una carpeta para los datos de nuestra app dentro de "Home"
+        Path dataDir = userHome.resolve("podiGest_data");
 
         try {
+            // Si la carpeta "podiGest_data" no existe, la crea
             if (!Files.exists(dataDir)) {
                 Files.createDirectories(dataDir);
             }
         } catch (IOException e) {
-            System.err.println("ERROR: No se pudo crear la carpeta 'base_de_datos': " + e.getMessage());
+            System.err.println("ERROR: No se pudo crear la carpeta 'podiGest_data': " + e.getMessage());
         }
+
+        // Devolvemos la ruta completa al archivo (ej: C:/Users/TuNombre/podiGest_data/usuarios.json)
         return dataDir.resolve(fileName);
     }
+
 
 
     // metodo para verificar si el usuario ya existe
