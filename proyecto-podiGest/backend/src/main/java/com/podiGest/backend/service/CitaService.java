@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.podiGest.backend.model.Cita;
+import com.podiGest.backend.model.Usuario;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +15,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -25,6 +29,9 @@ public class CitaService {
     private List<Cita> listaCitas;
     private static final String CITAS_JSON_FILE = "cita.json";
     private final ObjectMapper mapper;
+
+    @Autowired
+    private ConsultarPerfilService perfilService;
 
     // --- Lógica de Carga/Guardado (Adaptada de CrearUsuarioService) ---
 
@@ -146,7 +153,34 @@ public class CitaService {
                 .collect(Collectors.toList());
     }
 
-    public Cita agendarCita(String pacienteCedula, String especialistaCedula, java.time.LocalDateTime fechaHoraInicio, String descripcion) throws IOException {
+    public boolean estaDisponible(String especialistaCedula, LocalDateTime fechaHoraInicio) {
+        return listaCitas.stream()
+                .noneMatch(cita -> cita.getEspecialistaCedula().equals(especialistaCedula) &&
+                        cita.getFechaHoraInicio().equals(fechaHoraInicio) &&
+                        !cita.getEstado().equals("CANCELADA"));
+    }
+
+    private void validarHoraEnPunto(LocalDateTime fechaHora) throws IllegalArgumentException {
+        if (fechaHora.getMinute() != 0 || fechaHora.getSecond() != 0) {
+            throw new IllegalArgumentException("La cita debe ser programada en horas exactas (minutos y segundos en 00)");
+        }
+    }
+
+    private void validarHorariosClinica(LocalDateTime fechaHora) throws IllegalArgumentException {
+        LocalTime hora = fechaHora.toLocalTime();
+        if (hora.isBefore(HORA_INICIO_CLINICA) || hora.isAfter(HORA_FIN_CLINICA) || hora.equals(HORA_FIN_CLINICA)) {
+            throw new IllegalArgumentException("El horario debe estar entre " + HORA_INICIO_CLINICA + " y " + HORA_FIN_CLINICA.minusMinutes(1));
+        }
+    }
+
+    public Cita agendarCita(String pacienteCedula, String especialistaCedula, LocalDateTime fechaHoraInicio, String descripcion) throws IOException {
+        validarHoraEnPunto(fechaHoraInicio);
+        validarHorariosClinica(fechaHoraInicio);
+
+        if (!estaDisponible(especialistaCedula, fechaHoraInicio)) {
+            throw new IllegalArgumentException("El horario " + fechaHoraInicio.toLocalTime() + " no está disponible para el especialista");
+        }
+
         System.out.println("Agendando cita para: " + pacienteCedula + " con " + especialistaCedula + " en " + fechaHoraInicio);
         Cita nuevaCita = new Cita(
                 UUID.randomUUID().toString(),
@@ -160,5 +194,13 @@ public class CitaService {
         System.out.println("Total de citas en memoria: " + listaCitas.size());
         guardarCitasAJson(listaCitas, CITAS_JSON_FILE);
         return nuevaCita;
+    }
+
+    public Cita agendarCitaConUsuarioAutenticado(String especialistaCedula, LocalDateTime fechaHoraInicio, String descripcion) throws IOException {
+        Optional<Usuario> usuarioAutenticado = perfilService.obtenerPerfilActivo();
+        if (!usuarioAutenticado.isPresent()) {
+            throw new IllegalArgumentException("No hay usuario autenticado");
+        }
+        return agendarCita(usuarioAutenticado.get().getCedula(), especialistaCedula, fechaHoraInicio, descripcion);
     }
 }

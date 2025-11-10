@@ -42,7 +42,7 @@ public class CitaController {
     }
 
     /**
-     * HU 1.1.4: Endpoint para Agendar Cita
+     * HU 1.1.4: Endpoint para Agendar Cita (con cédula del paciente)
      * Vue llamará a esta URL:
      * POST /api/citas
      * Body: {
@@ -80,6 +80,40 @@ public class CitaController {
         }
     }
 
+    /**
+     * Endpoint para Agendar Cita usando Usuario Autenticado
+     * Vue llamará a esta URL:
+     * POST /api/citas/agendar
+     * Body: {
+     *   "especialistaCedula": "V-654321",
+     *   "fechaHoraInicio": "2025-11-10T14:00:00",
+     *   "descripcion": "Revisión general"
+     * }
+     */
+    @PostMapping("/agendar")
+    public ResponseEntity<?> agendarCitaConUsuarioAutenticado(@RequestBody CitaRequestAutenticado request) {
+        try {
+            if (request.getEspecialistaCedula() == null || request.getEspecialistaCedula().isEmpty()) {
+                return ResponseEntity.badRequest().body("La cédula del especialista es requerida");
+            }
+            if (request.getFechaHoraInicio() == null || request.getFechaHoraInicio().isEmpty()) {
+                return ResponseEntity.badRequest().body("La fecha y hora es requerida");
+            }
+
+            LocalDateTime fechaHora = LocalDateTime.parse(request.getFechaHoraInicio());
+            Cita citaCreada = citaService.agendarCitaConUsuarioAutenticado(
+                    request.getEspecialistaCedula(),
+                    fechaHora,
+                    request.getDescripcion()
+            );
+            return ResponseEntity.ok(citaCreada);
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body("Error al guardar la cita: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body("Error: " + e.getMessage());
+        }
+    }
+
     public static class CitaRequest {
         private String pacienteCedula;
         private String especialistaCedula;
@@ -93,6 +127,36 @@ public class CitaController {
         public void setPacienteCedula(String pacienteCedula) {
             this.pacienteCedula = pacienteCedula;
         }
+
+        public String getEspecialistaCedula() {
+            return especialistaCedula;
+        }
+
+        public void setEspecialistaCedula(String especialistaCedula) {
+            this.especialistaCedula = especialistaCedula;
+        }
+
+        public String getFechaHoraInicio() {
+            return fechaHoraInicio;
+        }
+
+        public void setFechaHoraInicio(String fechaHoraInicio) {
+            this.fechaHoraInicio = fechaHoraInicio;
+        }
+
+        public String getDescripcion() {
+            return descripcion;
+        }
+
+        public void setDescripcion(String descripcion) {
+            this.descripcion = descripcion;
+        }
+    }
+
+    public static class CitaRequestAutenticado {
+        private String especialistaCedula;
+        private String fechaHoraInicio;
+        private String descripcion;
 
         public String getEspecialistaCedula() {
             return especialistaCedula;
