@@ -10,6 +10,12 @@ import Notifications from '../views/Notifications.vue'
 import Information from '../views/Information.vue'
 import Appointments from '../views/Appointments.vue'
 import Configuration from '../views/Configuration.vue'
+import PodologiaGeneral from '../views/PodologiaGeneral.vue'
+import PodologiaPediatrica from '../views/PodologiaPediatrica.vue'
+import Quiropodia from '../views/Quiropodia.vue'
+import PlantillasPersonalizadas from '../views/PlantillasPersonalizadas.vue'
+import EvaluacionIntegral from '../views/EvaluacionIntegral.vue'
+import PodologiaDeportiva from '../views/PodologiaDeportiva.vue'
 
 // Define las URLS y el componente asociado
 const routes = [
@@ -57,7 +63,36 @@ const routes = [
         name: 'configuration',
         component: Configuration
     },
-    
+    {
+        path: '/configuration/podologia-general',
+        name: 'podologia-general',
+        component: PodologiaGeneral
+    },
+    {
+        path: '/configuration/podologia-pediatrica',
+        name: 'podologia-pediatrica',
+        component: PodologiaPediatrica
+    },
+    {
+        path: '/configuration/quiropodia',
+        name: 'quiropodia',
+        component: Quiropodia
+    },
+    {
+        path: '/configuration/plantillas-personalizadas',
+        name: 'plantillas-personalizadas',
+        component: PlantillasPersonalizadas
+    },
+    {
+        path: '/configuration/evaluacion-integral',
+        name: 'evaluacion-integral',
+        component: EvaluacionIntegral
+    },
+    {
+        path: '/configuration/podologia-deportiva',
+        name: 'podologia-deportiva',
+        component: PodologiaDeportiva
+    },
 
 ]
 
