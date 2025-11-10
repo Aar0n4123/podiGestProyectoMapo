@@ -4,40 +4,54 @@
   "apellido" : "Pérez",
   "fechaNacimiento" : [ 1980, 10, 25 ],
   "correoElectronico" : "juan.perez@ejemplo.com",
-  "contrasenia" : "clave123"
+  "contrasenia" : "clave123",
+  "rol" : null
 }, {
   "cedula" : "E-87654321",
   "nombre" : "María",
   "apellido" : "Gómez",
   "fechaNacimiento" : [ 1995, 5, 15 ],
   "correoElectronico" : "maria.gomez@ejemplo.com",
-  "contrasenia" : "secreto456"
+  "contrasenia" : "secreto456",
+  "rol" : null
 }, {
   "cedula" : "30 902794",
   "nombre" : "victoria",
   "apellido" : "carmona",
   "fechaNacimiento" : [ 2025, 11, 3 ],
   "correoElectronico" : "viki@ejemplo.com",
-  "contrasenia" : "viki123"
+  "contrasenia" : "viki123",
+  "rol" : null
 }, {
   "cedula" : "10903447",
   "nombre" : "victoria",
   "apellido" : "castillo",
   "fechaNacimiento" : [ 2004, 1, 8 ],
   "correoElectronico" : "castillo@gmail.com",
-  "contrasenia" : "castillo1234"
+  "contrasenia" : "castillo1234",
+  "rol" : null
 }, {
   "cedula" : "24456098",
   "nombre" : "petronilo",
   "apellido" : "aguilar",
   "fechaNacimiento" : [ 2003, 1, 7 ],
   "correoElectronico" : "petronilo@gmail.com",
-  "contrasenia" : "cc123"
+  "contrasenia" : "cc123",
+  "rol" : null
 }, {
   "cedula" : "V-1234567",
   "nombre" : "Aaron",
   "apellido" : "Rojas",
   "fechaNacimiento" : [ 1979, 11, 6 ],
   "correoElectronico" : "a@m.com",
-  "contrasenia" : "123456"
+  "contrasenia" : "123456",
+  "rol" : null
+}, {
+  "cedula" : "10800900",
+  "nombre" : "Ricardo",
+  "apellido" : "Barrios ",
+  "fechaNacimiento" : [ 2000, 12, 12 ],
+  "correoElectronico" : "r@gmail.com",
+  "contrasenia" : "admin",
+  "rol" : "paciente"
 } ]

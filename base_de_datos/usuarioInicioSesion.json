@@ -1,8 +1,9 @@
 [ {
-  "cedula" : "V-1234567",
-  "nombre" : "Aaron",
-  "apellido" : "Rojas",
-  "fechaNacimiento" : [ 1979, 11, 6 ],
-  "correoElectronico" : "a@m.com",
-  "contrasenia" : "123456"
+  "cedula" : "10800900",
+  "nombre" : "Ricardo",
+  "apellido" : "Barrios ",
+  "fechaNacimiento" : [ 2000, 12, 12 ],
+  "correoElectronico" : "r@gmail.com",
+  "contrasenia" : "admin",
+  "rol" : "paciente"
 } ]

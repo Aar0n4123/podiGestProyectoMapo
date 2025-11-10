@@ -5,7 +5,7 @@ import SideBar from '../components/SideBar.vue';
 
 
 interface Usuario {
-  cedula: string;n
+  cedula: string;
   nombre: string;
   apellido: string;
   fechaNacimiento: [number, number, number];
