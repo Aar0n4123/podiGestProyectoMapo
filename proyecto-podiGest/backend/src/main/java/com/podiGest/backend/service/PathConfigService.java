@@ -21,10 +21,8 @@ public class PathConfigService {
         DATA_DIR = userHome.resolve(DATA_DIR_NAME);
 
         // Obtiene la carpeta de datos semilla (base_de_datos en el backend)
-        // Navega desde la ubicación actual del proyecto hasta backend/base_de_datos
-        Path currentDir = Paths.get(System.getProperty("user.dir"));
-        Path backendDir = currentDir.resolve("proyecto-podiGest").resolve("backend");
-        SEED_DATA_DIR = backendDir.resolve("base_de_datos");
+        Path tempSeedDataDir = resolveSeedDataDirectory();
+        SEED_DATA_DIR = tempSeedDataDir;
 
         // Crea la carpeta de datos si no existe
         try {
@@ -83,5 +81,50 @@ public class PathConfigService {
         if (!Files.exists(DATA_DIR)) {
             Files.createDirectories(DATA_DIR);
         }
+    }
+
+    /**
+     * Resuelve la ruta de la carpeta base_de_datos buscando la estructura del proyecto.
+     * Primero busca ascendiendo desde el directorio actual hasta encontrar "proyecto-podiGest/backend",
+     * luego desciende a "base_de_datos".
+     * 
+     * @return Path a la carpeta base_de_datos, o el directorio actual si no se encuentra
+     */
+    private static Path resolveSeedDataDirectory() {
+        // Comienza desde el directorio actual (normalmente donde se ejecuta Maven)
+        Path currentDir = Paths.get(System.getProperty("user.dir"));
+        
+        // Primero, chequea si estamos en el directorio backend directamente
+        Path baseDbPath = currentDir.resolve("base_de_datos");
+        if (Files.exists(baseDbPath) && Files.isDirectory(baseDbPath)) {
+            return baseDbPath;
+        }
+        
+        // Si no, busca ascendiendo hasta encontrar "backend"
+        Path searchDir = currentDir;
+        while (searchDir != null) {
+            // Chequea si el directorio actual es "backend"
+            if ("backend".equals(searchDir.getFileName().toString())) {
+                Path possiblePath = searchDir.resolve("base_de_datos");
+                if (Files.exists(possiblePath) && Files.isDirectory(possiblePath)) {
+                    return possiblePath;
+                }
+            }
+            
+            // Chequea si "proyecto-podiGest/backend/base_de_datos" existe desde aquí
+            Path proyectoPath = searchDir.resolve("proyecto-podiGest")
+                    .resolve("backend")
+                    .resolve("base_de_datos");
+            if (Files.exists(proyectoPath) && Files.isDirectory(proyectoPath)) {
+                return proyectoPath;
+            }
+            
+            // Sube un nivel
+            searchDir = searchDir.getParent();
+        }
+        
+        // Último recurso: retorna base_de_datos en el directorio actual
+        // (esto debería funcionar si se ejecuta correctamente desde el backend)
+        return currentDir.resolve("base_de_datos");
     }
 }
