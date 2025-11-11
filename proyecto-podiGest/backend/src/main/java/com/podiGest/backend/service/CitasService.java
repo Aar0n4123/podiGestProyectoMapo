@@ -3,13 +3,13 @@ package com.podiGest.backend.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.podiGest.backend.model.Cita;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,10 +19,44 @@ public class CitasService {
 
     private final Path citasPath;
     private final ObjectMapper objectMapper;
+    private static final String CITAS_JSON_FILE = "citas.json";
 
-    public CitasService(@Value("${citas.file.path}") String citasPath) {
-        this.citasPath = Paths.get(citasPath).normalize();
+    public CitasService() {
+        this.citasPath = PathConfigService.getSeedFilePath(CITAS_JSON_FILE);
         this.objectMapper = new ObjectMapper();
+        
+        // Inicializa el archivo de citas si no existe
+        inicializarCitas();
+    }
+
+    /**
+     * Inicializa el archivo de citas si no existe o está vacío
+     */
+    private void inicializarCitas() {
+        try {
+            if (!Files.exists(citasPath) || Files.size(citasPath) == 0) {
+                List<Cita> citasIniciales = cargarDesdeClasspath();
+                guardarCitasAJson(citasIniciales);
+            }
+        } catch (IOException e) {
+            System.err.println("ERROR: No se pudieron inicializar las citas: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Carga las citas iniciales desde la carpeta base_de_datos
+     */
+    private List<Cita> cargarDesdeClasspath() {
+        try {
+            Path seedPath = PathConfigService.getSeedFilePath(CITAS_JSON_FILE);
+            if (Files.exists(seedPath)) {
+                String jsonContent = Files.readString(seedPath);
+                return objectMapper.readValue(jsonContent, new TypeReference<List<Cita>>() {});
+            }
+        } catch (IOException e) {
+            System.err.println("ADVERTENCIA: No se encontraron citas iniciales en base_de_datos");
+        }
+        return new ArrayList<>();
     }
 
     public List<Cita> obtenerCitas() throws IOException {
@@ -51,9 +85,7 @@ public class CitasService {
     }
 
     public void guardarCitasAJson(List<Cita> citas) throws IOException {
-        if (citasPath.getParent() != null) {
-            Files.createDirectories(citasPath.getParent());
-        }
+        // Sobrescribe el archivo con los datos actuales en base_de_datos/citas.json
         objectMapper.writerWithDefaultPrettyPrinter().writeValue(citasPath.toFile(), citas);
     }
 

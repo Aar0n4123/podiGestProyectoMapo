@@ -1,0 +1,13 @@
+[ {
+  "id" : "CITA-1762828432775-sdapea6q8",
+  "pacienteNombre" : "Victoria Carmona",
+  "pacienteCorreo" : "m@m.com",
+  "pacienteTelefono" : "04141302753",
+  "especialista" : "Elsee",
+  "especialidadBuscada" : "",
+  "fecha" : "2025-11-25",
+  "hora" : "11:11",
+  "razonConsulta" : "11",
+  "estado" : "pendiente",
+  "fechaCreacion" : "2025-11-11T02:33:52.775Z"
+} ]

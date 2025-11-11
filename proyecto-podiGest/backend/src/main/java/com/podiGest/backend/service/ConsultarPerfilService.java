@@ -23,16 +23,13 @@ public class ConsultarPerfilService {
     private static final String USUARIO_SESION_JSON_FILE = "usuarioInicioSesion.json";
 
     /**
-     * Constructor que inicializa la ruta usando la MISMA lógica
-     * que CrearUsuarioService.
-     * Ya no usa @Value ni application.properties.
+     * Constructor que inicializa la ruta usando PathConfigService.
+     * Garantiza rutas portátiles en cualquier sistema operativo.
      */
     public ConsultarPerfilService() {
         this.objectMapper = new ObjectMapper();
         this.objectMapper.registerModule(new JavaTimeModule());
-
-
-        this.sesionPath = resolveWritablePath(USUARIO_SESION_JSON_FILE);
+        this.sesionPath = PathConfigService.getFilePath(USUARIO_SESION_JSON_FILE);
     }
 
     /**
@@ -57,27 +54,5 @@ public class ConsultarPerfilService {
     }
 
 
-    /**
-     * Este método es una COPIA EXACTA del método en CrearUsuarioService.
-     * Nos aseguramos de que ambos servicios busquen en el mismo lugar.
-     */
-    private Path resolveWritablePath(String fileName) {
 
-        Path userHome = Paths.get(System.getProperty("user.home"));
-
-
-        Path dataDir = userHome.resolve("podiGest_data");
-
-        try {
-
-            if (!Files.exists(dataDir)) {
-                Files.createDirectories(dataDir);
-            }
-        } catch (IOException e) {
-            System.err.println("ERROR: No se pudo crear la carpeta 'podiGest_data': " + e.getMessage());
-        }
-
-
-        return dataDir.resolve(fileName);
-    }
 }

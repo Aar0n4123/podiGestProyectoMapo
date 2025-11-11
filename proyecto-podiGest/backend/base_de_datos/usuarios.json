@@ -1,0 +1,73 @@
+[ {
+  "cedula" : "123465",
+  "nombre" : "Gabriel",
+  "apellido" : "Bracho",
+  "fechaNacimiento" : [ 1999, 9, 27 ],
+  "correoElectronico" : "gabrielbrachobf@gmail.com",
+  "contrasenia" : "123",
+  "rol" : "paciente"
+}, {
+  "cedula" : "127765",
+  "nombre" : "Aaron",
+  "apellido" : "Rojas",
+  "fechaNacimiento" : [ 1999, 9, 27 ],
+  "correoElectronico" : "aaron@gmail.com",
+  "contrasenia" : "123",
+  "rol" : "paciente"
+}, {
+  "cedula" : "127861",
+  "nombre" : "Ricardo",
+  "apellido" : "Barrios",
+  "fechaNacimiento" : [ 1999, 9, 27 ],
+  "correoElectronico" : "ricardo@gmail.com",
+  "contrasenia" : "123",
+  "rol" : "paciente"
+}, {
+  "cedula" : "127861",
+  "nombre" : "Ricardo",
+  "apellido" : "Barrios",
+  "fechaNacimiento" : [ 1999, 9, 27 ],
+  "correoElectronico" : "ricardo@gmail.com",
+  "contrasenia" : "123",
+  "rol" : "paciente"
+}, {
+  "cedula" : "139861",
+  "nombre" : "Jesus",
+  "apellido" : "Figueroa",
+  "fechaNacimiento" : [ 1999, 9, 27 ],
+  "correoElectronico" : "jesus@gmail.com",
+  "contrasenia" : "123",
+  "rol" : "paciente"
+}, {
+  "cedula" : "127861",
+  "nombre" : "Victoria",
+  "apellido" : "Carmona",
+  "fechaNacimiento" : [ 1999, 9, 27 ],
+  "correoElectronico" : "victoria@gmail.com",
+  "contrasenia" : "v123",
+  "rol" : "paciente"
+}, {
+  "cedula" : "127861",
+  "nombre" : "Elsee",
+  "apellido" : "Aguilar",
+  "fechaNacimiento" : [ 1978, 9, 27 ],
+  "correoElectronico" : "elsee@gmail.com",
+  "contrasenia" : "123",
+  "rol" : "especialista"
+}, {
+  "cedula" : "127861",
+  "nombre" : "Marylyn",
+  "apellido" : "Rojas",
+  "fechaNacimiento" : [ 1978, 9, 27 ],
+  "correoElectronico" : "Marylyn@gmail.com",
+  "contrasenia" : "123",
+  "rol" : "especialista"
+}, {
+  "cedula" : "V-1234567",
+  "nombre" : "Mapo",
+  "apellido" : "MAPO",
+  "fechaNacimiento" : [ 2006, 11, 23 ],
+  "correoElectronico" : "123@1.com",
+  "contrasenia" : "12345",
+  "rol" : "paciente"
+} ]

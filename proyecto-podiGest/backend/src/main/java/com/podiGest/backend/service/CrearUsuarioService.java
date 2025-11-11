@@ -36,7 +36,7 @@ public class CrearUsuarioService {
 
     //metodo para sbaer cuales son los usuarios registrados en el JSON
     private List<Usuario> cargarUsuariosDesdeJson(String fileName) {
-        Path path = resolveWritablePath(fileName);
+        Path path = PathConfigService.getSeedFilePath(fileName);
         try {
             if (Files.exists(path) && Files.size(path) > 0) {
                 return mapper.readValue(path.toFile(), new TypeReference<List<Usuario>>() {});
@@ -68,33 +68,9 @@ public class CrearUsuarioService {
 
     //metodo para escribir el JSON y guardar el nuevo usuario
     private void guardarUsuariosAJson(List<Usuario> usuarios, String fileName) throws IOException {
-        Path path = resolveWritablePath(fileName);
-        if (path.getParent() != null) {
-            Files.createDirectories(path.getParent());
-        }
+        Path path = PathConfigService.getSeedFilePath(fileName);
+        // Sobrescribe el archivo con los datos actuales (sin duplicar)
         mapper.writerWithDefaultPrettyPrinter().writeValue(path.toFile(), usuarios);
-    }
-
-
-    private Path resolveWritablePath(String fileName) {
-        // Obtenemos la carpeta "Home" del usuario (ej: C:/Users/TuNombre)
-        // Esto es consistente en CUALQUIER máquina (Windows, Mac, Linux)
-        Path userHome = Paths.get(System.getProperty("user.home"));
-
-        // Creamos una carpeta para los datos de nuestra app dentro de "Home"
-        Path dataDir = userHome.resolve("podiGest_data");
-
-        try {
-            // Si la carpeta "podiGest_data" no existe, la crea
-            if (!Files.exists(dataDir)) {
-                Files.createDirectories(dataDir);
-            }
-        } catch (IOException e) {
-            System.err.println("ERROR: No se pudo crear la carpeta 'podiGest_data': " + e.getMessage());
-        }
-
-        // Devolvemos la ruta completa al archivo (ej: C:/Users/TuNombre/podiGest_data/usuarios.json)
-        return dataDir.resolve(fileName);
     }
 
 
@@ -152,16 +128,10 @@ public class CrearUsuarioService {
         listaUsuarioSesion.add(usuario);
 
         try {
-
-            Path path = resolveWritablePath(USUARIO_SESION_JSON_FILE);
-
-            if (path.getParent() != null) {
-                Files.createDirectories(path.getParent());
-            }
+            Path path = PathConfigService.getSeedFilePath(USUARIO_SESION_JSON_FILE);
+            // Sobrescribe el archivo con los datos actuales (sin duplicar)
             mapper.writerWithDefaultPrettyPrinter().writeValue(path.toFile(), listaUsuarioSesion);
-
             System.out.println("INFO: Usuario de sesión guardado en " + USUARIO_SESION_JSON_FILE);
-
         } catch (IOException e) {
             System.err.println("ERROR: No se pudo guardar el archivo de sesión del usuario: " + e.getMessage());
         }

@@ -1,0 +1,9 @@
+[ {
+  "cedula" : "V-1234567",
+  "nombre" : "Mapo",
+  "apellido" : "MAPO",
+  "fechaNacimiento" : [ 2006, 11, 23 ],
+  "correoElectronico" : "123@1.com",
+  "contrasenia" : "12345",
+  "rol" : "paciente"
+} ]

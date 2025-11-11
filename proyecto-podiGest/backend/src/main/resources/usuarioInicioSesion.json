@@ -1,9 +1,0 @@
-[ {
-  "cedula" : "123465",
-  "nombre" : "Gabriel",
-  "apellido" : "Bracho",
-  "fechaNacimiento" : [ 1999, 9, 27 ],
-  "correoElectronico" : "gabrielbrachobf@gmail.com",
-  "contrasenia" : "123",
-  "rol" : "paciente"
-} ]
