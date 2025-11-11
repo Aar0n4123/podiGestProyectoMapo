@@ -89,4 +89,18 @@
   "remitente" : "Clínica Podológica",
   "mensaje" : "Estimado/a Victoria Carmona,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Marylyn\nFecha: 2025-11-13\nHora: 08:20\nMotivo: me duele la uña chiquita\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
   "correoDestinatario" : "victoria@gmail.com"
+}, {
+  "id" : "NOTIF-1762893561211-1762893561206-39hz4jxqz",
+  "fechaEnvio" : "2025-11-11T16:39:21",
+  "asunto" : "Confirmación de cita agendada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a Omar Cafe,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Marylyn\nFecha: 2025-11-20\nHora: 13:00\nMotivo: CAFEEEEE\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
+  "correoDestinatario" : "o@o.com"
+}, {
+  "id" : "NOTIF-1762894326257-1762894326243-i4yssepzu",
+  "fechaEnvio" : "2025-11-11T16:52:06",
+  "asunto" : "Confirmación de cita agendada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a Omar Cafe,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Elsee\nFecha: 2025-11-19\nHora: 13:00\nMotivo: kk\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
+  "correoDestinatario" : "o@o.com"
 } ]

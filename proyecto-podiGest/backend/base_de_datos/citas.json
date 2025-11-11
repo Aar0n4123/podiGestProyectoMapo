@@ -190,4 +190,28 @@
   "razonConsulta" : "me duele la uña chiquita",
   "estado" : "pendiente",
   "fechaCreacion" : "2025-11-11T19:18:28.137Z"
+}, {
+  "id" : "CITA-1762893561206-39hz4jxqz",
+  "pacienteNombre" : "Omar Cafe",
+  "pacienteCorreo" : "o@o.com",
+  "pacienteTelefono" : "041415673",
+  "especialista" : "Marylyn",
+  "especialidadBuscada" : "",
+  "fecha" : "2025-11-20",
+  "hora" : "13:00",
+  "razonConsulta" : "CAFEEEEE",
+  "estado" : "pendiente",
+  "fechaCreacion" : "2025-11-11T20:39:21.206Z"
+}, {
+  "id" : "CITA-1762894326243-i4yssepzu",
+  "pacienteNombre" : "Omar Cafe",
+  "pacienteCorreo" : "o@o.com",
+  "pacienteTelefono" : "0414290399",
+  "especialista" : "Elsee",
+  "especialidadBuscada" : "",
+  "fecha" : "2025-11-19",
+  "hora" : "13:00",
+  "razonConsulta" : "kk",
+  "estado" : "pendiente",
+  "fechaCreacion" : "2025-11-11T20:52:06.243Z"
 } ]

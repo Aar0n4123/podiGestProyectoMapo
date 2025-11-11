@@ -6,6 +6,7 @@ import {
   fetchNotifications,
   type NotificationSummary
 } from '../services/notificationsService'
+import { useNotificationCount } from '../composables/useNotificationCount'
 
 const isCollapsed = ref(false)
 const notifications = ref<NotificationSummary[]>([])
@@ -14,6 +15,7 @@ const errorMessage = ref('')
 const selectedNotification = ref<NotificationSummary | null>(null)
 const loadingDetails = ref(false)
 const showDetailView = ref(false)
+const { loadNotificationCount, isMuted, toggleMute } = useNotificationCount()
 
 const toggleSidebar = () => {
   isCollapsed.value = !isCollapsed.value
@@ -29,6 +31,8 @@ const loadNotifications = async () => {
   }
   notifications.value = response
   loading.value = false
+  // Actualizar el contador en el sidebar
+  loadNotificationCount()
 }
 
 const openNotification = async (id: string) => {
@@ -71,15 +75,63 @@ onMounted(() => {
           </p>
         </header>
 
+        <!-- Mensaje informativo cuando las alertas están silenciadas -->
+        <div 
+          v-if="isMuted" 
+          class="bg-gray-100 border border-gray-300 rounded-lg p-4 flex items-center gap-3"
+        >
+          <svg class="w-6 h-6 text-gray-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <div class="flex-1">
+            <p class="text-gray-800 font-medium">Las alertas de notificaciones están silenciadas</p>
+            <p class="text-gray-600 text-sm">No verás el badge rojo en el icono de notificaciones hasta que las actives nuevamente.</p>
+          </div>
+        </div>
+
         <article class="bg-white rounded-lg shadow border border-amber-200">
           <div class="flex items-center justify-between px-6 py-4 border-b border-amber-100">
             <h2 class="text-xl font-semibold text-amber-700">Bandeja de entrada</h2>
-            <button
-              class="text-sm text-amber-600 hover:text-amber-800 font-medium transition"
-              @click="loadNotifications"
-            >
-              🔄 Recargar
-            </button>
+            <div class="flex items-center gap-3">
+              <!-- Botón de silenciar/activar alertas -->
+              <button
+                @click="toggleMute"
+                :class="[
+                  'flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200',
+                  isMuted 
+                    ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' 
+                    : 'bg-red-100 text-red-700 hover:bg-red-200'
+                ]"
+                :title="isMuted ? 'Activar alertas de notificaciones' : 'Silenciar alertas de notificaciones'"
+              >
+                <svg 
+                  v-if="!isMuted" 
+                  class="w-5 h-5" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+                <svg 
+                  v-else 
+                  class="w-5 h-5" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-.707-1.707l1.586-1.586a1 1 0 01.707-.293h3.172a1 1 0 00.707-.293l2.414-2.414A1 1 0 0113.586 8H15m5.586 7H22a1 1 0 00.707-1.707l-1.586-1.586a1 1 0 00-.707-.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 0010.414 8H9M3 3l18 18" />
+                </svg>
+                <span>{{ isMuted ? 'Alertas silenciadas' : 'Silenciar alertas' }}</span>
+              </button>
+              
+              <button
+                class="text-sm text-amber-600 hover:text-amber-800 font-medium transition"
+                @click="loadNotifications"
+              >
+                🔄 Recargar
+              </button>
+            </div>
           </div>
 
           <div v-if="loading" class="p-6 text-gray-500 text-center">

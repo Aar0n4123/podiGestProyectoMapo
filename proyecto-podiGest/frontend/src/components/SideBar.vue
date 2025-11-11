@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { defineProps, defineEmits } from 'vue'
+import { defineProps, defineEmits, onMounted } from 'vue'
 import {
   HomeIcon,
   UserIcon,
@@ -12,11 +12,13 @@ import {
   XMarkIcon,
   HeartIcon
 } from '@heroicons/vue/24/outline'
+import { useNotificationCount } from '../composables/useNotificationCount'
 
 const props = defineProps<{ isCollapsed: boolean }>()
 const emit = defineEmits(['toggle'])
 
 const route = useRoute()
+const { notificationCount, isMuted, loadNotificationCount } = useNotificationCount()
 
 // Rol actual del usuario (esto vendría de tu login/backend)
 const userRole = 'cliente' // especialista o cliente
@@ -34,6 +36,13 @@ const navItems = [
 ]
 
 const isActive = (path: string) => route.path === path
+
+// Cargar el conteo de notificaciones al montar el componente
+onMounted(() => {
+  loadNotificationCount()
+  // Actualizar cada 30 segundos
+  setInterval(loadNotificationCount, 30000)
+})
 </script>
 
 <template>
@@ -60,7 +69,16 @@ const isActive = (path: string) => route.path === path
             class="group flex items-center gap-3 px-4 py-3 hover:bg-amber-500 transition-colors duration-200"
             :class="{ 'bg-gray-800': isActive(item.to) }"
           >
-            <component :is="item.icon" class="text-white group-hover:text-black w-5 h-5" />
+            <div class="relative">
+              <component :is="item.icon" class="text-white group-hover:text-black w-5 h-5" />
+              <!-- Badge de notificaciones (solo se muestra si no está silenciado) -->
+              <span
+                v-if="item.name === 'Notificaciones' && notificationCount > 0 && !isMuted"
+                class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center"
+              >
+                {{ notificationCount > 9 ? '9+' : notificationCount }}
+              </span>
+            </div>
             <span
               v-if="!props.isCollapsed"
               class="text-white group-hover:text-black transition-all duration-200"
