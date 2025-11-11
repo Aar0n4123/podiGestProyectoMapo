@@ -84,6 +84,19 @@ public class CitasService {
 
     public Cita guardarCita(Cita nuevaCita) throws IOException {
         List<Cita> citas = obtenerCitas();
+        
+        boolean citaExistente = citas.stream()
+            .anyMatch(cita -> 
+                cita.getFecha().equals(nuevaCita.getFecha()) &&
+                cita.getHora().equals(nuevaCita.getHora()) &&
+                cita.getEspecialista().equals(nuevaCita.getEspecialista()) &&
+                !cita.getEstado().equals("cancelada")
+            );
+        
+        if (citaExistente) {
+            throw new IOException("Ya existe una cita agendada para este especialista en la fecha y hora seleccionadas");
+        }
+        
         citas.add(nuevaCita);
         guardarCitasAJson(citas);
         
