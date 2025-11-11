@@ -196,5 +196,50 @@ public class CitasService {
                 .filter(cita -> cita.getEspecialista().equals(especialista))
                 .toList();
     }
+
+    /**
+     * Obtiene una cita específica por ID
+     * @param citaId ID de la cita
+     * @return la cita encontrada o vacío si no existe
+     */
+    public Cita modificarCitaCompleta(String citaId, Cita citaActualizada) throws IOException {
+        List<Cita> citas = obtenerCitas();
+
+        for (int i = 0; i < citas.size(); i++) {
+            if (citas.get(i).getId().equals(citaId)) {
+                // Solo actualiza fecha y hora
+                citas.get(i).setFecha(citaActualizada.getFecha());
+                citas.get(i).setHora(citaActualizada.getHora());
+                guardarCitasAJson(citas);
+                return citas.get(i);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Revisa si un horario específico ya está ocupado por un especialista,
+     * excluyendo una cita específica (la que se está modificando).
+     *
+     * @param especialistaCorreo El correo del especialista.
+     * @param nuevaFecha         La nueva fecha a verificar.
+     * @param nuevaHora          La nueva hora a verificar.
+     * @param citaIdExcluir      El ID de la cita que estamos intentando modificar (para no chocar con ella misma).
+     * @return true si el horario está disponible, false si está ocupado.
+     */
+    public boolean isHorarioDisponible(String especialistaCorreo, String nuevaFecha, String nuevaHora, String citaIdExcluir) throws IOException {
+        List<Cita> citas = obtenerCitas();
+
+        Optional<Cita> citaOcupada = citas.stream()
+                .filter(cita ->
+                        !cita.getId().equals(citaIdExcluir) && // <<< No compruebes contra la cita actual
+                                cita.getEspecialista().equals(especialistaCorreo) &&
+                                cita.getFecha().equals(nuevaFecha) &&
+                                cita.getHora().equals(nuevaHora)
+                )
+                .findFirst();
+
+        return citaOcupada.isEmpty();
+    }
 }
 

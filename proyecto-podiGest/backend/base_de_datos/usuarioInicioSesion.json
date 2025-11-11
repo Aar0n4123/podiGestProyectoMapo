@@ -1,9 +1,9 @@
 [ {
-  "cedula" : "V-00000111",
-  "nombre" : "Omar",
-  "apellido" : "Cafe",
-  "fechaNacimiento" : [ 1986, 12, 22 ],
-  "correoElectronico" : "o@o.com",
-  "contrasenia" : "123456",
+  "cedula" : "127861",
+  "nombre" : "Victoria",
+  "apellido" : "Carmona",
+  "fechaNacimiento" : [ 1999, 9, 27 ],
+  "correoElectronico" : "victoria@gmail.com",
+  "contrasenia" : "v123",
   "rol" : "paciente"
 } ]

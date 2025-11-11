@@ -214,4 +214,16 @@
   "razonConsulta" : "kk",
   "estado" : "pendiente",
   "fechaCreacion" : "2025-11-11T20:52:06.243Z"
+}, {
+  "id" : "CITA-1762896842325-b4ovouket",
+  "pacienteNombre" : "Victoria Carmona",
+  "pacienteCorreo" : "victoria@gmail.com",
+  "pacienteTelefono" : "04242734639",
+  "especialista" : "Marylyn",
+  "especialidadBuscada" : "",
+  "fecha" : "2025-11-20",
+  "hora" : "11:00",
+  "razonConsulta" : "hongo gigante",
+  "estado" : "pendiente",
+  "fechaCreacion" : "2025-11-11T21:34:02.325Z"
 } ]

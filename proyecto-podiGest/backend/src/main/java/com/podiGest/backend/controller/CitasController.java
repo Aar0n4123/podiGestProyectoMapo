@@ -2,6 +2,8 @@ package com.podiGest.backend.controller;
 
 import com.podiGest.backend.model.Cita;
 import com.podiGest.backend.service.CitasService;
+import com.podiGest.backend.model.Usuario;
+import com.podiGest.backend.service.PerfilService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +16,11 @@ import java.util.List;
 public class CitasController {
 
     private final CitasService citasService;
+    private final PerfilService perfilService; // agrego viki
 
-    public CitasController(CitasService citasService) {
+    public CitasController(CitasService citasService, PerfilService perfilService) {
         this.citasService = citasService;
+        this.perfilService = perfilService;// agrego viki
     }
 
     @GetMapping
@@ -97,5 +101,41 @@ public class CitasController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+
+    //agregado viki
+    /**
+     * Endpoint para modificar la fecha y hora de una cita existente.
+     * @param citaId ID de la cita a modificar.
+     * @param citaData Un objeto Cita que contiene la nueva 'fecha' y 'hora'.
+     */
+    @PutMapping("/{citaId}")
+    public ResponseEntity<?> modificarCita(@PathVariable String citaId, @RequestBody Cita citaData) {
+        try {
+            if (citaData.getFecha() == null || citaData.getHora() == null) {
+                return ResponseEntity.badRequest().body("La fecha y la hora son campos requeridos para la modificación.");
+            }
+
+
+            Cita citaActualizada = citasService.modificarCitaCompleta(
+                    citaId,
+                    citaData
+            );
+
+            if (citaActualizada != null) {
+
+                return ResponseEntity.ok(citaActualizada);
+            } else {
+
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró la cita con ID: " + citaId);
+            }
+        } catch (IOException e) {
+            System.err.println("Error al modificar cita: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Error al modificar la cita.");
+        }
+    }
+
+
+
 }
 
