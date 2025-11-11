@@ -11,6 +11,7 @@ import Information from '../views/Information.vue'
 import Configuration from '../views/Configuration.vue'
 import AgendarCita from '../views/AgendarCita.vue'
 import MisCitas from '../views/MisCitas.vue'
+import ConsultarCitas from '../views/ConsultarCitas.vue'
 
 // Define las URLS y el componente asociado
 const routes = [
@@ -62,6 +63,11 @@ const routes = [
         path: '/mis-citas',
         name: 'mis-citas',
         component: MisCitas
+    },
+    {
+        path: '/consultar-citas',
+        name: 'consultar-citas',
+        component: ConsultarCitas
     }
 ]
 

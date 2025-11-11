@@ -18,69 +18,34 @@
 
       <div v-else>
         <div class="header-section">
-          <h2>Mis Citas</h2>
-          <router-link to="/agendar-cita" class="btn btn-primary">
-            + Agendar Nueva Cita
+          <h2>Gestión de Citas</h2>
+        </div>
+
+        <div class="menu-grid">
+          <router-link to="/agendar-cita" class="menu-card">
+            <div class="menu-icon">📅</div>
+            <h3>Agendar Cita</h3>
+            <p>Agenda una nueva cita con un especialista</p>
           </router-link>
-        </div>
 
-        <div v-if="cargando" class="loading">
-          <p>Cargando citas...</p>
-        </div>
-
-        <div v-else-if="citas.length === 0" class="empty-state">
-          <p>No tienes citas agendadas aún.</p>
-          <router-link to="/agendar-cita" class="btn btn-primary">
-            Agendar Primera Cita
+          <router-link to="/consultar-citas" class="menu-card">
+            <div class="menu-icon">🔍</div>
+            <h3>Consultar Citas Disponibles</h3>
+            <p>Consulta las citas disponibles</p>
           </router-link>
-        </div>
 
-        <div v-else class="citas-grid">
-          <div v-for="cita in citas" :key="cita.id" class="cita-card">
-            <div class="cita-header">
-              <h3>{{ cita.especialista }}</h3>
-              <span :class="['estado', 'estado-' + cita.estado]">
-                {{ cita.estado }}
-              </span>
-            </div>
+          <div class="menu-card disabled">
+            <div class="menu-icon">✏️</div>
+            <h3>Modificar Citas</h3>
+            <p>Modifica tus citas agendadas</p>
+            <span class="badge-soon">Próximamente</span>
+          </div>
 
-            <div class="cita-content">
-              <div class="cita-row">
-                <span class="label">Especialidad:</span>
-                <span class="value">{{ cita.especialidadBuscada }}</span>
-              </div>
-
-              <div class="cita-row">
-                <span class="label">Fecha:</span>
-                <span class="value">{{ formatearFecha(cita.fecha) }}</span>
-              </div>
-
-              <div class="cita-row">
-                <span class="label">Hora:</span>
-                <span class="value">{{ cita.hora }}</span>
-              </div>
-
-              <div class="cita-row">
-                <span class="label">Teléfono:</span>
-                <span class="value">{{ cita.pacienteTelefono }}</span>
-              </div>
-
-              <div class="cita-row">
-                <span class="label">Razón:</span>
-                <span class="value">{{ cita.razonConsulta }}</span>
-              </div>
-            </div>
-
-            <div class="cita-actions">
-              <button 
-                v-if="cita.estado === 'pendiente'"
-                @click="cancelarCita(cita.id)"
-                class="btn btn-danger"
-                :disabled="cancelando === cita.id"
-              >
-                {{ cancelando === cita.id ? 'Cancelando...' : 'Cancelar' }}
-              </button>
-            </div>
+          <div class="menu-card disabled">
+            <div class="menu-icon">❌</div>
+            <h3>Cancelar Citas</h3>
+            <p>Cancela tus citas agendadas</p>
+            <span class="badge-soon">Próximamente</span>
           </div>
         </div>
       </div>
@@ -91,21 +56,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import SideBar from '../components/SideBar.vue'
-import { obtenerCitasPorPaciente, cancelarCita as cancelarCitaAPI } from '../services/appointmentService'
-
-interface Cita {
-  id: string
-  pacienteNombre: string
-  pacienteCorreo: string
-  pacienteTelefono: string
-  especialista: string
-  especialidadBuscada: string
-  fecha: string
-  hora: string
-  razonConsulta: string
-  estado: string
-  fechaCreacion: string
-}
 
 export default defineComponent({
   name: 'MisCitas',
@@ -114,76 +64,25 @@ export default defineComponent({
   },
   data() {
     return {
-      citas: [] as Cita[],
-      cargando: true,
-      cancelando: '',
       usuarioAutenticado: false,
-      isCollapsed: false,
-      usuarioCorreo: ''
+      isCollapsed: false
     }
   },
-  async mounted() {
+  mounted() {
     this.verificarSesion()
-    if (this.usuarioAutenticado) {
-      await this.cargarCitas()
-    }
   },
   methods: {
     verificarSesion() {
       const usuarioJSON = localStorage.getItem('currentUser')
       if (usuarioJSON) {
         try {
-          const usuario = JSON.parse(usuarioJSON)
-          this.usuarioCorreo = usuario.correo
+          JSON.parse(usuarioJSON)
           this.usuarioAutenticado = true
         } catch (error) {
           this.usuarioAutenticado = false
         }
       } else {
         this.usuarioAutenticado = false
-      }
-    },
-    async cargarCitas() {
-      this.cargando = true
-      try {
-        if (this.usuarioCorreo) {
-          this.citas = await obtenerCitasPorPaciente(this.usuarioCorreo)
-          this.citas.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
-        }
-      } catch (error) {
-        console.error('Error al cargar citas:', error)
-      } finally {
-        this.cargando = false
-      }
-    },
-    async cancelarCita(citaId: string) {
-      if (confirm('¿Estás seguro de que deseas cancelar esta cita?')) {
-        this.cancelando = citaId
-        try {
-          const resultado = await cancelarCitaAPI(citaId)
-          if (resultado) {
-            this.citas = this.citas.filter(c => c.id !== citaId)
-          } else {
-            alert('Error al cancelar la cita')
-          }
-        } catch (error) {
-          console.error('Error al cancelar cita:', error)
-          alert('Error al cancelar la cita')
-        } finally {
-          this.cancelando = ''
-        }
-      }
-    },
-    formatearFecha(fecha: string): string {
-      try {
-        const date = new Date(fecha + 'T00:00:00')
-        return date.toLocaleDateString('es-VE', { 
-          year: 'numeric', 
-          month: 'long', 
-          day: 'numeric' 
-        })
-      } catch {
-        return fecha
       }
     },
     toggleSidebar() {
@@ -204,15 +103,16 @@ main {
 
 .header-section {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
 .header-section h2 {
-  font-size: 28px;
+  font-size: 32px;
   color: #333;
   margin: 0;
+  font-weight: 700;
 }
 
 .alert {
@@ -231,117 +131,6 @@ main {
 
 .alert p {
   margin-bottom: 15px;
-}
-
-.loading {
-  text-align: center;
-  padding: 40px;
-  color: #666;
-  font-size: 18px;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 60px 20px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.empty-state p {
-  color: #666;
-  font-size: 18px;
-  margin-bottom: 20px;
-}
-
-.citas-grid {
-  display: grid;
-  gap: 20px;
-}
-
-.cita-card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition: box-shadow 0.3s;
-}
-
-.cita-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.cita-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 20px;
-  margin-bottom: 15px;
-}
-
-.cita-header h3 {
-  margin: 0;
-  font-size: 20px;
-}
-
-.estado {
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.estado-pendiente {
-  background-color: #ffc107;
-  color: #000;
-}
-
-.estado-confirmada {
-  background-color: #28a745;
-  color: white;
-}
-
-.estado-cancelada {
-  background-color: #dc3545;
-  color: white;
-}
-
-.estado-completada {
-  background-color: #17a2b8;
-  color: white;
-}
-
-.cita-content {
-  padding: 0 20px 20px;
-}
-
-.cita-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 12px;
-  font-size: 14px;
-}
-
-.cita-row .label {
-  font-weight: 600;
-  color: #333;
-  min-width: 120px;
-}
-
-.cita-row .value {
-  color: #666;
-  text-align: right;
-  flex: 1;
-}
-
-.cita-actions {
-  padding: 15px 20px;
-  border-top: 1px solid #eee;
-  display: flex;
-  gap: 10px;
 }
 
 .btn {
@@ -366,43 +155,93 @@ main {
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
 }
 
-.btn-danger {
-  background-color: #dc3545;
-  color: white;
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.btn-danger:hover:not(:disabled) {
-  background-color: #c82333;
+.menu-card {
+  background: white;
+  border-radius: 12px;
+  padding: 40px 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  cursor: pointer;
 }
 
-.btn-danger:disabled {
+.menu-card:not(.disabled):hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+}
+
+.menu-card.disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
+.menu-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+}
+
+.menu-card h3 {
+  font-size: 22px;
+  color: #333;
+  margin: 0 0 12px 0;
+  font-weight: 600;
+}
+
+.menu-card p {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.badge-soon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 @media (max-width: 768px) {
-  .header-section {
-    flex-direction: column;
-    gap: 15px;
+  .menu-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 
-  .cita-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+  .header-section h2 {
+    font-size: 24px;
   }
 
-  .cita-row {
-    flex-direction: column;
-    gap: 5px;
+  .menu-card {
+    padding: 30px 20px;
   }
 
-  .cita-row .label {
-    min-width: auto;
+  .menu-icon {
+    font-size: 48px;
   }
 
-  .cita-row .value {
-    text-align: left;
+  .menu-card h3 {
+    font-size: 18px;
   }
 }
 </style>
