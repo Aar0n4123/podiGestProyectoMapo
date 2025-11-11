@@ -3,6 +3,7 @@ package com.podiGest.backend.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.podiGest.backend.model.Cita;
+import com.podiGest.backend.model.Notificacion;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,11 +22,13 @@ public class CitasService {
 
     private final Path citasPath;
     private final ObjectMapper objectMapper;
+    private final NotificacionService notificacionService;
     private static final String CITAS_JSON_FILE = "citas.json";
 
-    public CitasService() {
+    public CitasService(NotificacionService notificacionService) {
         this.citasPath = PathConfigService.getSeedFilePath(CITAS_JSON_FILE);
         this.objectMapper = new ObjectMapper();
+        this.notificacionService = notificacionService;
         
         // Inicializa el archivo de citas si no existe
         inicializarCitas();
@@ -81,7 +86,74 @@ public class CitasService {
         List<Cita> citas = obtenerCitas();
         citas.add(nuevaCita);
         guardarCitasAJson(citas);
+        
+        // Generar notificación automáticamente al agendar la cita
+        generarNotificacionCita(nuevaCita);
+        
         return nuevaCita;
+    }
+
+    /**
+     * Genera una notificación automática cuando se agenda una cita
+     * 
+     * @param cita La cita que se acaba de agendar
+     */
+    private void generarNotificacionCita(Cita cita) {
+        try {
+            System.out.println("INFO: Iniciando generación de notificación para la cita: " + cita.getId());
+            System.out.println("INFO: Correo del paciente: " + cita.getPacienteCorreo());
+            
+            // Generar ID único para la notificación
+            String notificacionId = "NOTIF-" + System.currentTimeMillis() + "-" + cita.getId().substring(5);
+            
+            // Obtener fecha y hora actual para la notificación
+            LocalDateTime ahora = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            String fechaEnvio = ahora.format(formatter);
+            
+            // Crear el asunto de la notificación
+            String asunto = "Confirmación de cita agendada";
+            
+            // Crear el mensaje de la notificación con los detalles de la cita
+            String mensaje = String.format(
+                "Estimado/a %s,\n\n" +
+                "Su cita ha sido agendada exitosamente con los siguientes detalles:\n\n" +
+                "Especialista: %s\n" +
+                "Fecha: %s\n" +
+                "Hora: %s\n" +
+                "Motivo: %s\n\n" +
+                "Por favor, llegue 10 minutos antes de su cita.\n" +
+                "Si necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\n" +
+                "Gracias por confiar en nuestros servicios.",
+                cita.getPacienteNombre(),
+                cita.getEspecialista(),
+                cita.getFecha(),
+                cita.getHora(),
+                cita.getRazonConsulta()
+            );
+            
+            // Crear la notificación vinculada al correo del paciente
+            Notificacion notificacion = new Notificacion(
+                notificacionId,
+                fechaEnvio,
+                asunto,
+                "Clínica Podológica",
+                mensaje,
+                cita.getPacienteCorreo() // Vincula la notificación al correo del paciente
+            );
+            
+            System.out.println("INFO: Notificación creada con ID: " + notificacionId);
+            System.out.println("INFO: Correo destinatario: " + notificacion.getCorreoDestinatario());
+            
+            // Guardar la notificación
+            notificacionService.crearNotificacion(notificacion);
+            
+            System.out.println("INFO: Notificación guardada exitosamente para la cita: " + cita.getId());
+        } catch (IOException e) {
+            System.err.println("ERROR: Error al generar notificación para la cita " + cita.getId() + ": " + e.getMessage());
+            e.printStackTrace();
+            // No lanzamos la excepción para no interrumpir el proceso de creación de la cita
+        }
     }
 
     public void guardarCitasAJson(List<Cita> citas) throws IOException {

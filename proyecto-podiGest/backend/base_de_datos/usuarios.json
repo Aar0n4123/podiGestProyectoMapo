@@ -86,4 +86,12 @@
   "correoElectronico" : "alicia@gmail.com",
   "contrasenia" : "123",
   "rol" : "paciente"
+}, {
+  "cedula" : "V-00000111",
+  "nombre" : "Omar",
+  "apellido" : "Cafe",
+  "fechaNacimiento" : [ 1986, 12, 22 ],
+  "correoElectronico" : "o@o.com",
+  "contrasenia" : "123456",
+  "rol" : "paciente"
 } ]

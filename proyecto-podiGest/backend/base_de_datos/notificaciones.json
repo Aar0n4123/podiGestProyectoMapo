@@ -1,23 +1,29 @@
-[
-  {
-    "id": "notif-001",
-    "fechaEnvio": "2025-01-10T09:00:00",
-    "asunto": "Recordatorio de cita",
-    "remitente": "Clínica Podológica",
-    "mensaje": "Estimado paciente, le recordamos su cita programada para el 12 de enero de 2025 a las 10:00 AM."
-  },
-  {
-    "id": "notif-002",
-    "fechaEnvio": "2025-01-08T15:30:00",
-    "asunto": "Actualización de cita",
-    "remitente": "Clínica Podológica",
-    "mensaje": "Su cita del 15 de enero ha sido reprogramada para el 16 de enero a las 11:30 AM."
-  },
-  {
-    "id": "notif-003",
-    "fechaEnvio": "2024-12-25T08:15:00",
-    "asunto": "Cita cancelada",
-    "remitente": "Clínica Podológica",
-    "mensaje": "Lamentamos informarle que su cita del 27 de diciembre ha sido cancelada. Por favor, comuníquese para reagendar."
-  }
-]
+[ {
+  "id" : "notif-001",
+  "fechaEnvio" : "2025-01-10T09:00:00",
+  "asunto" : "Recordatorio de cita",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado paciente, le recordamos su cita programada para el 12 de enero de 2025 a las 10:00 AM.",
+  "correoDestinatario" : "o@o.com"
+}, {
+  "id" : "notif-002",
+  "fechaEnvio" : "2025-01-08T15:30:00",
+  "asunto" : "Actualización de cita",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Su cita del 15 de enero ha sido reprogramada para el 16 de enero a las 11:30 AM.",
+  "correoDestinatario" : "o@o.com"
+}, {
+  "id" : "notif-003",
+  "fechaEnvio" : "2024-12-25T08:15:00",
+  "asunto" : "Cita cancelada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Lamentamos informarle que su cita del 27 de diciembre ha sido cancelada. Por favor, comuníquese para reagendar.",
+  "correoDestinatario" : "gabrielbrachobf@gmail.com"
+},  {
+  "id" : "NOTIF-1762881548223-1762881548221-w5gk7358z",
+  "fechaEnvio" : "2025-11-11T13:19:08",
+  "asunto" : "Confirmación de cita agendada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a Omar Cafe,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Elsee\nFecha: 2030-11-11\nHora: 11:01\nMotivo: necesito cafe\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
+  "correoDestinatario" : "o@o.com"
+} ]

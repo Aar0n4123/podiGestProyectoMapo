@@ -22,4 +22,64 @@
   "razonConsulta" : "me duele la cabeza",
   "estado" : "pendiente",
   "fechaCreacion" : "2025-11-11T04:07:17.443Z"
+}, {
+  "id" : "CITA-1762880010208-4jbw8aquf",
+  "pacienteNombre" : "Mapo MAPO",
+  "pacienteCorreo" : "m@m.com",
+  "pacienteTelefono" : "0141456662",
+  "especialista" : "Marylyn",
+  "especialidadBuscada" : "",
+  "fecha" : "2025-12-22",
+  "hora" : "22:02",
+  "razonConsulta" : "22",
+  "estado" : "pendiente",
+  "fechaCreacion" : "2025-11-11T16:53:30.208Z"
+}, {
+  "id" : "CITA-1762880140937-4n3if1ewa",
+  "pacienteNombre" : "Mapo MAPO",
+  "pacienteCorreo" : "m@m.com",
+  "pacienteTelefono" : "051515622",
+  "especialista" : "Elsee",
+  "especialidadBuscada" : "",
+  "fecha" : "2026-02-22",
+  "hora" : "10:10",
+  "razonConsulta" : "Dolor de cabeza",
+  "estado" : "pendiente",
+  "fechaCreacion" : "2025-11-11T16:55:40.937Z"
+}, {
+  "id" : "CITA-1762880851697-j0u5vki17",
+  "pacienteNombre" : "Omar Cafe",
+  "pacienteCorreo" : "m@m.com",
+  "pacienteTelefono" : "11111111",
+  "especialista" : "Elsee",
+  "especialidadBuscada" : "",
+  "fecha" : "2036-11-11",
+  "hora" : "11:01",
+  "razonConsulta" : "ss",
+  "estado" : "pendiente",
+  "fechaCreacion" : "2025-11-11T17:07:31.697Z"
+}, {
+  "id" : "CITA-1762881424019-fu4w0t8et",
+  "pacienteNombre" : "Omar Cafe",
+  "pacienteCorreo" : "m@m.com",
+  "pacienteTelefono" : "123456789",
+  "especialista" : "Marylyn",
+  "especialidadBuscada" : "",
+  "fecha" : "2030-11-11",
+  "hora" : "11:01",
+  "razonConsulta" : "Se me acabo el cafe",
+  "estado" : "pendiente",
+  "fechaCreacion" : "2025-11-11T17:17:04.019Z"
+}, {
+  "id" : "CITA-1762881548221-w5gk7358z",
+  "pacienteNombre" : "Omar Cafe",
+  "pacienteCorreo" : "o@o.com",
+  "pacienteTelefono" : "0141456662",
+  "especialista" : "Elsee",
+  "especialidadBuscada" : "",
+  "fecha" : "2030-11-11",
+  "hora" : "11:01",
+  "razonConsulta" : "necesito cafe",
+  "estado" : "pendiente",
+  "fechaCreacion" : "2025-11-11T17:19:08.221Z"
 } ]

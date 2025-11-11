@@ -23,7 +23,7 @@ public class NotificacionService {
     private static final String NOTIFICACIONES_JSON_FILE = "notificaciones.json";
 
     public NotificacionService() {
-        this.notificacionesPath = PathConfigService.getFilePath(NOTIFICACIONES_JSON_FILE);
+        this.notificacionesPath = PathConfigService.getSeedFilePath(NOTIFICACIONES_JSON_FILE);
         this.objectMapper = new ObjectMapper();
         this.objectMapper.registerModule(new JavaTimeModule());
         
@@ -88,8 +88,57 @@ public class NotificacionService {
      * @throws IOException si hay error al escribir el archivo
      */
     private void guardarNotificacionesAJson(List<Notificacion> notificaciones) throws IOException {
-        PathConfigService.ensureDataDirectoryExists();
-        // Sobrescribe el archivo con los datos actuales (sin duplicar)
+        // Sobrescribe el archivo con los datos actuales en base_de_datos/notificaciones.json
         objectMapper.writerWithDefaultPrettyPrinter().writeValue(notificacionesPath.toFile(), notificaciones);
+    }
+
+    /**
+     * Crea y guarda una nueva notificación
+     * 
+     * @param notificacion La notificación a crear
+     * @return La notificación creada
+     * @throws IOException si hay error al guardar
+     */
+    public Notificacion crearNotificacion(Notificacion notificacion) throws IOException {
+        System.out.println("INFO: Creando notificación con ID: " + notificacion.getId());
+        System.out.println("INFO: Ruta del archivo: " + notificacionesPath.toAbsolutePath());
+        
+        List<Notificacion> notificaciones = new ArrayList<>(obtenerNotificaciones());
+        System.out.println("INFO: Notificaciones existentes antes de agregar: " + notificaciones.size());
+        
+        notificaciones.add(notificacion);
+        System.out.println("INFO: Notificaciones después de agregar: " + notificaciones.size());
+        
+        guardarNotificacionesAJson(notificaciones);
+        System.out.println("INFO: Notificación guardada exitosamente en: " + notificacionesPath.toAbsolutePath());
+        
+        return notificacion;
+    }
+
+    /**
+     * Obtiene las notificaciones de un usuario específico por su correo electrónico
+     * 
+     * @param correoUsuario El correo del usuario
+     * @return Lista de notificaciones del usuario
+     * @throws IOException si hay error al leer
+     */
+    public List<Notificacion> obtenerNotificacionesPorUsuario(String correoUsuario) throws IOException {
+        List<Notificacion> todasLasNotificaciones = obtenerNotificaciones();
+        System.out.println("INFO: Total de notificaciones en el archivo: " + todasLasNotificaciones.size());
+        
+        List<Notificacion> notificacionesFiltradas = todasLasNotificaciones
+                .stream()
+                .filter(notificacion -> {
+                    boolean coincide = notificacion.getCorreoDestinatario() != null 
+                            && notificacion.getCorreoDestinatario().equalsIgnoreCase(correoUsuario);
+                    if (coincide) {
+                        System.out.println("INFO: Notificación " + notificacion.getId() + " coincide con el usuario " + correoUsuario);
+                    }
+                    return coincide;
+                })
+                .toList();
+        
+        System.out.println("INFO: Notificaciones filtradas para " + correoUsuario + ": " + notificacionesFiltradas.size());
+        return notificacionesFiltradas;
     }
 }
