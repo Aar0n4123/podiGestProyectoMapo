@@ -42,10 +42,11 @@ const cargarPerfil = async () => {
   cargando.value = true;
   errorCarga.value = '';
   try {
-    const urlBackend = "http://localhost:8080/api/perfil"; // esta es la ruta de ConsultarPerfilController este no se cambia
+    const urlBackend = "http://localhost:8080/api/usuarios"; // esta es la ruta de ConsultarPerfilController este no se cambia
 
 
-    const response = await fetch(urlBackend);
+
+    const response = await fetch(urlBackend, { cache: 'no-store' });
 
 
     if (response.ok) {
@@ -117,7 +118,7 @@ onMounted(() => {
             <div class="mt-8 text-left space-y-5">
 
               <div class="flex flex-col md:flex-row p-4 bg-gray-50 rounded-lg border border-gray-200">
-                <span class="font-semibold text-amber-700 w-full md:w-1/3">Cédula:</span>
+                <span class="font-semibold text-amber-700 w-full md:w-1D/3">Cédula:</span>
                 <span class="text-gray-800 w-full md:w-2/3">{{ usuario.cedula }}</span>
               </div>
 
@@ -136,7 +137,7 @@ onMounted(() => {
                 <span class="text-gray-800 w-full md:w-2/3">{{ usuario.correoElectronico }}</span>
               </div>
 
-              <div class="flex flex-col md:flex-row p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <div classs="flex flex-col md:flex-row p-4 bg-gray-50 rounded-lg border border-gray-200">
                 <span class="font-semibold text-amber-700 w-full md:w-1/3">Nacimiento:</span>
                 <span class="text-gray-800 w-full md:w-2/3">{{ formatFecha(usuario.fechaNacimiento) }}</span>
               </div>

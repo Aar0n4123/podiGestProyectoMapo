@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -19,14 +18,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CrearUsuarioService {
+public class PerfilService {
 
     private List<Usuario> listaUsuarios;
     private static final String USUARIOS_JSON_FILE = "usuarios.json";
     private static final String USUARIO_SESION_JSON_FILE = "usuarioInicioSesion.json";
     private final ObjectMapper mapper;
 
-    public CrearUsuarioService() {
+    public PerfilService() {
         this.mapper = new ObjectMapper();
         this.mapper.registerModule(new JavaTimeModule());
 
@@ -141,6 +140,33 @@ public class CrearUsuarioService {
         return listaUsuarios.stream()
                 .filter(u -> u.getRol() != null && u.getRol().equalsIgnoreCase("especialista"))
                 .toList();
+    }
+
+    /**
+     * Metodo para leer los datos del usuario activo desde el archivo JSON
+     * (Este es el método que movimos desde ConsultarPerfilService)
+     */
+    public Optional<Usuario> obtenerPerfilActivo() throws IOException {
+
+        // ¡IMPORTANTE! Usamos la misma lógica de ruta que 'guardarUsuarioSesion'
+        Path sesionPath = PathConfigService.getSeedFilePath(USUARIO_SESION_JSON_FILE);
+
+        if (!Files.exists(sesionPath)) {
+            System.err.println("ADVERTENCIA: No se encontró el archivo de sesión en: " + sesionPath);
+            return Optional.empty();
+        }
+        String jsonContent = Files.readString(sesionPath);
+        if (jsonContent.isBlank()) {
+            return Optional.empty();
+        }
+
+        // Usamos el 'mapper' que ya existe en esta clase
+        List<Usuario> sesion = mapper.readValue(jsonContent, new TypeReference<List<Usuario>>() {});
+
+        if (sesion.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(sesion.get(0));
     }
 
 }

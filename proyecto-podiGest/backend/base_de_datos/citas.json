@@ -10,4 +10,16 @@
   "razonConsulta" : "11",
   "estado" : "pendiente",
   "fechaCreacion" : "2025-11-11T02:33:52.775Z"
+}, {
+  "id" : "CITA-1762834037443-zrbbodd3v",
+  "pacienteNombre" : "andres ccc",
+  "pacienteCorreo" : "andres@gmail.com",
+  "pacienteTelefono" : "04242739633",
+  "especialista" : "Marylyn",
+  "especialidadBuscada" : "",
+  "fecha" : "2025-11-12",
+  "hora" : "06:10",
+  "razonConsulta" : "me duele la cabeza",
+  "estado" : "pendiente",
+  "fechaCreacion" : "2025-11-11T04:07:17.443Z"
 } ]

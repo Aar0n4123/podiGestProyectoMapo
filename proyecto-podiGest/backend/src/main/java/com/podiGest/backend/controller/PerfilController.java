@@ -2,21 +2,22 @@ package com.podiGest.backend.controller;
 
 import com.podiGest.backend.model.Usuario;
 import com.podiGest.backend.model.LoginRequest;
-import com.podiGest.backend.service.CrearUsuarioService;
+import com.podiGest.backend.service.PerfilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Optional;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/usuarios")
-public class CrearUsuarioController {
+public class PerfilController {
 
     @Autowired
-    private CrearUsuarioService usuarioService;
+    private PerfilService usuarioService;
 
     /**
      * Maneja las peticiones POST para registrar un nuevo usuario.
@@ -91,6 +92,27 @@ public class CrearUsuarioController {
         } catch (Exception e) {
             System.err.println("Error al obtener especialistas: " + e.getMessage());
             return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<?> consultarPerfil() {
+        try {
+
+            Optional<Usuario> usuarioSesion = usuarioService.obtenerPerfilActivo();
+
+            if (usuarioSesion.isPresent()) {
+                return ResponseEntity.ok(usuarioSesion.get());
+            } else {
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body("No hay una sesión activa.");
+            }
+        } catch (IOException e) {
+            System.err.println("Error al leer datos del perfil: " + e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al leer los datos del perfil.");
         }
     }
 }
