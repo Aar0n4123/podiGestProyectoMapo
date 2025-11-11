@@ -1,40 +1,58 @@
 <script setup lang="ts">
-
 import { ref, onMounted } from 'vue';
 import SideBar from '../components/SideBar.vue';
-
 
 interface Usuario {
   cedula: string;
   nombre: string;
   apellido: string;
-  fechaNacimiento: [number, number, number];
+  fechaNacimiento: string | null | undefined;
   correoElectronico: string;
   rol: string;
 }
-
 
 const isCollapsed = ref(false);
 const toggleSidebar = () => {
   isCollapsed.value = !isCollapsed.value;
 };
 
-
 const usuario = ref<Usuario | null>(null);
 const errorCarga = ref<string>('');
 const cargando = ref<boolean>(true);
 
-// Función para formatear la fecha
-const formatFecha = (fechaArray: [number, number, number] | undefined): string => {
-  if (!fechaArray || fechaArray.length !== 3) {
-    return 'Fecha inválida';
+
+const formatFecha = (fechaString: string | null | undefined): string => {
+  if (!fechaString) {
+    return 'Fecha no disponible';
   }
-  const fecha = new Date(fechaArray[0], fechaArray[1] - 1, fechaArray[2]);
-  return fecha.toLocaleDateString('es-ES', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-  });
+
+
+  const parts = fechaString.split('-');
+
+  if (parts.length !== 3) {
+    return 'Formato de fecha inválido';
+  }
+
+
+  const monthNames = [
+    "enero", "febrero", "marzo", "abril", "mayo", "junio",
+    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+  ];
+
+
+  const monthIndex = parseInt(parts[1], 10) - 1;
+  const day = parts[2];
+  const year = parts[0];
+
+  const monthName = monthNames[monthIndex];
+
+
+  if (!monthName) {
+    return 'Mes inválido';
+  }
+
+
+  return `${day} de ${monthName} de ${year}`;
 };
 
 
@@ -42,30 +60,26 @@ const cargarPerfil = async () => {
   cargando.value = true;
   errorCarga.value = '';
   try {
-    const urlBackend = "http://localhost:8080/api/usuarios"; // esta es la ruta de ConsultarPerfilController este no se cambia
-
-
+    const urlBackend = "http://localhost:8080/api/usuarios";
 
     const response = await fetch(urlBackend, { cache: 'no-store' });
 
-
     if (response.ok) {
 
-      usuario.value = await response.json(); // ¡Éxito! Guardamos el usuario
+      const data = await response.json();
+
+      usuario.value = data;
+
 
     } else {
-      // 4. Manejamos errores HTTP (como 401 o 500)
       if (response.status === 401) {
-        // Error 401: No hay sesión activa
         errorCarga.value = "No hay una sesión activa. Por favor, inicia sesión.";
       } else {
-        // Otro error del servidor
         errorCarga.value = `Error ${response.status}: ${response.statusText}`;
       }
       usuario.value = null;
     }
   } catch (error) {
-    // 5. Manejamos errores de red (ej. no se pudo conectar)
     errorCarga.value = "Error de red. No se pudo conectar al servidor.";
     console.error("Error al cargar perfil:", error);
     usuario.value = null;
@@ -74,11 +88,10 @@ const cargarPerfil = async () => {
   }
 };
 
-// Hook de Vue: Llama a cargarPerfil() cuando el componente se monta
+
 onMounted(() => {
   cargarPerfil();
 });
-
 </script>
 
 <template>
@@ -140,11 +153,6 @@ onMounted(() => {
               <div classs="flex flex-col md:flex-row p-4 bg-gray-50 rounded-lg border border-gray-200">
                 <span class="font-semibold text-amber-700 w-full md:w-1/3">Nacimiento:</span>
                 <span class="text-gray-800 w-full md:w-2/3">{{ formatFecha(usuario.fechaNacimiento) }}</span>
-              </div>
-
-              <div class="flex flex-col md:flex-row p-4 bg-gray-50 rounded-lg border border-gray-200">
-                <span class="font-semibold text-amber-700 w-full md:w-1/3">Rol:</span>
-                <span class="text-gray-800 w-full md:w-2/3 capitalize">{{ usuario.rol || 'No especificado' }}</span>
               </div>
 
             </div>

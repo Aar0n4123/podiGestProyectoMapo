@@ -82,4 +82,16 @@
   "razonConsulta" : "necesito cafe",
   "estado" : "pendiente",
   "fechaCreacion" : "2025-11-11T17:19:08.221Z"
+}, {
+  "id" : "CITA-1762888708137-vyg5e4smi",
+  "pacienteNombre" : "Victoria Carmona",
+  "pacienteCorreo" : "victoria@gmail.com",
+  "pacienteTelefono" : "04242739634",
+  "especialista" : "Marylyn",
+  "especialidadBuscada" : "",
+  "fecha" : "2025-11-13",
+  "hora" : "08:20",
+  "razonConsulta" : "me duele la uña chiquita",
+  "estado" : "pendiente",
+  "fechaCreacion" : "2025-11-11T19:18:28.137Z"
 } ]
