@@ -100,7 +100,7 @@ onMounted(() => {
 
     <main :class="[
       'transition-all duration-300 p-6 overflow-auto min-h-screen',
-      'bg-blue-100',
+      'bg-blue-200/50 rounded-lg shadow-lg mx-auto border border-blue-300',
       isCollapsed ? 'ml-20' : 'ml-64'
     ]">
 
@@ -109,7 +109,7 @@ onMounted(() => {
 
           <div v-if="cargando" class="flex flex-col items-center justify-center p-10">
             <div class="w-16 h-16 border-4 border-blue-300 border-t-blue-600 rounded-full animate-spin"></div>
-            <span class="mt-4 text-gray-700 text-lg">Cargando perfil...</span>
+            <span class="mt-4 text-gray-500 text-lg">Cargando perfil...</span>
           </div>
 
           <div v-else-if="errorCarga" class="text-center p-6">
@@ -118,42 +118,43 @@ onMounted(() => {
             </svg>
             <h3 class="mt-4 text-2xl font-semibold text-gray-800">Error al Cargar</h3>
             <p class="mt-2 text-gray-600">{{ errorCarga }}</p>
-            <a href="/login" class="mt-6 inline-block bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors">
+            <a href="/login" class="mt-6 inline-block bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-500 transition-colors">
               Ir a Iniciar Sesión
             </a>
           </div>
 
           <div v-else-if="usuario" class="text-center">
-            <h1 class="text-4xl font-bold text-blue-600">
+            <h1 class="text-4xl font-bold text-blue-500">
               Tu Perfil
             </h1>
             <p class="mt-2 text-lg text-gray-600">Aquí están tus datos personales.</p>
             <div class="mt-8 text-left space-y-5">
 
               <div class="flex flex-col md:flex-row p-4 bg-gray-50 rounded-lg border border-gray-200">
-                <span class="font-semibold text-blue-700 w-full md:w-1D/3">Cédula:</span>
+                <span class="font-semibold text-blue-500 w-full md:w-1/3">Cédula:</span>
                 <span class="text-gray-800 w-full md:w-2/3">{{ usuario.cedula }}</span>
               </div>
 
               <div class="flex flex-col md:flex-row p-4 bg-gray-50 rounded-lg border border-gray-200">
-                <span class="font-semibold text-blue-700 w-full md:w-1/3">Nombre:</span>
+                <span class="font-semibold text-blue-500 w-full md:w-1/3">Nombre:</span>
                 <span class="text-gray-800 w-full md:w-2/3">{{ usuario.nombre }}</span>
               </div>
 
               <div class="flex flex-col md:flex-row p-4 bg-gray-50 rounded-lg border border-gray-200">
-                <span class="font-semibold text-blue-700 w-full md:w-1/3">Apellido:</span>
+                <span class="font-semibold text-blue-500 w-full md:w-1/3">Apellido:</span>
                 <span class="text-gray-800 w-full md:w-2/3">{{ usuario.apellido }}</span>
               </div>
 
               <div class="flex flex-col md:flex-row p-4 bg-gray-50 rounded-lg border border-gray-200">
-                <span class="font-semibold text-blue-700 w-full md:w-1/3">Correo:</span>
+                <span class="font-semibold text-blue-500 w-full md:w-1/3">Correo:</span>
                 <span class="text-gray-800 w-full md:w-2/3">{{ usuario.correoElectronico }}</span>
               </div>
 
-              <div classs="flex flex-col md:flex-row p-4 bg-gray-50 rounded-lg border border-gray-200">
-                <span class="font-semibold text-blue-700 w-full md:w-1/3">Nacimiento:</span>
+              <div class="flex flex-col md:flex-row p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <span class="font-semibold text-blue-500 w-full md:w-1/3">Fecha de Nacimiento:</span>
                 <span class="text-gray-800 w-full md:w-2/3">{{ formatFecha(usuario.fechaNacimiento) }}</span>
               </div>
+
 
             </div>
           </div>

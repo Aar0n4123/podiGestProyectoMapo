@@ -1,124 +1,3 @@
-<template>
-  <div class="consultar-wrapper">
-    <SideBar :is-collapsed="isCollapsed" @toggle="toggleSidebar" />
-
-    <div :class="[
-      'consultar-container transition-all duration-300',
-      isCollapsed ? 'ml-20' : 'ml-64'
-    ]">
-      <div v-if="!usuarioAutenticado" class="alert alert-danger">
-        <h3>Acceso Denegado</h3>
-        <p>Debes iniciar sesión para consultar citas disponibles.</p>
-        <router-link to="/login" class="btn btn-primary mt-3">
-          Ir al Login
-        </router-link>
-      </div>
-
-      <div v-else class="card">
-        <div class="card-header">
-          <h2>Consultar Citas Disponibles</h2>
-        </div>
-
-        <div v-if="errorMessage" class="alert alert-danger">
-          {{ errorMessage }}
-        </div>
-
-        <div class="consultar-content">
-          <div class="criterios-busqueda">
-            <h3>Criterios de Búsqueda</h3>
-            
-            <div class="form-group">
-              <label for="especialista">Especialista (Opcional)</label>
-              <select 
-                id="especialista" 
-                v-model="criterios.especialista"
-                class="form-control"
-              >
-                <option value="">Todos los especialistas</option>
-                <option v-for="esp in especialistas" :key="esp.correoElectronico" :value="esp.nombre">
-                  {{ esp.nombre }} {{ esp.apellido }}
-                </option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="fecha">Fecha (Opcional)</label>
-              <input 
-                type="date" 
-                id="fecha" 
-                v-model="criterios.fecha"
-                :min="hoyFecha"
-                class="form-control"
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="horario">Horario (Opcional)</label>
-              <select 
-                id="horario" 
-                v-model="criterios.horario"
-                class="form-control"
-              >
-                <option value="">Cualquier horario</option>
-                <option v-for="hora in horariosDisponibles" :key="hora" :value="hora">
-                  {{ hora }}
-                </option>
-              </select>
-            </div>
-
-            <div class="form-actions">
-              <button @click="buscarCitas" class="btn btn-primary" :disabled="buscando">
-                {{ buscando ? 'Buscando...' : 'Buscar' }}
-              </button>
-              <button @click="limpiarCriterios" class="btn btn-secondary">
-                Limpiar
-              </button>
-              <router-link to="/mis-citas" class="btn btn-secondary">
-                Salir
-              </router-link>
-            </div>
-          </div>
-
-          <div v-if="busquedaRealizada" class="resultados-section">
-            <h3>Resultados de la Búsqueda</h3>
-            
-            <div v-if="citasDisponibles.length === 0" class="alert alert-warning">
-              No hay horarios disponibles con los criterios seleccionados.
-            </div>
-
-            <div v-else class="resultados-grid">
-              <div v-for="(cita, index) in citasDisponibles" :key="index" class="resultado-card">
-                <div class="resultado-header">
-                  <h4>{{ cita.especialista }}</h4>
-                </div>
-                <div class="resultado-content">
-                  <div class="resultado-row">
-                    <span class="label">Fecha:</span>
-                    <span class="value">{{ formatearFecha(cita.fecha) }}</span>
-                  </div>
-                  <div class="resultado-row">
-                    <span class="label">Horario:</span>
-                    <span class="value">{{ cita.horario }}</span>
-                  </div>
-                  <div class="resultado-row">
-                    <span class="label">Estado:</span>
-                    <span class="badge-disponible">Disponible</span>
-                  </div>
-                </div>
-                <div class="resultado-actions">
-                  <button @click="agendarCita(cita)" class="btn btn-primary btn-sm">
-                    Aceptar horario
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script lang="ts">
 import { defineComponent } from 'vue'
 import SideBar from '../components/SideBar.vue'
@@ -325,271 +204,159 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-.consultar-wrapper {
-  display: flex;
-}
+<template>
+  <div class="flex">
+    <SideBar :is-collapsed="isCollapsed" @toggle="toggleSidebar" />
 
-.consultar-container {
-  min-height: 100vh;
-  padding: 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  flex: 1;
-}
+    <div
+      :class="[
+        'bg-blue-200/50 rounded-lg shadow-lg p-6 max-w-3xl mx-auto mt-8 border border-blue-300',
+        isCollapsed ? 'ml-20' : 'ml-64'
+      ]"
+    >
+      <!-- Acceso denegado -->
+      <div
+        v-if="!usuarioAutenticado"
+        class="bg-red-100 text-red-700 border border-red-300 p-5 rounded mb-5"
+      >
+        <h3 class="text-lg font-bold mb-2">Acceso Denegado</h3>
+        <p class="mb-3">Debes iniciar sesión para consultar citas disponibles.</p>
+        <router-link
+          to="/login"
+          class="inline-block mt-3 px-4 py-2 rounded bg-linear-to-r bg-blue-600/60 text-white font-semibold text-sm hover:-translate-y-0.5 hover:shadow-lg transition"
+        >
+          Ir al Login
+        </router-link>
+      </div>
 
-.card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  max-width: 1200px;
-  margin: 0 auto;
-}
+      <!-- Card principal -->
+      <div v-else class="bg-white rounded-lg shadow-md overflow-hidden max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="bg-linear-to-r bg-blue-600/60 text-white p-8 text-center">
+          <h2 class="text-2xl font-semibold">Consultar Citas Disponibles</h2>
+        </div>
 
-.card-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 30px;
-  text-align: center;
-}
+        <!-- Mensaje de error -->
+        <div v-if="errorMessage" class="bg-red-100 text-red-700 border border-red-300 p-4 rounded mb-5">
+          {{ errorMessage }}
+        </div>
 
-.card-header h2 {
-  margin: 0;
-  font-size: 28px;
-  font-weight: 600;
-}
+        <!-- Contenido -->
+        <div class="p-8">
+          <!-- Criterios de búsqueda -->
+          <div class="bg-gray-100 rounded-lg p-6 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-5">Criterios de Búsqueda</h3>
 
-.consultar-content {
-  padding: 30px;
-}
+            <!-- Especialista -->
+            <div class="mb-5">
+              <label for="especialista" class="block mb-2 font-medium text-gray-700 text-sm">Especialista (Opcional)</label>
+              <select
+                id="especialista"
+                v-model="criterios.especialista"
+                class="w-full p-3 border rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              >
+                <option value="">Todos los especialistas</option>
+                <option v-for="esp in especialistas" :key="esp.correoElectronico" :value="esp.nombre">
+                  {{ esp.nombre }} {{ esp.apellido }}
+                </option>
+              </select>
+            </div>
 
-.criterios-busqueda {
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 25px;
-  margin-bottom: 30px;
-}
+            <!-- Fecha -->
+            <div class="mb-5">
+              <label for="fecha" class="block mb-2 font-medium text-gray-700 text-sm">Fecha (Opcional)</label>
+              <input
+                type="date"
+                id="fecha"
+                v-model="criterios.fecha"
+                :min="hoyFecha"
+                class="w-full p-3 border rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              />
+            </div>
 
-.criterios-busqueda h3 {
-  margin: 0 0 20px 0;
-  font-size: 20px;
-  color: #333;
-}
+            <!-- Horario -->
+            <div class="mb-5">
+              <label for="horario" class="block mb-2 font-medium text-gray-700 text-sm">Horario (Opcional)</label>
+              <select
+                id="horario"
+                v-model="criterios.horario"
+                class="w-full p-3 border rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              >
+                <option value="">Cualquier horario</option>
+                <option v-for="hora in horariosDisponibles" :key="hora" :value="hora">
+                  {{ hora }}
+                </option>
+              </select>
+            </div>
 
-.form-group {
-  margin-bottom: 20px;
-}
+            <!-- Botones -->
+            <div class="flex gap-3 mt-6 flex-wrap">
+              <button
+                @click="buscarCitas"
+                class="flex-1 bg-linear-to-r bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:-translate-y-0.5 hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+                :disabled="buscando"
+              >
+                {{ buscando ? 'Buscando...' : 'Buscar' }}
+              </button>
+              <button
+                @click="limpiarCriterios"
+                class="flex-1 bg-gray-600 text-white font-semibold py-2 px-4 rounded hover:bg-gray-700 transition hover:-translate-y-0.5"
+              >
+                Limpiar
+              </button>
+              <router-link
+                to="/mis-citas"
+                class="flex-1 bg-gray-600 text-white font-semibold py-2 px-4 rounded hover:bg-red-700 transition text-center hover:-translate-y-0.5"
+              >
+              <P class="text-white">Salir</P>                
+              </router-link>
+            </div>
+          </div>
 
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
-  color: #333;
-  font-size: 14px;
-}
+          <!-- Resultados -->
+          <div v-if="busquedaRealizada" class="mt-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-5">Resultados de la Búsqueda</h3>
 
-.form-control {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  font-family: inherit;
-  transition: border-color 0.3s;
-}
+            <div v-if="citasDisponibles.length === 0" class="bg-yellow-100 text-yellow-800 border border-yellow-300 p-4 rounded">
+              No hay horarios disponibles con los criterios seleccionados.
+            </div>
 
-.form-control:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-.form-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 25px;
-}
-
-.btn {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-  text-decoration: none;
-  text-align: center;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
-
-.btn-primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-}
-
-.btn-primary:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.btn-secondary {
-  background-color: #6c757d;
-  color: white;
-}
-
-.btn-secondary:hover {
-  background-color: #5a6268;
-}
-
-.btn-sm {
-  padding: 8px 16px;
-  font-size: 13px;
-}
-
-.resultados-section {
-  margin-top: 30px;
-}
-
-.resultados-section h3 {
-  margin: 0 0 20px 0;
-  font-size: 20px;
-  color: #333;
-}
-
-.resultados-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-}
-
-.resultado-card {
-  background: white;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  overflow: hidden;
-  transition: all 0.3s;
-}
-
-.resultado-card:hover {
-  border-color: #667eea;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
-}
-
-.resultado-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 15px;
-}
-
-.resultado-header h4 {
-  margin: 0;
-  font-size: 18px;
-}
-
-.resultado-content {
-  padding: 15px;
-}
-
-.resultado-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.resultado-row:last-child {
-  border-bottom: none;
-}
-
-.resultado-row .label {
-  font-weight: 600;
-  color: #333;
-  font-size: 14px;
-}
-
-.resultado-row .value {
-  color: #666;
-  font-size: 14px;
-}
-
-.badge-disponible {
-  background-color: #28a745;
-  color: white;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.resultado-actions {
-  padding: 15px;
-  border-top: 1px solid #f0f0f0;
-  text-align: center;
-}
-
-.alert {
-  padding: 15px;
-  border-radius: 4px;
-  margin-bottom: 20px;
-}
-
-.alert-danger {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-}
-
-.alert-warning {
-  background-color: #fff3cd;
-  color: #856404;
-  border: 1px solid #ffeaa7;
-}
-
-.alert h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
-}
-
-.alert p {
-  margin-bottom: 15px;
-}
-
-.mt-3 {
-  margin-top: 15px;
-}
-
-@media (max-width: 768px) {
-  .consultar-container {
-    padding: 10px;
-  }
-
-  .consultar-content {
-    padding: 15px;
-  }
-
-  .criterios-busqueda {
-    padding: 15px;
-  }
-
-  .form-actions {
-    flex-direction: column;
-  }
-
-  .btn {
-    width: 100%;
-  }
-
-  .resultados-grid {
-    grid-template-columns: 1fr;
-  }
-}
-</style>
+            <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div
+                v-for="(cita, index) in citasDisponibles"
+                :key="index"
+                class="bg-white border-2 border-gray-200 rounded-lg overflow-hidden transition hover:border-indigo-500 hover:shadow-lg"
+              >
+                <div class="bg-linear-to-r bg-blue-600/60 text-white p-4">
+                  <h4 class="text-lg font-semibold">{{ cita.especialista }}</h4>
+                </div>
+                <div class="p-4">
+                  <div class="flex justify-between items-center border-b py-2 text-sm">
+                    <span class="font-semibold text-gray-700">Fecha:</span>
+                    <span class="text-gray-600">{{ formatearFecha(cita.fecha) }}</span>
+                  </div>
+                  <div class="flex justify-between items-center border-b py-2 text-sm">
+                    <span class="font-semibold text-gray-700">Horario:</span>
+                    <span class="text-gray-600">{{ cita.horario }}</span>
+                  </div>
+                  <div class="flex justify-between items-center py-2 text-sm">
+                    <span class="font-semibold text-gray-700">Estado:</span>
+                    <span class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">Disponible</span>
+                  </div>
+                </div>
+                <div class="p-4 border-t text-center">
+                  <button
+                    @click="agendarCita(cita)"
+                    class="bg-linear-to-r bg-blue-600/60 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded text-sm hover:-translate-y-0.5 hover:shadow-lg transition"
+                  >
+                    Aceptar horario
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

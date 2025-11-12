@@ -10,7 +10,6 @@ import {
   SquaresPlusIcon,
   DocumentIcon,
   XMarkIcon,
-  HeartIcon,
   PencilIcon,
   EyeIcon
 } from '@heroicons/vue/24/outline'
