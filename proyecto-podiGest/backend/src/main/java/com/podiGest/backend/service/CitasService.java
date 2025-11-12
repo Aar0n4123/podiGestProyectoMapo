@@ -116,18 +116,18 @@ public class CitasService {
             System.out.println("INFO: Iniciando generación de notificación para la cita: " + cita.getId());
             System.out.println("INFO: Correo del paciente: " + cita.getPacienteCorreo());
             
-            // Generar ID único para la notificación
+
             String notificacionId = "NOTIF-" + System.currentTimeMillis() + "-" + cita.getId().substring(5);
             
-            // Obtener fecha y hora actual para la notificación
+
             LocalDateTime ahora = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
             String fechaEnvio = ahora.format(formatter);
             
-            // Crear el asunto de la notificación
+
             String asunto = "Confirmación de cita agendada";
             
-            // Crear el mensaje de la notificación con los detalles de la cita
+
             String mensaje = String.format(
                 "Estimado/a %s,\n\n" +
                 "Su cita ha sido agendada exitosamente con los siguientes detalles:\n\n" +
@@ -145,20 +145,20 @@ public class CitasService {
                 cita.getRazonConsulta()
             );
             
-            // Crear la notificación vinculada al correo del paciente
+
             Notificacion notificacion = new Notificacion(
                 notificacionId,
                 fechaEnvio,
                 asunto,
                 "Clínica Podológica",
                 mensaje,
-                cita.getPacienteCorreo() // Vincula la notificación al correo del paciente
+                cita.getPacienteCorreo()
             );
             
             System.out.println("INFO: Notificación creada con ID: " + notificacionId);
             System.out.println("INFO: Correo destinatario: " + notificacion.getCorreoDestinatario());
             
-            // Guardar la notificación
+
             notificacionService.crearNotificacion(notificacion);
             
             System.out.println("INFO: Notificación guardada exitosamente para la cita: " + cita.getId());
@@ -197,21 +197,43 @@ public class CitasService {
                 .toList();
     }
 
+
+
     /**
-     * Obtiene una cita específica por ID
-     * @param citaId ID de la cita
-     * @return la cita encontrada o vacío si no existe
+     * Obtiene una cita específica por ID y la modifica solo en fecha y hora,
+     * verificando antes la disponibilidad del nuevo horario.
+     *
+     * @param citaId ID de la cita a modificar.
+     * @param citaActualizada Objeto Cita con la nueva fecha y hora.
+     * @return La cita actualizada.
+     * @throws IOException Si ocurre un error de lectura/escritura del archivo.
+     * @throws IllegalStateException Si el nuevo horario choca con otra cita.
      */
-    public Cita modificarCitaCompleta(String citaId, Cita citaActualizada) throws IOException {
+    public Cita modificarCitaCompleta(String citaId, Cita citaActualizada) throws IOException, IllegalStateException {
         List<Cita> citas = obtenerCitas();
 
         for (int i = 0; i < citas.size(); i++) {
             if (citas.get(i).getId().equals(citaId)) {
-                // Solo actualiza fecha y hora
-                citas.get(i).setFecha(citaActualizada.getFecha());
-                citas.get(i).setHora(citaActualizada.getHora());
+                Cita citaOriginal = citas.get(i);
+
+
+                String especialistaNombre = citaOriginal.getEspecialista();
+                String nuevaFecha = citaActualizada.getFecha();
+                String nuevaHora = citaActualizada.getHora();
+
+
+                if (!isHorarioDisponible(especialistaNombre, nuevaFecha, nuevaHora, citaId)) {
+
+                    throw new IllegalStateException("El horario solicitado ya está ocupado por otra cita.");
+                }
+
+
+                citaOriginal.setFecha(nuevaFecha);
+                citaOriginal.setHora(nuevaHora);
+
+
                 guardarCitasAJson(citas);
-                return citas.get(i);
+                return citaOriginal;
             }
         }
         return null;
@@ -221,25 +243,28 @@ public class CitasService {
      * Revisa si un horario específico ya está ocupado por un especialista,
      * excluyendo una cita específica (la que se está modificando).
      *
-     * @param especialistaCorreo El correo del especialista.
+     * @param especialistaNombre El nombre del especialista.
      * @param nuevaFecha         La nueva fecha a verificar.
      * @param nuevaHora          La nueva hora a verificar.
      * @param citaIdExcluir      El ID de la cita que estamos intentando modificar (para no chocar con ella misma).
      * @return true si el horario está disponible, false si está ocupado.
      */
-    public boolean isHorarioDisponible(String especialistaCorreo, String nuevaFecha, String nuevaHora, String citaIdExcluir) throws IOException {
+    public boolean isHorarioDisponible(String especialistaNombre, String nuevaFecha, String nuevaHora, String citaIdExcluir) throws IOException {
         List<Cita> citas = obtenerCitas();
 
         Optional<Cita> citaOcupada = citas.stream()
                 .filter(cita ->
-                        !cita.getId().equals(citaIdExcluir) && // <<< No compruebes contra la cita actual
-                                cita.getEspecialista().equals(especialistaCorreo) &&
+                        !cita.getId().equals(citaIdExcluir) &&
+                                cita.getEspecialista().equals(especialistaNombre) &&
                                 cita.getFecha().equals(nuevaFecha) &&
-                                cita.getHora().equals(nuevaHora)
+                                cita.getHora().equals(nuevaHora) &&
+                                !cita.getEstado().equals("cancelada")
                 )
                 .findFirst();
 
         return citaOcupada.isEmpty();
     }
+
+
 }
 

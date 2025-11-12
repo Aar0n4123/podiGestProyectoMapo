@@ -12,7 +12,7 @@ const toggleSidebar = () => {
 const faqs = [
   {
     question: '¿Cuál es el horario de atención?',
-    answer: 'Atendemos de lunes a viernes de 8:00 AM a 6:00 PM, y sábados de 9:00 AM a 2:00 PM.'
+    answer: 'Atendemos todos los dias de la semana de 8am hasta las 6pm'
   },
   {
     question: '¿Requiero cita previa?',
@@ -154,7 +154,7 @@ const toggleFAQ = (index: number) => {
             <p><strong>Dirección:</strong> Calle Principal 123, Centro Médico Profesional, Piso 5</p>
             <p><strong>Teléfono:</strong> 0424-xxxxxxx | 0414-xxxxxxx</p>
             <p><strong>Email:</strong> info@podigest.com</p>
-            <p><strong>Horario:</strong> Lunes a Viernes 8:00 AM - 6:00 PM | Sábado 9:00 AM - 2:00 PM</p>
+            <p><strong>Horario:</strong> Todos los dias de 8:00 AM - 6:00 PM </p>
           </div>
         </div>
 

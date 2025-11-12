@@ -13,7 +13,13 @@ import AgendarCita from '../views/AgendarCita.vue'
 import MisCitas from '../views/MisCitas.vue'
 import ConsultarCitas from '../views/ConsultarCitas.vue'
 import ConsultarCitaEsp from '../views/ConsultarCitaEsp.vue'
-import ModificarCitaEsp from '../views/ModificarCitaEsp.vue'
+import ModificarCitaAgendada from '../views/ModificarCitaAgendada.vue'
+import PodologiaGeneral from '../views/PodologiaGeneral.vue'
+import PodologiaPediatrica from '../views/PodologiaPediatrica.vue'
+import Quiropodia from '../views/Quiropodia.vue'
+import PlantillasPersonalizadas from '../views/PlantillasPersonalizadas.vue'
+import EvaluacionIntegral from '../views/EvaluacionIntegral.vue'
+import PodologiaDeportiva from '../views/PodologiaDeportiva.vue'
 
 // Define las URLS y el componente asociado
 const routes = [
@@ -79,7 +85,37 @@ const routes = [
     {
         path: '/modificar-citas-esp',
         name: 'modificar-citas-esp',
-        component: ModificarCitaEsp
+        component: ModificarCitaAgendada
+    },
+    {
+        path: '/configuration/podologia-general',
+        name: 'podologia-general',
+        component: PodologiaGeneral
+    },
+    {
+        path: '/configuration/podologia-pediatrica',
+        name: 'podologia-pediatrica',
+        component: PodologiaPediatrica
+    },
+    {
+        path: '/configuration/quiropodia',
+        name: 'quiropodia',
+        component: Quiropodia
+    },
+    {
+        path: '/configuration/plantillas-personalizadas',
+        name: 'plantillas-personalizadas',
+        component: PlantillasPersonalizadas
+    },
+    {
+        path: '/configuration/evaluacion-integral',
+        name: 'evaluacion-integral',
+        component: EvaluacionIntegral
+    },
+    {
+        path: '/configuration/podologia-deportiva',
+        name: 'podologia-deportiva',
+        component: PodologiaDeportiva
     },
     
 ]

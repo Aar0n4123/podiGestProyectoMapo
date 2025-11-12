@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/citas")
@@ -106,6 +107,7 @@ public class CitasController {
     //agregado viki
     /**
      * Endpoint para modificar la fecha y hora de una cita existente.
+     * Incluye manejo de excepción para verificar la disponibilidad (409 Conflict).
      * @param citaId ID de la cita a modificar.
      * @param citaData Un objeto Cita que contiene la nueva 'fecha' y 'hora'.
      */
@@ -116,22 +118,47 @@ public class CitasController {
                 return ResponseEntity.badRequest().body("La fecha y la hora son campos requeridos para la modificación.");
             }
 
-
             Cita citaActualizada = citasService.modificarCitaCompleta(
                     citaId,
                     citaData
             );
 
             if (citaActualizada != null) {
-
                 return ResponseEntity.ok(citaActualizada);
             } else {
 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró la cita con ID: " + citaId);
             }
+        } catch (IllegalStateException e) {
+
+            System.err.println("Conflicto al modificar cita: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         } catch (IOException e) {
             System.err.println("Error al modificar cita: " + e.getMessage());
             return ResponseEntity.internalServerError().body("Error al modificar la cita.");
+        }
+    }
+
+
+    @GetMapping("/propias")
+    public ResponseEntity<?> obtenerCitasPropias() {
+        try {
+
+            Optional<Usuario> usuarioSesion = perfilService.obtenerPerfilActivo();
+
+            if (usuarioSesion.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Debe iniciar sesión para ver sus citas.");
+            }
+
+            Usuario usuario = usuarioSesion.get();
+
+            List<Cita> citasFiltradas = citasService.obtenerCitasPorEspecialista(usuario.getNombre());
+
+            return ResponseEntity.ok(citasFiltradas);
+
+        } catch (IOException e) {
+            System.err.println("Error al obtener citas del especialista: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Error al obtener citas del especialista.");
         }
     }
 
