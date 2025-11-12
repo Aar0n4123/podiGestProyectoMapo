@@ -143,6 +143,32 @@ public class PerfilService {
     }
 
     /**
+     * Obtiene el correo electrónico de un especialista por su nombre completo o solo nombre
+     * @param nombreBuscado El nombre del especialista (puede ser solo nombre o nombre completo)
+     * @return Optional con el correo electrónico si se encuentra el especialista
+     */
+    public Optional<String> obtenerCorreoEspecialistaPorNombre(String nombreBuscado) {
+        if (nombreBuscado == null || nombreBuscado.trim().isEmpty()) {
+            return Optional.empty();
+        }
+        
+        String nombreBuscadoTrim = nombreBuscado.trim();
+        
+        return listaUsuarios.stream()
+                .filter(u -> u.getRol() != null && u.getRol().equalsIgnoreCase("especialista"))
+                .filter(u -> {
+                    String nombreCompletoUsuario = (u.getNombre() + " " + u.getApellido()).trim();
+                    String soloNombre = u.getNombre().trim();
+                    
+                    // Buscar por nombre completo o solo por nombre
+                    return nombreCompletoUsuario.equalsIgnoreCase(nombreBuscadoTrim) ||
+                           soloNombre.equalsIgnoreCase(nombreBuscadoTrim);
+                })
+                .map(Usuario::getCorreoElectronico)
+                .findFirst();
+    }
+
+    /**
      * Metodo para leer los datos del usuario activo desde el archivo JSON
      * (Este es el método que movimos desde ConsultarPerfilService)
      */

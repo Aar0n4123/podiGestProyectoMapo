@@ -23,12 +23,14 @@ public class CitasService {
     private final Path citasPath;
     private final ObjectMapper objectMapper;
     private final NotificacionService notificacionService;
+    private final PerfilService perfilService;
     private static final String CITAS_JSON_FILE = "citas.json";
 
-    public CitasService(NotificacionService notificacionService) {
+    public CitasService(NotificacionService notificacionService, PerfilService perfilService) {
         this.citasPath = PathConfigService.getSeedFilePath(CITAS_JSON_FILE);
         this.objectMapper = new ObjectMapper();
         this.notificacionService = notificacionService;
+        this.perfilService = perfilService;
         
         // Inicializa el archivo de citas si no existe
         inicializarCitas();
@@ -100,8 +102,11 @@ public class CitasService {
         citas.add(nuevaCita);
         guardarCitasAJson(citas);
         
-        // Generar notificación automáticamente al agendar la cita
+        // Generar notificación automáticamente al agendar la cita (para el paciente)
         generarNotificacionCita(nuevaCita);
+        
+        // Generar notificación para el especialista
+        generarNotificacionCitaParaEspecialista(nuevaCita);
         
         return nuevaCita;
     }
@@ -169,6 +174,233 @@ public class CitasService {
         }
     }
 
+    /**
+     * Genera una notificación automática para el especialista cuando se agenda una cita con él
+     * 
+     * @param cita La cita que se acaba de agendar
+     */
+    private void generarNotificacionCitaParaEspecialista(Cita cita) {
+        try {
+            System.out.println("INFO: Iniciando generación de notificación para el especialista: " + cita.getEspecialista());
+            
+            // Obtener el correo del especialista
+            Optional<String> correoEspecialista = perfilService.obtenerCorreoEspecialistaPorNombre(cita.getEspecialista());
+            
+            if (correoEspecialista.isEmpty()) {
+                System.err.println("ADVERTENCIA: No se encontró el correo del especialista: " + cita.getEspecialista());
+                return;
+            }
+            
+            System.out.println("INFO: Correo del especialista: " + correoEspecialista.get());
+            
+            // Generar ID único para la notificación
+            String notificacionId = "NOTIF-ESP-" + System.currentTimeMillis() + "-" + cita.getId().substring(5);
+            
+            // Obtener fecha y hora actual
+            LocalDateTime ahora = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            String fechaEnvio = ahora.format(formatter);
+            
+            // Asunto de la notificación
+            String asunto = "Nueva cita agendada - " + cita.getPacienteNombre();
+            
+            // Mensaje de la notificación
+            String mensaje = String.format(
+                "Estimado/a Dr./Dra. %s,\n\n" +
+                "Se ha agendado una nueva cita con usted:\n\n" +
+                "Paciente: %s\n" +
+                "Fecha: %s\n" +
+                "Hora: %s\n" +
+                "Motivo de consulta: %s\n" +
+                "Teléfono del paciente: %s\n\n" +
+                "Por favor, revise su agenda y prepárese para la consulta.\n\n" +
+                "Saludos cordiales,\n" +
+                "Sistema de Gestión de Citas",
+                cita.getEspecialista(),
+                cita.getPacienteNombre(),
+                cita.getFecha(),
+                cita.getHora(),
+                cita.getRazonConsulta(),
+                cita.getPacienteTelefono()
+            );
+            
+            // Crear la notificación
+            Notificacion notificacion = new Notificacion(
+                notificacionId,
+                fechaEnvio,
+                asunto,
+                "Sistema de Gestión de Citas",
+                mensaje,
+                correoEspecialista.get()
+            );
+            
+            System.out.println("INFO: Notificación para especialista creada con ID: " + notificacionId);
+            System.out.println("INFO: Correo destinatario: " + notificacion.getCorreoDestinatario());
+            
+            // Guardar la notificación
+            notificacionService.crearNotificacion(notificacion);
+            
+            System.out.println("INFO: Notificación para especialista guardada exitosamente para la cita: " + cita.getId());
+        } catch (IOException e) {
+            System.err.println("ERROR: Error al generar notificación para el especialista " + cita.getEspecialista() + ": " + e.getMessage());
+            e.printStackTrace();
+            // No lanzamos la excepción para no interrumpir el proceso de creación de la cita
+        }
+    }
+
+    /**
+     * Genera una notificación automática cuando se modifica una cita
+     * 
+     * @param cita La cita que se acaba de modificar
+     * @param fechaAnterior La fecha anterior de la cita
+     * @param horaAnterior La hora anterior de la cita
+     */
+    private void generarNotificacionModificacionCita(Cita cita, String fechaAnterior, String horaAnterior) {
+        try {
+            System.out.println("INFO: Iniciando generación de notificación de modificación para la cita: " + cita.getId());
+            System.out.println("INFO: Correo del paciente: " + cita.getPacienteCorreo());
+            
+
+            String notificacionId = "NOTIF-MOD-" + System.currentTimeMillis() + "-" + cita.getId().substring(5);
+            
+
+            LocalDateTime ahora = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            String fechaEnvio = ahora.format(formatter);
+            
+
+            String asunto = "Modificación de cita - Información actualizada";
+            
+
+            String mensaje = String.format(
+                "Estimado/a %s,\n\n" +
+                "Le informamos que su cita ha sido modificada.\n\n" +
+                "INFORMACIÓN ANTERIOR:\n" +
+                "Fecha: %s\n" +
+                "Hora: %s\n\n" +
+                "NUEVA INFORMACIÓN:\n" +
+                "Especialista: %s\n" +
+                "Fecha: %s\n" +
+                "Hora: %s\n" +
+                "Motivo: %s\n\n" +
+                "Por favor, tome nota de los nuevos datos y llegue 10 minutos antes de su cita.\n" +
+                "Si tiene alguna duda o necesita realizar cambios adicionales, comuníquese con nosotros.\n\n" +
+                "Gracias por su comprensión.",
+                cita.getPacienteNombre(),
+                fechaAnterior,
+                horaAnterior,
+                cita.getEspecialista(),
+                cita.getFecha(),
+                cita.getHora(),
+                cita.getRazonConsulta()
+            );
+            
+
+            Notificacion notificacion = new Notificacion(
+                notificacionId,
+                fechaEnvio,
+                asunto,
+                "Clínica Podológica",
+                mensaje,
+                cita.getPacienteCorreo()
+            );
+            
+            System.out.println("INFO: Notificación de modificación creada con ID: " + notificacionId);
+            System.out.println("INFO: Correo destinatario: " + notificacion.getCorreoDestinatario());
+            
+
+            notificacionService.crearNotificacion(notificacion);
+            
+            System.out.println("INFO: Notificación de modificación guardada exitosamente para la cita: " + cita.getId());
+        } catch (IOException e) {
+            System.err.println("ERROR: Error al generar notificación de modificación para la cita " + cita.getId() + ": " + e.getMessage());
+            e.printStackTrace();
+            // No lanzamos la excepción para no interrumpir el proceso de modificación de la cita
+        }
+    }
+
+    /**
+     * Genera una notificación automática para el especialista cuando se modifica una cita
+     * 
+     * @param cita La cita que se acaba de modificar
+     * @param fechaAnterior La fecha anterior de la cita
+     * @param horaAnterior La hora anterior de la cita
+     */
+    private void generarNotificacionModificacionCitaParaEspecialista(Cita cita, String fechaAnterior, String horaAnterior) {
+        try {
+            System.out.println("INFO: Iniciando generación de notificación de modificación para el especialista: " + cita.getEspecialista());
+            
+            // Obtener el correo del especialista
+            Optional<String> correoEspecialista = perfilService.obtenerCorreoEspecialistaPorNombre(cita.getEspecialista());
+            
+            if (correoEspecialista.isEmpty()) {
+                System.err.println("ADVERTENCIA: No se encontró el correo del especialista: " + cita.getEspecialista());
+                return;
+            }
+            
+            System.out.println("INFO: Correo del especialista: " + correoEspecialista.get());
+            
+            // Generar ID único para la notificación
+            String notificacionId = "NOTIF-ESP-MOD-" + System.currentTimeMillis() + "-" + cita.getId().substring(5);
+            
+            // Obtener fecha y hora actual
+            LocalDateTime ahora = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            String fechaEnvio = ahora.format(formatter);
+            
+            // Asunto de la notificación
+            String asunto = "Modificación de cita - " + cita.getPacienteNombre();
+            
+            // Mensaje de la notificación
+            String mensaje = String.format(
+                "Estimado/a Dr./Dra. %s,\n\n" +
+                "Se ha modificado una cita en su agenda:\n\n" +
+                "INFORMACIÓN ANTERIOR:\n" +
+                "Fecha: %s\n" +
+                "Hora: %s\n\n" +
+                "NUEVA INFORMACIÓN:\n" +
+                "Paciente: %s\n" +
+                "Fecha: %s\n" +
+                "Hora: %s\n" +
+                "Motivo de consulta: %s\n" +
+                "Teléfono del paciente: %s\n\n" +
+                "Por favor, tome nota de los cambios en su agenda.\n\n" +
+                "Saludos cordiales,\n" +
+                "Sistema de Gestión de Citas",
+                cita.getEspecialista(),
+                fechaAnterior,
+                horaAnterior,
+                cita.getPacienteNombre(),
+                cita.getFecha(),
+                cita.getHora(),
+                cita.getRazonConsulta(),
+                cita.getPacienteTelefono()
+            );
+            
+            // Crear la notificación
+            Notificacion notificacion = new Notificacion(
+                notificacionId,
+                fechaEnvio,
+                asunto,
+                "Sistema de Gestión de Citas",
+                mensaje,
+                correoEspecialista.get()
+            );
+            
+            System.out.println("INFO: Notificación de modificación para especialista creada con ID: " + notificacionId);
+            System.out.println("INFO: Correo destinatario: " + notificacion.getCorreoDestinatario());
+            
+            // Guardar la notificación
+            notificacionService.crearNotificacion(notificacion);
+            
+            System.out.println("INFO: Notificación de modificación para especialista guardada exitosamente para la cita: " + cita.getId());
+        } catch (IOException e) {
+            System.err.println("ERROR: Error al generar notificación de modificación para el especialista " + cita.getEspecialista() + ": " + e.getMessage());
+            e.printStackTrace();
+            // No lanzamos la excepción para no interrumpir el proceso de modificación de la cita
+        }
+    }
+
     public void guardarCitasAJson(List<Cita> citas) throws IOException {
         // Sobrescribe el archivo con los datos actuales en base_de_datos/citas.json
         objectMapper.writerWithDefaultPrettyPrinter().writeValue(citasPath.toFile(), citas);
@@ -216,6 +448,9 @@ public class CitasService {
             if (citas.get(i).getId().equals(citaId)) {
                 Cita citaOriginal = citas.get(i);
 
+                // Guardar los valores anteriores para la notificación
+                String fechaAnterior = citaOriginal.getFecha();
+                String horaAnterior = citaOriginal.getHora();
 
                 String especialistaNombre = citaOriginal.getEspecialista();
                 String nuevaFecha = citaActualizada.getFecha();
@@ -233,6 +468,13 @@ public class CitasService {
 
 
                 guardarCitasAJson(citas);
+                
+                // Generar notificación de modificación para el paciente
+                generarNotificacionModificacionCita(citaOriginal, fechaAnterior, horaAnterior);
+                
+                // Generar notificación de modificación para el especialista
+                generarNotificacionModificacionCitaParaEspecialista(citaOriginal, fechaAnterior, horaAnterior);
+                
                 return citaOriginal;
             }
         }

@@ -6,7 +6,7 @@
   "especialista" : "Elsee",
   "especialidadBuscada" : "",
   "fecha" : "2026-02-22",
-  "hora" : "10:10",
+  "hora" : "10:09",
   "razonConsulta" : "11",
   "estado" : "pendiente",
   "fechaCreacion" : "2025-11-11T02:33:52.775Z"
@@ -58,4 +58,16 @@
   "razonConsulta" : "JJJJJJ",
   "estado" : "pendiente",
   "fechaCreacion" : "2025-11-12T02:32:14.343Z"
+}, {
+  "id" : "CITA-1762957000412-1io903i8g",
+  "pacienteNombre" : "Penelope De Luque",
+  "pacienteCorreo" : "p@gmail.com",
+  "pacienteTelefono" : "04145556556",
+  "especialista" : "Marylyn",
+  "especialidadBuscada" : "",
+  "fecha" : "2026-02-02",
+  "hora" : "22:00",
+  "razonConsulta" : "Me duele un de'o ",
+  "estado" : "pendiente",
+  "fechaCreacion" : "2025-11-12T14:16:40.412Z"
 } ]

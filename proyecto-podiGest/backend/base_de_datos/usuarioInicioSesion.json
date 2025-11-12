@@ -1,9 +1,9 @@
 [ {
   "cedula" : "127861",
-  "nombre" : "Elsee",
-  "apellido" : "Aguilar",
+  "nombre" : "Marylyn",
+  "apellido" : "Rojas",
   "fechaNacimiento" : [ 1978, 9, 27 ],
-  "correoElectronico" : "elsee@gmail.com",
+  "correoElectronico" : "Marylyn@gmail.com",
   "contrasenia" : "123",
   "rol" : "especialista"
 } ]

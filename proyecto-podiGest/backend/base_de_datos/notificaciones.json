@@ -138,4 +138,11 @@
   "remitente" : "Clínica Podológica",
   "mensaje" : "Estimado/a Penelope De Luque,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Marylyn\nFecha: 2030-07-07\nHora: 13:00\nMotivo: JJJJJJ\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
   "correoDestinatario" : "p@gmail.com"
+}, {
+  "id" : "NOTIF-1762957000427-1762957000412-1io903i8g",
+  "fechaEnvio" : "2025-11-12T10:16:40",
+  "asunto" : "Confirmación de cita agendada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a Penelope De Luque,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Marylyn\nFecha: 2026-02-02\nHora: 13:00\nMotivo: Me duele un de'o \n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
+  "correoDestinatario" : "p@gmail.com"
 } ]

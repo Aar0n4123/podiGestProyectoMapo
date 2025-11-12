@@ -57,7 +57,7 @@
           <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mb-8 ">
             <div v-for="esp in especialistas" :key="esp.correoElectronico" @click="seleccionarEspecialista(esp)" :class="[
               'bg-white border-2 rounded-lg p-6 text-center cursor-pointer transition hover:-translate-y-0.5',
-              formulario.especialista === esp.nombre ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-blue-400 hover:shadow-lg'
+              formulario.especialista === `${esp.nombre} ${esp.apellido}` ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-blue-400 hover:shadow-lg'
             ]">
               <div class="text-5xl mb-3 ">👨‍⚕️</div>
               <h4 class="text-lg font-semibold text-gray-800">{{ esp.nombre }} {{ esp.apellido }}</h4>
@@ -311,7 +311,7 @@ export default defineComponent({
       }
     },
     seleccionarEspecialista(especialista: Usuario) {
-      this.formulario.especialista = especialista.nombre
+      this.formulario.especialista = `${especialista.nombre} ${especialista.apellido}`
     },
     async cargarHorariosDisponibles() {
       if (!this.formulario.fecha || !this.formulario.especialista) {
