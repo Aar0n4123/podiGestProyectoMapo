@@ -13,7 +13,7 @@ import AgendarCita from '../views/AgendarCita.vue'
 import MisCitas from '../views/MisCitas.vue'
 import ConsultarCitas from '../views/ConsultarCitas.vue'
 import ConsultarCitaEsp from '../views/ConsultarCitaEsp.vue'
-import ModificarCitaEsp from '../views/ModificarCitaEsp.vue'
+import ModificarCitaAgendada from '../views/ModificarCitaAgendada.vue'
 import PodologiaGeneral from '../views/PodologiaGeneral.vue'
 import PodologiaPediatrica from '../views/PodologiaPediatrica.vue'
 import Quiropodia from '../views/Quiropodia.vue'
@@ -85,7 +85,7 @@ const routes = [
     {
         path: '/modificar-citas-esp',
         name: 'modificar-citas-esp',
-        component: ModificarCitaEsp
+        component: ModificarCitaAgendada
     },
     {
         path: '/configuration/podologia-general',

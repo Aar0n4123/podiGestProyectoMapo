@@ -1,9 +1,9 @@
 [ {
-  "cedula" : "10200300",
-  "nombre" : "Penelope",
-  "apellido" : "De Luque",
-  "fechaNacimiento" : [ 1980, 12, 12 ],
-  "correoElectronico" : "p@gmail.com",
-  "contrasenia" : "12345",
+  "cedula" : "1234108",
+  "nombre" : "andres",
+  "apellido" : "ccc",
+  "fechaNacimiento" : [ 1991, 12, 30 ],
+  "correoElectronico" : "andres@gmail.com",
+  "contrasenia" : "123",
   "rol" : "paciente"
 } ]
