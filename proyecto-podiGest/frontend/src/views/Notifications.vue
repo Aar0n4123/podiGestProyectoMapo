@@ -63,13 +63,13 @@ onMounted(() => {
   <div class="flex">
     <SideBar :is-collapsed="isCollapsed" @toggle="toggleSidebar" />
     <main :class="[
-      'transition-all duration-300 p-6 overflow-auto bg-amber-150 min-h-screen w-full',
+      'transition-all duration-300 p-6 overflow-auto bg-blue-150 min-h-screen w-full',
       isCollapsed ? 'ml-20' : 'ml-64'
     ]">
       <!-- VISTA DE LISTA DE NOTIFICACIONES -->
       <section v-if="!showDetailView" class="max-w-6xl mx-auto space-y-6">
-        <header class="bg-white shadow-sm rounded-lg p-6 border border-amber-200">
-          <h1 class="text-3xl font-bold text-amber-700 mb-2">Notificaciones</h1>
+        <header class="bg-white shadow-sm rounded-lg p-6 border border-blue-200">
+          <h1 class="text-3xl font-bold text-blue-700 mb-2">Notificaciones</h1>
           <p class="text-gray-600">
             Consulta los recordatorios y avisos importantes enviados por la institución.
           </p>
@@ -80,7 +80,7 @@ onMounted(() => {
           v-if="isMuted" 
           class="bg-gray-100 border border-gray-300 rounded-lg p-4 flex items-center gap-3"
         >
-          <svg class="w-6 h-6 text-gray-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg class="w-6 h-6 text-gray-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <div class="flex-1">
@@ -89,9 +89,9 @@ onMounted(() => {
           </div>
         </div>
 
-        <article class="bg-white rounded-lg shadow border border-amber-200">
-          <div class="flex items-center justify-between px-6 py-4 border-b border-amber-100">
-            <h2 class="text-xl font-semibold text-amber-700">Bandeja de entrada</h2>
+        <article class="bg-white rounded-lg shadow border border-blue-200">
+          <div class="flex items-center justify-between px-6 py-4 border-b border-blue-100">
+            <h2 class="text-xl font-semibold text-blue-700">Bandeja de entrada</h2>
             <div class="flex items-center gap-3">
               <!-- Botón de silenciar/activar alertas -->
               <button
@@ -126,7 +126,7 @@ onMounted(() => {
               </button>
               
               <button
-                class="text-sm text-amber-600 hover:text-amber-800 font-medium transition"
+                class="text-sm text-blue-600 hover:text-blue-800 font-medium transition"
                 @click="loadNotifications"
               >
                 🔄 Recargar
@@ -135,7 +135,7 @@ onMounted(() => {
           </div>
 
           <div v-if="loading" class="p-6 text-gray-500 text-center">
-            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-amber-600"></div>
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
             <p class="mt-2">Cargando notificaciones...</p>
           </div>
 
@@ -146,11 +146,11 @@ onMounted(() => {
             <p class="mt-2">No hay notificaciones disponibles.</p>
           </div>
 
-          <ul v-else class="divide-y divide-amber-100">
+          <ul v-else class="divide-y divide-blue-100">
             <li
               v-for="notification in notifications"
               :key="notification.id"
-              class="px-6 py-4 cursor-pointer hover:bg-amber-50 transition-colors duration-200"
+              class="px-6 py-4 cursor-pointer hover:bg-blue-50 transition-colors duration-200"
               @click="openNotification(notification.id)"
             >
               <div class="flex items-start justify-between">
@@ -175,7 +175,7 @@ onMounted(() => {
                 </div>
                 <div class="ml-4">
                   <svg
-                    class="w-6 h-6 text-amber-600"
+                    class="w-6 h-6 text-blue-600"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -199,7 +199,7 @@ onMounted(() => {
         <div>
           <button
             @click="backToList"
-            class="inline-flex items-center gap-2 px-4 py-2 text-amber-700 hover:text-amber-900 hover:bg-amber-50 rounded-lg transition-colors duration-200 font-medium"
+            class="inline-flex items-center gap-2 px-4 py-2 text-blue-700 hover:text-blue-900 hover:bg-blue-50 rounded-lg transition-colors duration-200 font-medium"
           >
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -209,16 +209,16 @@ onMounted(() => {
         </div>
 
         <!-- Contenido de la notificación -->
-        <div v-if="loadingDetails" class="bg-white rounded-lg shadow border border-amber-200 p-12 text-center">
-          <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600"></div>
+        <div v-if="loadingDetails" class="bg-white rounded-lg shadow border border-blue-200 p-12 text-center">
+          <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
           <p class="mt-4 text-gray-600">Cargando notificación...</p>
         </div>
 
-        <article v-else-if="selectedNotification" class="bg-white rounded-lg shadow border border-amber-200 overflow-hidden">
+        <article v-else-if="selectedNotification" class="bg-white rounded-lg shadow border border-blue-200 overflow-hidden">
           <!-- Encabezado de la notificación -->
-          <header class="bg-gradient-to-r from-amber-50 to-amber-100 px-8 py-6 border-b border-amber-200">
+          <header class="bg-linear-to-r from-blue-50 to-blue-100 px-8 py-6 border-b border-blue-200">
             <div class="flex items-start gap-4">
-              <div class="flex-shrink-0 w-12 h-12 bg-amber-600 rounded-full flex items-center justify-center">
+              <div class="shrink-0 w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
                 <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
@@ -269,7 +269,7 @@ onMounted(() => {
             </p>
             <button
               @click="backToList"
-              class="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition-colors duration-200"
+              class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200"
             >
               Cerrar
             </button>

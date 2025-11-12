@@ -1,8 +1,8 @@
 <template>
-  <div class="register-container flex items-center justify-center min-h-screen w-250 bg-amber-100/50 rounded-lg">
+  <div class="register-container flex items-center justify-center min-h-screen w-250 bg-blue-100/50 rounded-lg">
 
-    <div class="register-box bg-white p-8 rounded-xl shadow-2xl shadow-amber-300 w-full max-w-xl">
-      <h2 class="text-2xl font-semibold text-center text-gray-800 border-b-2 border-amber-500 pb-2 mb-6">
+    <div class="register-box bg-white p-8 rounded-xl shadow-2xl shadow-blue-300 w-full max-w-xl">
+      <h2 class="text-2xl font-semibold text-center text-gray-800 border-b-2 border-blue-500 pb-2 mb-6">
          Crear Cuenta
       </h2>
 
@@ -17,7 +17,7 @@
                 v-model="registration.nombre"
                 required
                 placeholder="Ingrese su Nombre"
-                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -29,7 +29,7 @@
                 v-model="registration.apellido"
                 required
                 placeholder="Ingrese su Apellido"
-                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
         </div>
@@ -41,7 +41,7 @@
               v-model="registration.cedula"
               required
               placeholder="Ingrese su Cedula Ej:(V-12345678)"
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -53,7 +53,7 @@
               v-model="registration.correoElectronico"
               required
               placeholder="Ingrese su Correo Electronico Ej:(ejemplo@gmail.com)"
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -65,7 +65,7 @@
               v-model="registration.contrasenia"
               required
               placeholder="••••••••"
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -76,7 +76,7 @@
               id="fechaNacimiento"
               v-model="registration.fechaNacimiento"
               required
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -87,7 +87,7 @@
           {{ successMessage }}
         </div>
 
-        <button type="submit" class="register-button-submit w-full py-2 px-4 bg-amber-500 text-white rounded-md hover:bg-amber-600 transition-colors text-lg font-bold">
+        <button type="submit" class="register-button-submit w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors text-lg font-bold">
           Registrarse
         </button>
       </form>
@@ -96,7 +96,7 @@
 
       <p class="login-text text-center text-sm text-gray-600">
         ¿Ya tienes cuenta?
-        <router-link to="/login" class="login-link text-amber-600 underline hover:text-amber-700 font-medium">
+        <router-link to="/login" class="login-link text-blue-600 underline hover:text-blue-700 font-medium">
           Inicia Sesión aquí
         </router-link>
       </p>

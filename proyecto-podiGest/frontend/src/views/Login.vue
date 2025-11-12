@@ -1,8 +1,8 @@
 <template>
-  <div class="login-container flex items-center justify-center min-h-screen w-150 bg-amber-100/50 rounded-lg">
+  <div class="login-container flex items-center justify-center min-h-screen w-150 bg-blue-100/50 rounded-lg">
 
-    <div class="login-box bg-white p-8 rounded-xl shadow-2xl shadow-amber-300 w-full max-w-md">
-      <h2 class="text-2xl font-semibold text-center text-gray-800 border-b-2 border-amber-500 pb-2 mb-6">
+    <div class="login-box bg-white p-8 rounded-xl shadow-2xl shadow-blue-300 w-full max-w-md">
+      <h2 class="text-2xl font-semibold text-center text-gray-800 border-b-2 border-blue-500 pb-2 mb-6">
           Iniciar Sesión
       </h2>
 
@@ -16,7 +16,7 @@
               v-model="credentials.email"
               required
               placeholder="Ingrese Correo Ej:(ejemplo@gmail.com)"
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -28,7 +28,7 @@
               v-model="credentials.password"
               required
               placeholder="••••••••"
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -40,7 +40,7 @@
           {{ successMessage }}
         </div>
         
-        <button router-link to="/mainpage" type="submit" class="login-button w-full py-2 px-4 bg-amber-500 text-white rounded-md hover:bg-amber-700 transition-colors text-lg">
+        <button router-link to="/mainpage" type="submit" class="login-button w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-700 transition-colors text-lg">
           Iniciar Sesión
         </button>
       </form>
@@ -49,7 +49,7 @@
 
       <p class="register-text text-center text-sm text-gray-600">
         ¿Aún no tienes cuenta?
-        <router-link to="/registro" class="register-link text-amber-600 underline hover:text-amber-700 font-medium">
+        <router-link to="/registro" class="register-link text-blue-600 underline hover:text-blue-700 font-medium">
           Regístrate aquí
         </router-link>
       </p>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { defineProps, defineEmits, onMounted } from 'vue'
+import { defineProps, defineEmits, onMounted, ref, computed } from 'vue'
 import {
   HomeIcon,
   UserIcon,
@@ -10,7 +10,9 @@ import {
   SquaresPlusIcon,
   DocumentIcon,
   XMarkIcon,
-  HeartIcon
+  HeartIcon,
+  PencilIcon,
+  EyeIcon
 } from '@heroicons/vue/24/outline'
 import { useNotificationCount } from '../composables/useNotificationCount'
 
@@ -20,30 +22,70 @@ const emit = defineEmits(['toggle'])
 const route = useRoute()
 const { notificationCount, isMuted, loadNotificationCount } = useNotificationCount()
 
-// Rol actual del usuario (esto vendría de tu login/backend)
-const userRole = 'cliente' // especialista o cliente
+// Interfaz del usuario
+interface Usuario {
+  cedula: string
+  nombre: string
+  apellido: string
+  fechaNacimiento: string | null | undefined
+  correoElectronico: string
+  rol: string
+}
+
+// Estado del usuario
+const usuario = ref<Usuario | null>(null)
+const cargando = ref(true)
+const errorCarga = ref('')
+
+// Función para cargar perfil desde backend
+const cargarPerfil = async () => {
+  cargando.value = true
+  errorCarga.value = ''
+  try {
+    const response = await fetch("http://localhost:8080/api/usuarios", { cache: 'no-store' })
+    if (response.ok) {
+      usuario.value = await response.json()
+    } else {
+      errorCarga.value = response.status === 401
+        ? "No hay una sesión activa. Por favor, inicia sesión."
+        : `Error ${response.status}: ${response.statusText}`
+      usuario.value = null
+    }
+  } catch (error) {
+    errorCarga.value = "Error de red. No se pudo conectar al servidor."
+    console.error("Error al cargar perfil:", error)
+    usuario.value = null
+  } finally {
+    cargando.value = false
+  }
+}
+
+// ✅ Computed para obtener el rol dinámicamente
+const userRole = computed(() => usuario.value?.rol?.toLowerCase() || '')
 
 // Items con restricción de roles
 const navItems = [
-  { name: 'Inicio', to: '/mainpage', icon: HomeIcon, roles: ['especialista','cliente'] },
-  { name: 'Perfil', to: '/profile', icon: UserIcon, roles: ['especialista','cliente'] },
-  { name: 'Notificaciones', to: '/notifications', icon: BellIcon, roles: ['especialista','cliente'] },
-  { name: 'Citas', to: '/mis-citas', icon: SquaresPlusIcon, roles: ['especialista','cliente'] },
-  { name: 'Atención al Cliente', to: '/configuration', icon: CogIcon, roles: ['especialista','cliente'] },
-  { name: 'Información', to: '/information', icon: DocumentIcon, roles: ['especialista','cliente'] },
-  { name: 'Gestión de Especialista', to: '/especialist', icon: HeartIcon, roles: ['especialista'] },
-  { name: 'Salir', to: '/', icon: XMarkIcon, roles: ['especialista','cliente'] },
+  { name: 'Inicio', to: '/mainpage', icon: HomeIcon, roles: ['especialista','paciente'] },
+  { name: 'Perfil', to: '/profile', icon: UserIcon, roles: ['especialista','paciente'] },
+  { name: 'Notificaciones', to: '/notifications', icon: BellIcon, roles: ['especialista','paciente'] },
+  { name: 'Citas', to: '/mis-citas', icon: SquaresPlusIcon, roles: ['especialista','paciente'] },
+  { name: 'Atención al Cliente', to: '/configuration', icon: CogIcon, roles: ['especialista','paciente'] },
+  { name: 'Información', to: '/information', icon: DocumentIcon, roles: ['especialista','paciente'] },
+  { name: 'Consultar Citas ', to: '/consultar-citas-esp', icon: EyeIcon, roles: ['especialista'] },
+  { name: 'Modificar Citas ', to: '/modificar-citas-esp', icon: PencilIcon, roles: ['especialista'] },
+  { name: 'Salir', to: '/', icon: XMarkIcon, roles: ['especialista','paciente'] },
 ]
 
 const isActive = (path: string) => route.path === path
 
-// Cargar el conteo de notificaciones al montar el componente
+// Al montar, cargar perfil y notificaciones
 onMounted(() => {
+  cargarPerfil()
   loadNotificationCount()
-  // Actualizar cada 30 segundos
   setInterval(loadNotificationCount, 30000)
 })
 </script>
+
 
 <template>
   <aside
@@ -53,9 +95,9 @@ onMounted(() => {
     ]"
   >
     <!-- Header -->
-    <div class="flex items-center justify-between p-4 border-b border-amber-700">
+    <div class="flex items-center justify-between p-4 border-b border-blue-700">
       <span v-if="!props.isCollapsed" class="text-xl font-bold">PodiGest</span>
-      <button @click="emit('toggle')" class="text-white hover:text-amber-500 flex">
+      <button @click="emit('toggle')" class="text-white hover:text-blue-500 flex">
         <Bars3Icon class="w-6 h-6" />
       </button>
     </div>
@@ -66,7 +108,7 @@ onMounted(() => {
         <li v-for="item in navItems.filter(i => i.roles.includes(userRole))" :key="item.name">
           <RouterLink
             :to="item.to"
-            class="group flex items-center gap-3 px-4 py-3 hover:bg-amber-500 transition-colors duration-200"
+            class="group flex items-center gap-3 px-4 py-3 hover:bg-blue-500 transition-colors duration-200"
             :class="{ 'bg-gray-800': isActive(item.to) }"
           >
             <div class="relative">

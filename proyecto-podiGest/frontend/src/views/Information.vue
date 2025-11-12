@@ -43,7 +43,7 @@ const toggleFAQ = (index: number) => {
   <div class="flex">
     <SideBar :is-collapsed="isCollapsed" @toggle="toggleSidebar" />
     <main :class="[
-      'transition-all duration-300 p-6 overflow-auto bg-amber-150 min-h-screen',
+      'transition-all duration-300 p-6 overflow-auto bg-blue-150 min-h-screen',
       isCollapsed ? 'ml-20' : 'ml-64'
     ]">
       <!-- Sub-navbar -->
@@ -52,7 +52,7 @@ const toggleFAQ = (index: number) => {
           @click="activeTab = 'acerca'"
           :class="[
             'px-6 py-3 transition-colors duration-200 flex-1',
-            activeTab === 'acerca' ? 'bg-amber-500 text-black' : 'hover:bg-amber-500 hover:text-black'
+            activeTab === 'acerca' ? 'bg-blue-500 text-black' : 'hover:bg-blue-500 hover:text-black'
           ]"
         >
           Acerca de nosotros
@@ -61,7 +61,7 @@ const toggleFAQ = (index: number) => {
           @click="activeTab = 'ubicacion'"
           :class="[
             'px-6 py-3 transition-colors duration-200 flex-1',
-            activeTab === 'ubicacion' ? 'bg-amber-500 text-black' : 'hover:bg-amber-500 hover:text-black'
+            activeTab === 'ubicacion' ? 'bg-blue-500 text-black' : 'hover:bg-blue-500 hover:text-black'
           ]"
         >
           Ubicación
@@ -116,7 +116,7 @@ const toggleFAQ = (index: number) => {
             >
               <button
                 @click="toggleFAQ(index)"
-                class="w-full px-6 py-4 text-left font-semibold text-gray-800 bg-gray-100 hover:bg-amber-200 transition-colors duration-200 flex justify-between items-center"
+                class="w-full px-6 py-4 text-left font-semibold text-gray-800 bg-gray-100 hover:bg-blue-200 transition-colors duration-200 flex justify-between items-center"
               >
                 <span>{{ faq.question }}</span>
                 <span class="text-xl">{{ expandedFAQ === index ? '−' : '+' }}</span>
@@ -165,7 +165,6 @@ const toggleFAQ = (index: number) => {
               width="100%"
               height="500"
               style="border: 0"
-              allowfullscreen=""
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
           ></iframe>

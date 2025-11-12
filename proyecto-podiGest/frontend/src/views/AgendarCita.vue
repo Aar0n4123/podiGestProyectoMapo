@@ -1,101 +1,121 @@
 <template>
-  <div class="agendar-wrapper">
+  <div class="flex">
     <SideBar :is-collapsed="isCollapsed" @toggle="toggleSidebar" />
 
-    <div :class="[
-      'agendar-container transition-all duration-300',
-      isCollapsed ? 'ml-20' : 'ml-64'
-    ]">
-      <div v-if="!usuarioAutenticado" class="alert alert-danger">
-        <h3>Acceso Denegado</h3>
+    <div
+      :class="[
+        'min-h-screen flex justify-center items-center p-5 transition-all duration-300 bg-linear-to-br from-indigo-400 to-purple-600',
+        isCollapsed ? 'ml-20' : 'ml-64'
+      ]"
+    >
+      <!-- Acceso denegado -->
+      <div v-if="!usuarioAutenticado" class="bg-red-100 border border-red-400 text-red-700 rounded p-6 text-center">
+        <h3 class="text-xl font-bold mb-2">Acceso Denegado</h3>
         <p>Debes iniciar sesión para agendar una cita.</p>
-        <router-link to="/login" class="btn btn-primary mt-3">
+        <router-link
+          to="/login"
+          class="mt-3 inline-block bg-linear-to-r from-indigo-400 to-purple-600 text-white font-semibold py-2 px-4 rounded hover:shadow-lg transition"
+        >
           Ir al Login
         </router-link>
       </div>
 
-      <div v-else class="card">
-        <div class="card-header">
-          <h2>Agendar Cita</h2>
-          <div class="steps">
-            <span :class="['step', paso >= 1 ? 'active' : '']">1. Especialista</span>
-            <span :class="['step', paso >= 2 ? 'active' : '']">2. Horario</span>
-            <span :class="['step', paso >= 3 ? 'active' : '']">3. Confirmar</span>
+      <!-- Card principal -->
+      <div v-else class="bg-white rounded-lg shadow-lg w-full max-w-3xl overflow-hidden">
+        <!-- Header -->
+        <div class="bg-linear-to-br from-indigo-400 to-purple-600 text-white p-8 text-center">
+          <h2 class="text-2xl font-semibold mb-5">Agendar Cita</h2>
+          <div class="flex justify-center gap-5 mt-5">
+            <span :class="['px-4 py-2 rounded-full text-sm font-medium transition', paso >= 1 ? 'bg-white text-indigo-500' : 'bg-white/20 text-white']">
+              1. Especialista
+            </span>
+            <span :class="['px-4 py-2 rounded-full text-sm font-medium transition', paso >= 2 ? 'bg-white text-indigo-500' : 'bg-white/20 text-white']">
+              2. Horario
+            </span>
+            <span :class="['px-4 py-2 rounded-full text-sm font-medium transition', paso >= 3 ? 'bg-white text-indigo-500' : 'bg-white/20 text-white']">
+              3. Confirmar
+            </span>
           </div>
         </div>
 
-        <div v-if="successMessage" class="alert alert-success">
+        <!-- Mensajes -->
+        <div v-if="successMessage" class="bg-green-100 border border-green-400 text-green-700 rounded p-4 m-6">
           {{ successMessage }}
         </div>
-
-        <div v-if="errorMessage" class="alert alert-danger">
+        <div v-if="errorMessage" class="bg-red-100 border border-red-400 text-red-700 rounded p-4 m-6">
           {{ errorMessage }}
         </div>
 
-        <div v-if="paso === 1 && !successMessage" class="paso-container">
-          <h3>Seleccione un Especialista</h3>
-          
-          <div v-if="especialistas.length === 0" class="alert alert-warning">
+        <!-- Paso 1 -->
+        <div v-if="paso === 1 && !successMessage" class="p-8">
+          <h3 class="text-xl font-semibold text-gray-800 text-center mb-6">Seleccione un Especialista</h3>
+
+          <div v-if="especialistas.length === 0" class="bg-yellow-100 border border-yellow-400 text-yellow-700 rounded p-4 text-center">
             No hay especialistas disponibles en este momento.
           </div>
 
-          <div v-else class="especialistas-grid">
-            <div 
-              v-for="esp in especialistas" 
+          <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mb-8">
+            <div
+              v-for="esp in especialistas"
               :key="esp.correoElectronico"
               @click="seleccionarEspecialista(esp)"
-              :class="['especialista-card', formulario.especialista === esp.nombre ? 'selected' : '']"
+              :class="[
+                'bg-white border-2 rounded-lg p-6 text-center cursor-pointer transition',
+                formulario.especialista === esp.nombre ? 'border-indigo-500 bg-indigo-50' : 'border-gray-200 hover:border-indigo-400 hover:shadow-lg'
+              ]"
             >
-              <div class="especialista-icon">👨‍⚕️</div>
-              <h4>{{ esp.nombre }} {{ esp.apellido }}</h4>
-              <p class="especialista-info">Especialista</p>
+              <div class="text-5xl mb-3">👨‍⚕️</div>
+              <h4 class="text-lg font-semibold text-gray-800">{{ esp.nombre }} {{ esp.apellido }}</h4>
+              <p class="text-sm text-gray-500">Especialista</p>
             </div>
           </div>
 
-          <div class="form-actions">
-            <button 
-              @click="siguientePaso" 
-              class="btn btn-primary" 
+          <div class="flex gap-3 mt-6">
+            <button
+              @click="siguientePaso"
+              class="flex-1 bg-linear-to-r from-indigo-400 to-purple-600 text-white font-semibold py-2 px-4 rounded hover:shadow-lg transition disabled:opacity-50"
               :disabled="!formulario.especialista"
             >
               Siguiente
             </button>
-            <router-link to="/mis-citas" class="btn btn-secondary">
+            <router-link to="/mis-citas" class="flex-1 bg-gray-600 text-white font-semibold py-2 px-4 rounded hover:bg-gray-700 transition">
               Cancelar
             </router-link>
           </div>
         </div>
 
-        <div v-if="paso === 2 && !successMessage" class="paso-container">
-          <h3>Seleccione Fecha y Horario</h3>
-          
-          <div class="form-group">
-            <label for="fecha">Fecha de la Cita</label>
-            <input 
-              type="date" 
-              id="fecha" 
+        <!-- Paso 2 -->
+        <div v-if="paso === 2 && !successMessage" class="p-8">
+          <h3 class="text-xl font-semibold text-gray-800 text-center mb-6">Seleccione Fecha y Horario</h3>
+
+          <div class="flex flex-col mb-5">
+            <label for="fecha" class="mb-2 font-medium text-gray-700">Fecha de la Cita</label>
+            <input
+              type="date"
+              id="fecha"
               v-model="formulario.fecha"
               @change="cargarHorariosDisponibles"
               :min="hoyFecha"
               required
-              class="form-control"
+              class="p-3 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
             />
           </div>
 
-          <div v-if="formulario.fecha" class="horarios-section">
-            <h4>Horarios Disponibles</h4>
-            <div v-if="cargandoHorarios" class="loading-horarios">
-              Cargando horarios...
-            </div>
-            <div v-else-if="horariosDisponibles.length === 0" class="alert alert-warning">
+          <div v-if="formulario.fecha" class="mt-6">
+            <h4 class="text-lg font-semibold text-gray-800 mb-3">Horarios Disponibles</h4>
+            <div v-if="cargandoHorarios" class="text-center text-gray-500 py-4">Cargando horarios...</div>
+            <div v-else-if="horariosDisponibles.length === 0" class="bg-yellow-100 border border-yellow-400 text-yellow-700 rounded p-4 text-center">
               No hay horarios disponibles para esta fecha.
             </div>
-            <div v-else class="horarios-grid">
+            <div v-else class="grid grid-cols-3 sm:grid-cols-4 gap-3">
               <button
                 v-for="horario in horariosDisponibles"
                 :key="horario"
                 @click="seleccionarHorario(horario)"
-                :class="['horario-btn', formulario.hora === horario ? 'selected' : '']"
+                :class="[
+                  'p-3 border rounded text-sm font-medium transition',
+                  formulario.hora === horario ? 'bg-linear-to-r from-indigo-400 to-purple-600 text-white border-indigo-500' : 'bg-white border-gray-200 hover:border-indigo-400 hover:bg-indigo-50'
+                ]"
                 type="button"
               >
                 {{ horario }}
@@ -103,13 +123,13 @@
             </div>
           </div>
 
-          <div class="form-actions">
-            <button @click="paso = 1" class="btn btn-secondary">
+          <div class="flex gap-3 mt-6">
+            <button @click="paso = 1" class="flex-1 bg-gray-600 text-white font-semibold py-2 px-4 rounded hover:bg-gray-700 transition">
               Atrás
             </button>
-            <button 
-              @click="siguientePaso" 
-              class="btn btn-primary" 
+            <button
+              @click="siguientePaso"
+              class="flex-1 bg-linear-to-r from-indigo-400 to-purple-600 text-white font-semibold py-2 px-4 rounded hover:shadow-lg transition disabled:opacity-50"
               :disabled="!formulario.fecha || !formulario.hora"
             >
               Siguiente
@@ -117,62 +137,64 @@
           </div>
         </div>
 
-        <div v-if="paso === 3 && !successMessage" class="paso-container">
-          <h3>Confirmar Cita</h3>
-          
-          <div class="form-group">
-            <label for="telefono">Teléfono de Contacto</label>
-            <input 
-              type="tel" 
-              id="telefono" 
+        <!-- Paso 3 -->
+        <div v-if="paso === 3 && !successMessage" class="p-8">
+          <h3 class="text-xl font-semibold text-gray-800 text-center mb-6">Confirmar Cita</h3>
+
+          <div class="flex flex-col mb-5">
+            <label for="telefono" class="mb-2 font-medium text-gray-700">Teléfono de Contacto</label>
+            <input
+              type="tel"
+              id="telefono"
               v-model="formulario.pacienteTelefono"
               placeholder="Ingrese su teléfono"
               required
-              class="form-control"
+              class="p-3 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
             />
           </div>
 
-          <div class="form-group">
-            <label for="razon">Razón de la Consulta</label>
-            <textarea 
-              id="razon" 
+          <div class="flex flex-col mb-5">
+            <label for="razon" class="mb-2 font-medium text-gray-700">Razón de la Consulta</label>
+            <textarea
+              id="razon"
               v-model="formulario.razonConsulta"
               placeholder="Describa el motivo de la consulta"
               required
-              class="form-control"
               rows="4"
+              class="p-3 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
             ></textarea>
           </div>
 
-          <div class="resumen-cita">
-            <h4>Resumen de la Cita</h4>
-            <div class="resumen-row">
-              <span class="label">Paciente:</span>
-              <span class="value">{{ formulario.pacienteNombre }}</span>
+          <div class="bg-gray-100 rounded p-5 mb-6">
+            <h4 class="text-lg font-semibold text-gray-800 mb-3">Resumen de la Cita</h4>
+            <div class="flex justify-between border-b py-2 text-sm">
+              <span class="font-semibold text-gray-700">Paciente:</span>
+              <span class="text-gray-600">{{ formulario.pacienteNombre }}</span>
             </div>
-            <div class="resumen-row">
-              <span class="label">Correo:</span>
-              <span class="value">{{ formulario.pacienteCorreo }}</span>
+
+            <div class="flex justify-between border-b py-2 text-sm">
+              <span class="font-semibold text-gray-700">Correo:</span>
+              <span class="text-gray-600">{{ formulario.pacienteCorreo }}</span>
             </div>
-            <div class="resumen-row">
-              <span class="label">Teléfono:</span>
-              <span class="value">{{ formulario.pacienteTelefono || 'No especificado' }}</span>
+            <div class="flex justify-between border-b py-2 text-sm">
+              <span class="font-semibold text-gray-700">Teléfono:</span>
+              <span class="text-gray-600">{{ formulario.pacienteTelefono || 'No especificado' }}</span>
             </div>
-            <div class="resumen-row">
-              <span class="label">Especialista:</span>
-              <span class="value">{{ formulario.especialista }}</span>
+            <div class="flex justify-between border-b py-2 text-sm">
+              <span class="font-semibold text-gray-700">Especialista:</span>
+              <span class="text-gray-600">{{ formulario.especialista }}</span>
             </div>
-            <div class="resumen-row">
-              <span class="label">Fecha:</span>
-              <span class="value">{{ formatearFecha(formulario.fecha) }}</span>
+            <div class="flex justify-between border-b py-2 text-sm">
+              <span class="font-semibold text-gray-700">Fecha:</span>
+              <span class="text-gray-600">{{ formatearFecha(formulario.fecha) }}</span>
             </div>
-            <div class="resumen-row">
-              <span class="label">Hora:</span>
-              <span class="value">{{ formulario.hora }}</span>
+            <div class="flex justify-between border-b py-2 text-sm">
+              <span class="font-semibold text-gray-700">Hora:</span>
+              <span class="text-gray-600">{{ formulario.hora }}</span>
             </div>
-            <div class="resumen-row">
-              <span class="label">Razón:</span>
-              <span class="value">{{ formulario.razonConsulta || 'No especificada' }}</span>
+            <div class="flex justify-between border-b py-2 text-sm">
+              <span class="font-semibold text-gray-700">Razón:</span>
+              <span class="text-gray-600">{{ formulario.razonConsulta || 'No especificada' }}</span>
             </div>
           </div>
 
@@ -477,364 +499,3 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-.agendar-wrapper {
-  display: flex;
-}
-
-.agendar-container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  flex: 1;
-}
-
-.card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  width: 100%;
-  max-width: 800px;
-}
-
-.card-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 30px;
-  text-align: center;
-}
-
-.card-header h2 {
-  margin: 0 0 20px 0;
-  font-size: 28px;
-  font-weight: 600;
-}
-
-.steps {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.step {
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 500;
-  background-color: rgba(255, 255, 255, 0.2);
-  transition: all 0.3s;
-}
-
-.step.active {
-  background-color: white;
-  color: #667eea;
-}
-
-.paso-container {
-  padding: 30px;
-}
-
-.paso-container h3 {
-  margin: 0 0 25px 0;
-  font-size: 22px;
-  color: #333;
-  text-align: center;
-}
-
-.paso-container h4 {
-  margin: 20px 0 15px 0;
-  font-size: 18px;
-  color: #333;
-}
-
-.especialistas-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-  margin-bottom: 30px;
-}
-
-.especialista-card {
-  background: white;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 25px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.especialista-card:hover {
-  border-color: #667eea;
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
-}
-
-.especialista-card.selected {
-  border-color: #667eea;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-}
-
-.especialista-icon {
-  font-size: 48px;
-  margin-bottom: 15px;
-}
-
-.especialista-card h4 {
-  margin: 0 0 8px 0;
-  font-size: 16px;
-  color: #333;
-}
-
-.especialista-info {
-  margin: 0;
-  font-size: 13px;
-  color: #666;
-}
-
-.horarios-section {
-  margin-top: 25px;
-}
-
-.loading-horarios {
-  text-align: center;
-  padding: 20px;
-  color: #666;
-}
-
-.horarios-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  gap: 10px;
-  margin-top: 15px;
-}
-
-.horario-btn {
-  padding: 12px;
-  border: 2px solid #e0e0e0;
-  border-radius: 6px;
-  background: white;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.horario-btn:hover {
-  border-color: #667eea;
-  background-color: rgba(102, 126, 234, 0.05);
-}
-
-.horario-btn.selected {
-  border-color: #667eea;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
-
-.resumen-cita {
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 25px;
-}
-
-.resumen-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.resumen-row:last-child {
-  border-bottom: none;
-}
-
-.resumen-row .label {
-  font-weight: 600;
-  color: #333;
-}
-
-.resumen-row .value {
-  color: #666;
-  text-align: right;
-}
-
-form {
-  padding: 30px;
-}
-
-.form-group {
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-}
-
-.form-group label {
-  margin-bottom: 8px;
-  font-weight: 500;
-  color: #333;
-  font-size: 14px;
-}
-
-.form-control {
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  font-family: inherit;
-  transition: border-color 0.3s;
-}
-
-.form-control:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-.form-control:readonly {
-  background-color: #f5f5f5;
-  cursor: not-allowed;
-}
-
-.form-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 30px;
-}
-
-.btn {
-  flex: 1;
-  padding: 12px;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-  text-decoration: none;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
-
-.btn-primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-}
-
-.btn-primary:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.btn-secondary {
-  background-color: #6c757d;
-  color: white;
-}
-
-.btn-secondary:hover {
-  background-color: #5a6268;
-  transform: translateY(-2px);
-}
-
-.alert {
-  padding: 15px;
-  border-radius: 4px;
-  margin: 20px 30px;
-  font-weight: 500;
-}
-
-.alert h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
-}
-
-.alert p {
-  margin-bottom: 15px;
-}
-
-.alert-success {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-}
-
-.alert-danger {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-}
-
-.alert-warning {
-  background-color: #fff3cd;
-  color: #856404;
-  border: 1px solid #ffeaa7;
-}
-
-.mt-3 {
-  margin-top: 15px;
-}
-
-@media (max-width: 768px) {
-  .card {
-    max-width: 100%;
-  }
-
-  .card-header {
-    padding: 20px;
-  }
-
-  .card-header h2 {
-    font-size: 24px;
-  }
-
-  .steps {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .especialistas-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .horarios-grid {
-    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-  }
-
-  .paso-container {
-    padding: 20px;
-  }
-
-  .resumen-row {
-    flex-direction: column;
-    gap: 5px;
-  }
-
-  .resumen-row .value {
-    text-align: left;
-  }
-
-  form {
-    padding: 20px;
-  }
-
-  .form-actions {
-    flex-direction: column;
-  }
-
-  .btn {
-    width: 100%;
-  }
-}
-</style>

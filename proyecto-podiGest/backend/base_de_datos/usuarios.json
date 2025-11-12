@@ -102,4 +102,12 @@
   "correoElectronico" : "gebracho.23@est.ucab.edu.ve",
   "contrasenia" : "123",
   "rol" : "paciente"
+}, {
+  "cedula" : "10200300",
+  "nombre" : "Penelope",
+  "apellido" : "De Luque",
+  "fechaNacimiento" : [ 1980, 12, 12 ],
+  "correoElectronico" : "p@gmail.com",
+  "contrasenia" : "12345",
+  "rol" : "paciente"
 } ]

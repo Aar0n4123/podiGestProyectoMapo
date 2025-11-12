@@ -12,6 +12,8 @@ import Configuration from '../views/Configuration.vue'
 import AgendarCita from '../views/AgendarCita.vue'
 import MisCitas from '../views/MisCitas.vue'
 import ConsultarCitas from '../views/ConsultarCitas.vue'
+import ConsultarCitaEsp from '../views/ConsultarCitaEsp.vue'
+import ModificarCitaEsp from '../views/ModificarCitaEsp.vue'
 
 // Define las URLS y el componente asociado
 const routes = [
@@ -68,7 +70,18 @@ const routes = [
         path: '/consultar-citas',
         name: 'consultar-citas',
         component: ConsultarCitas
-    }
+    },
+    {
+        path: '/consultar-citas-esp',
+        name: 'consultar-citas-esp',
+        component: ConsultarCitaEsp
+    },
+    {
+        path: '/modificar-citas-esp',
+        name: 'modificar-citas-esp',
+        component: ModificarCitaEsp
+    },
+    
 ]
 
 // Crea la instancia del router

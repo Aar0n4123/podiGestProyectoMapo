@@ -2,9 +2,9 @@
 import { ref } from 'vue'
 
 const images = [
-  'https://picsum.photos/id/1015/800/400',
-  'https://picsum.photos/id/1016/800/400',
-  'https://picsum.photos/id/1018/800/400',
+  '/images/Doctores.jpg',
+  '/images/Doctora.jpg',
+  '/images/podologia-deportiva.jpg',
 ]
 
 const currentIndex = ref(0)
@@ -23,7 +23,7 @@ const goTo = (index) => {
 </script>
 
 <template>
-  <div class="relative w-full aspect-video overflow-hidden rounded-lg shadow-lg">
+  <div class="relative w-200 h-120 overflow-hidden rounded-lg shadow-lg">
     <!-- Imagen actual -->
     <img
       :src="images[currentIndex]"

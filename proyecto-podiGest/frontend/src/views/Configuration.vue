@@ -16,7 +16,7 @@ const services = [
   { name: 'Podologia General', image: '/images/podologia_General.jpg', path: '/configuration/podologia-general' },
   { name: 'Podologia pediatrica', image: '/images/podologia-pediatrica.jpg', path: '/configuration/podologia-pediatrica' },
   { name: 'Quiropodia', image: '/images/quiropodia.jpg', path: '/configuration/quiropodia' },
-  { name: 'plantillas personalizadas', image: '/images/plantilla.jpg', path: '/configuration/plantillas-personalizadas' },
+  { name: 'Plantillas personalizadas', image: '/images/plantilla.jpg', path: '/configuration/plantillas-personalizadas' },
   { name: 'Evaluacion integral del pie', image: '/images/Evaluacion_Integral.jpg', path: '/configuration/evaluacion-integral' },
   { name: 'Podologia Deportiva', image: '/images/podologia-deportiva.jpg', path: '/configuration/podologia-deportiva' }
 ]
@@ -26,7 +26,7 @@ const services = [
   <div class="flex">
     <SideBar :is-collapsed="isCollapsed" @toggle="toggleSidebar" />
     <main :class="[
-      'transition-all duration-300 p-6 overflow-auto bg-amber-150 min-h-screen',
+      'transition-all duration-300 p-6 overflow-auto bg-blue-150 min-h-screen',
       isCollapsed ? 'ml-20' : 'ml-64'
     ]">
       <!-- Sub-navbar -->
@@ -35,7 +35,7 @@ const services = [
           @click="activeTab = 'servicios'"
           :class="[
             'px-6 py-3 transition-colors duration-200 flex-1',
-            activeTab === 'servicios' ? 'bg-amber-500 text-black' : 'hover:bg-amber-500 hover:text-black'
+            activeTab === 'servicios' ? 'bg-blue-500 text-black' : 'hover:bg-blue-500 hover:text-black'
           ]"
         >
           Servicios
@@ -44,7 +44,7 @@ const services = [
           @click="activeTab = 'especialistas'"
           :class="[
             'px-6 py-3 transition-colors duration-200 flex-1',
-            activeTab === 'especialistas' ? 'bg-amber-500 text-black' : 'hover:bg-amber-500 hover:text-black'
+            activeTab === 'especialistas' ? 'bg-blue-500 text-black' : 'hover:bg-blue-500 hover:text-black'
           ]"
         >
           Especialistas

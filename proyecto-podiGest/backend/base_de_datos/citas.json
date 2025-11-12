@@ -226,4 +226,28 @@
   "razonConsulta" : "hongo gigante",
   "estado" : "pendiente",
   "fechaCreacion" : "2025-11-11T21:34:02.325Z"
+}, {
+  "id" : "CITA-1762903626016-maqkaf1qg",
+  "pacienteNombre" : "Elsee Aguilar",
+  "pacienteCorreo" : "elsee@gmail.com",
+  "pacienteTelefono" : "041400000",
+  "especialista" : "Elsee",
+  "especialidadBuscada" : "",
+  "fecha" : "2026-02-20",
+  "hora" : "13:00",
+  "razonConsulta" : "Me duele el dedo gordo del pie ",
+  "estado" : "pendiente",
+  "fechaCreacion" : "2025-11-11T23:27:06.016Z"
+}, {
+  "id" : "CITA-1762905617387-olibizbd3",
+  "pacienteNombre" : "Penelope De Luque",
+  "pacienteCorreo" : "p@gmail.com",
+  "pacienteTelefono" : "0412000000",
+  "especialista" : "Elsee",
+  "especialidadBuscada" : "",
+  "fecha" : "2027-12-12",
+  "hora" : "17:00",
+  "razonConsulta" : "Dolor en todo el pie",
+  "estado" : "pendiente",
+  "fechaCreacion" : "2025-11-12T00:00:17.387Z"
 } ]

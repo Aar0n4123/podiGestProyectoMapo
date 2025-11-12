@@ -110,4 +110,18 @@
   "remitente" : "Clínica Podológica",
   "mensaje" : "Estimado/a Victoria Carmona,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Marylyn\nFecha: 2025-11-20\nHora: 11:00\nMotivo: hongo gigante\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
   "correoDestinatario" : "victoria@gmail.com"
+}, {
+  "id" : "NOTIF-1762903626090-1762903626016-maqkaf1qg",
+  "fechaEnvio" : "2025-11-11T19:27:06",
+  "asunto" : "Confirmación de cita agendada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a Elsee Aguilar,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Elsee\nFecha: 2026-02-20\nHora: 13:00\nMotivo: Me duele el dedo gordo del pie \n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
+  "correoDestinatario" : "elsee@gmail.com"
+}, {
+  "id" : "NOTIF-1762905617407-1762905617387-olibizbd3",
+  "fechaEnvio" : "2025-11-11T20:00:17",
+  "asunto" : "Confirmación de cita agendada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a Penelope De Luque,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Elsee\nFecha: 2027-12-12\nHora: 17:00\nMotivo: Dolor en todo el pie\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
+  "correoDestinatario" : "p@gmail.com"
 } ]

@@ -15,11 +15,11 @@ const toggleSidebar = () => {
   <div class="flex">
     <SideBar :is-collapsed="isCollapsed" @toggle="toggleSidebar" />
     <main :class="[
-      'transition-all duration-300 p-6 overflow-auto bg-amber-150 min-h-screen',
+      'transition-all duration-300 p-6 overflow-auto bg-blue-150 min-h-screen',
       isCollapsed ? 'ml-20' : 'ml-64'
     ]">
       <div class="max-w-4xl mx-auto">
-        <button @click="router.push('/configuration')" class="bg-amber-400 text-gray-800 px-4 py-2 rounded mb-4">Volver</button>
+        <button @click="router.push('/configuration')" class="bg-blue-400 text-gray-800 px-4 py-2 rounded mb-4">Volver</button>
         <h1 class="text-4xl font-bold text-gray-800 mb-6">Evaluacion integral del pie</h1>
         <div class="bg-white rounded-lg shadow-lg overflow-hidden mb-6">
           <img src="/images/Evaluacion_Integral.jpg" alt="Evaluacion integral del pie" class="w-full h-64 object-cover" />

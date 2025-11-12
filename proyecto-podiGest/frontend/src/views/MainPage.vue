@@ -15,11 +15,11 @@ const toggleSidebar = () => {
     <SideBar :is-collapsed="isCollapsed" @toggle="toggleSidebar" />
 
     <main :class="[
-      'transition-all duration-300 p-6 overflow-auto bg-amber-150 min-h-screen',
+      'transition-all duration-300 p-6 overflow-auto bg-blue-150 min-h-screen',
       isCollapsed ? 'ml-20' : 'ml-64'
     ]">
-      <div class="bg-amber-200/50 rounded-lg shadow-lg p-6 max-w-3xl mx-auto mt-8 border border-amber-300">
-        <h2 class="text-2xl font-bold text-amber-500 mb-4">Bienvenido a la Clínica Podológica Avanzada</h2>
+      <div class="bg-blue-200/50 rounded-lg shadow-lg p-6 max-w-3xl mx-auto mt-8 border border-blue-300">
+        <h2 class="text-2xl font-bold text-blue-500 mb-4">Bienvenido a la Clínica Podológica Avanzada</h2>
         <p class="text-gray-700 leading-relaxed mb-2">
           Gabinete Podológico, tu centro de referencia para el cuidado integral de los pies en Caracas, Venezuela.
           Entendemos que la salud de tus pies es fundamental para tu calidad de vida diaria y tu bienestar general.
@@ -31,8 +31,8 @@ const toggleSidebar = () => {
         </p>
       </div>
       <Carrousel class="mt-8"/>
-      <div class="bg-amber-200/50 rounded-lg shadow-lg p-6 max-w-3xl mx-auto mt-8 border border-amber-300">
-        <h2 class="text-2xl font-bold text-amber-500 mb-4">Sobre Nosotros</h2>
+      <div class="bg-blue-200/50 rounded-lg shadow-lg p-6 max-w-3xl mx-auto mt-8 border border-blue-300">
+        <h2 class="text-2xl font-bold text-blue-500 mb-4">Sobre Nosotros</h2>
         <p class="text-gray-700 leading-relaxed mb-2">
           Contamos con un equipo de especialistas con más de 3 años de experiencia en
           el sector de la podología. Nuestra clínica ha crecido con la filosofía
