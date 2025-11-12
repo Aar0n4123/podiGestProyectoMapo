@@ -1,220 +1,7 @@
-<template>
-  <div class="flex">
-    <div :class="[
-      'min-h-screen flex justify-center items-start p-10 flex-1 transition-all duration-300',
-      'bg-gradient-to-br from-indigo-500 to-purple-600',
-      // Ajusta 'ml-0' si SideBar está en uso (ej: isCollapsed ? 'ml-20' : 'ml-64')
-      'ml-0'
-    ]">
-      <div class="bg-white rounded-xl shadow-2xl overflow-hidden w-full max-w-4xl mt-10">
-
-        <div class="p-8 text-center text-white bg-gradient-to-r from-indigo-500 to-purple-700">
-          <h2 class="text-3xl font-semibold">Mis Citas Agendadas</h2>
-        </div>
-
-        <div v-if="isLoading" class="p-6 text-center">
-          <p class="text-lg text-gray-600">Cargando citas...</p>
-        </div>
-
-        <div v-else-if="citas.length === 0" class="p-6 text-center">
-          <p class="text-lg text-gray-500">No tienes citas agendadas.</p>
-          <router-link to="/" class="mt-4 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-500 hover:bg-gray-600 transition-colors">
-            Volver al Menú
-          </router-link>
-        </div>
-
-        <div v-else class="p-8">
-          <p class="mb-6 font-semibold text-gray-700 text-lg">Selecciona la cita que deseas modificar:</p>
-
-          <div class="space-y-4">
-            <div
-                v-for="cita in citas"
-                :key="cita.id"
-                class="p-5 bg-white border border-gray-200 rounded-lg shadow-md flex justify-between items-center transition-shadow hover:shadow-lg"
-            >
-              <div>
-                <p class="font-bold text-xl text-indigo-700">Paciente: {{ cita.pacienteNombre }}</p>
-                <p class="text-gray-600 mt-1">Fecha Actual: {{ cita.fecha }} | Hora Actual: {{ cita.hora }}</p>
-              </div>
-              <button
-                  @click="abrirConfirmacion(cita)"
-                  class="px-6 py-2 border border-transparent text-white font-semibold rounded-md shadow-lg bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 transition-all transform hover:scale-105"
-              >
-                Seleccionar
-              </button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- MODAL DE CONFIRMACIÓN -->
-    <div
-        v-if="estadoModal === 'confirmacion'"
-        class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50"
-    >
-      <div class="bg-white rounded-xl shadow-2xl overflow-hidden w-full max-w-md">
-        <div class="p-5 text-center text-white bg-gradient-to-r from-indigo-500 to-purple-700">
-          <h3 class="text-2xl font-semibold">Modificar Cita</h3>
-        </div>
-        <div class="p-6">
-          <p class="mb-6 text-gray-700 text-center">
-            ¿Deseas modificar la cita con el paciente
-            <span class="font-bold text-indigo-600">{{ citaSeleccionada.pacienteNombre }}</span>,
-            actualmente agendada para el {{ citaSeleccionada.fecha }} a las {{ citaSeleccionada.hora }}?
-          </p>
-
-          <div class="flex justify-end space-x-3 mt-4">
-            <!-- Botón para CANCELAR y volver a la lista -->
-            <button
-                type="button"
-                @click="estadoModal = null; citaSeleccionada = null;"
-                class="px-5 py-2 text-gray-700 bg-gray-200 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
-            >
-              Cancelar
-            </button>
-            <!-- Botón para CONTINUAR al formulario -->
-            <button
-                type="button"
-                @click="estadoModal = 'formulario'"
-                class="px-5 py-2 text-white font-semibold rounded-lg shadow-md bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 transition-colors"
-            >
-              Presion OK (Modificar)
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- MODAL DE FORMULARIO -->
-    <div
-        v-if="estadoModal === 'formulario'"
-        class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50"
-    >
-      <div class="bg-white rounded-xl shadow-2xl overflow-hidden w-full max-w-md">
-        <div class="p-5 text-center text-white bg-gradient-to-r from-indigo-500 to-purple-700">
-          <h3 class="text-2xl font-semibold">Reprogramar Cita</h3>
-        </div>
-
-        <form @submit.prevent="verificarDisponibilidad" class="p-6">
-
-          <div v-if="mensajeModal" :class="[
-            'p-4 mb-4 rounded-lg font-medium',
-            isExito ? 'bg-green-100 text-green-800 border border-green-300' : 'bg-red-100 text-red-800 border border-red-300'
-          ]">
-            {{ mensajeModal }}
-          </div>
-
-          <!-- Si hay un error, mostramos el botón de OK para limpiar el modal -->
-          <p v-if="!isExito && mensajeModal" class="mb-4 text-center">
-            <button @click="resetFormularioErrores" type="button" class="mt-2 px-4 py-2 text-white bg-gray-500 rounded-lg font-semibold hover:bg-gray-600 transition-colors">
-              Presionar OK para continuar
-            </button>
-          </p>
-
-          <div v-if="!mensajeModal || !isExito">
-            <div class="mb-4">
-              <label for="nuevaFecha" class="block text-sm font-medium text-gray-700 mb-2">Nueva Fecha</label>
-              <input
-                  type="date"
-                  id="nuevaFecha"
-                  v-model="nuevaFecha"
-                  :min="hoyFecha"
-                  class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-shadow"
-                  required
-              />
-            </div>
-            <div class="mb-6">
-              <label for="nuevaHora" class="block text-sm font-medium text-gray-700 mb-2">Nueva Hora</label>
-              <input
-                  type="time"
-                  id="nuevaHora"
-                  v-model="nuevaHora"
-                  class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-shadow"
-                  required
-              />
-            </div>
-
-            <div class="flex justify-between space-x-3">
-              <!-- Botón agregado para SALIR del flujo de modificación y volver a la lista -->
-              <button
-                  type="button"
-                  @click="estadoModal = null; citaSeleccionada = null;"
-                  class="px-5 py-2 text-gray-700 bg-red-100 rounded-lg font-semibold hover:bg-red-200 transition-colors"
-              >
-                Cerrar
-              </button>
-
-              <div class="flex space-x-3">
-                <!-- Botón para volver a la CONFIRMACIÓN (si es necesario) -->
-                <button
-                    type="button"
-                    @click="estadoModal = 'confirmacion'"
-                    class="px-5 py-2 text-gray-700 bg-gray-200 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
-                >
-                  Regresar
-                </button>
-                <!-- Botón de SUBMIT -->
-                <button
-                    type="submit"
-                    class="px-5 py-2 text-white font-semibold rounded-lg shadow-md bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 transition-colors"
-                >
-                  Verificar y Confirmar
-                </button>
-              </div>
-
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- MODAL DE ÉXITO -->
-    <div
-        v-if="estadoModal === 'exito'"
-        class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50"
-    >
-      <div class="bg-white rounded-xl shadow-2xl overflow-hidden w-full max-w-md">
-        <div class="p-5 text-center text-white bg-green-500">
-          <h3 class="text-2xl font-semibold">¡Éxito!</h3>
-        </div>
-        <div class="p-6 text-center">
-          <p class="mb-6 font-semibold text-green-700">
-            La cita ha sido modificada con éxito para el {{ nuevaFecha }} a las {{ nuevaHora }}.
-          </p>
-          <p class="mb-6 text-gray-700">¿Quieres modificar otra cita?</p>
-
-          <div class="flex justify-center space-x-4 mt-4">
-            <!-- Botón para volver a la lista de citas (recarga la lista) -->
-            <button
-                type="button"
-                @click="volverALista"
-                class="px-5 py-2 text-white font-semibold rounded-lg shadow-md bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 transition-colors"
-            >
-              Sí (Modificar Otra)
-            </button>
-            <!-- Botón para ir al menú principal -->
-            <button
-                type="button"
-                @click="$router.push('/')"
-                class="px-5 py-2 text-gray-700 bg-gray-200 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
-            >
-              No (Ir a Menú)
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import SideBar from '../components/SideBar.vue'
 
 const router = useRouter();
 const BASE_URL = 'http://localhost:8080/api';
@@ -223,7 +10,11 @@ const BASE_URL = 'http://localhost:8080/api';
 const citas = ref<any[]>([]);
 const isLoading = ref(true);
 const hoyFecha = ref('');
+const isCollapsed = ref(false)
 
+const toggleSidebar = () => {
+  isCollapsed.value = !isCollapsed.value
+}
 // --- ESTADOS DE LA MODIFICACIÓN ---
 const citaSeleccionada = ref<any | null>(null);
 const nuevaFecha = ref('');
@@ -273,8 +64,8 @@ async function cargarCitasEspecialista() {
   } catch (error: any) {
     console.error("Error al cargar citas:", error);
     const errorMessage = error.message.includes("expirado") || error.message.includes("permisos")
-        ? error.message
-        : "No se pudieron cargar tus citas.";
+      ? error.message
+      : "No se pudieron cargar tus citas.";
 
     mensajeModal.value = errorMessage;
     isExito.value = false;
@@ -359,3 +150,175 @@ function volverALista() {
   cargarCitasEspecialista();
 }
 </script>
+
+<template>
+  <div class="flex">
+    <SideBar :is-collapsed="isCollapsed" @toggle="toggleSidebar" />
+
+    <main :class="[
+      'transition-all duration-300 p-6 overflow-auto bg-blue-150 min-h-screen',
+      isCollapsed ? 'ml-20' : 'ml-64'
+    ]">
+      <div
+        class="flex min-h-screen bg-linear-to-br border border-blue-300 bg-blue-200/50 rounded-2xl p-10 transition-all duration-300">
+        <div class="bg-white rounded-xl shadow-2xl overflow-hidden w-full max-w-4xl mx-auto mt-10">
+          <!-- HEADER -->
+          <header class="p-8 text-center text-white bg-linear-to-r bg-blue-500/90">
+            <h2 class="text-5xl font-bold">Mis Citas Agendadas</h2>
+          </header>
+
+          <!-- LOADING -->
+          <section v-if="isLoading" class="p-6 text-center">
+            <p class="text-lg text-gray-600">Cargando citas...</p>
+          </section>
+
+          <!-- SIN CITAS -->
+          <section v-else-if="citas.length === 0" class="p-6 text-center">
+            <p class="text-lg text-gray-500">No tienes citas agendadas.</p>
+            <router-link to="/mainpage"
+              class="mt-4 inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-md shadow-sm text-white bg-gray-500 hover:bg-gray-600 transition-colors">
+              Volver al Menú
+            </router-link>
+          </section>
+
+          <!-- LISTA DE CITAS -->
+          <section v-else class="p-8">
+            <p class="mb-6 font-semibold text-gray-700 text-lg">Selecciona la cita que deseas modificar:</p>
+            <div class="space-y-4">
+              <article v-for="cita in citas" :key="cita.id"
+                class="p-5 bg-white border border-gray-200 rounded-lg shadow-md flex justify-between items-center hover:shadow-lg">
+                <div>
+                  <p class="font-bold text-xl text-blue-700">Paciente: {{ cita.pacienteNombre }}</p>
+                  <p class="text-gray-600 mt-1">Fecha Actual: {{ cita.fecha }} | Hora Actual: {{ cita.hora }}</p>
+                </div>
+                <button @click="abrirConfirmacion(cita)"
+                  class=" ml-6 px-6 py-2 text-white font-semibold rounded-md shadow-lg bg-linear-to-r bg-blue-500 hover:bg-blue-600 hover:-translate-y-0.5 ">
+                  Seleccionar
+                </button>
+              </article>
+            </div>
+          </section>
+        </div>
+
+        <!-- MODAL CONFIRMACIÓN -->
+        <div v-if="estadoModal === 'confirmacion'"
+          class="fixed inset-0 bg-blue-100/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md">
+            <header class="p-5 text-center text-white bg-linear-to-r from-blue-500 to-indigo-600 rounded-t-3xl">
+              <h3 class="text-2xl font-semibold">Modificar Cita</h3>
+            </header>
+            <div class="p-6">
+              <p class="mb-6 text-gray-700 text-center">
+                ¿Deseas modificar la cita con
+                <span class="font-bold text-indigo-600">{{ citaSeleccionada.pacienteNombre }}</span>,
+                actualmente agendada para el {{ citaSeleccionada.fecha }} a las {{ citaSeleccionada.hora }}?
+              </p>
+              <div class="flex justify-end space-x-3 mt-4">
+                <button @click="estadoModal = null; citaSeleccionada = null"
+                  class="px-5 py-2 text-gray-700 bg-gray-200 rounded-lg font-semibold hover:bg-gray-300 hover:-translate-y-0.5">
+                  Cancelar
+                </button>
+                <button @click="estadoModal = 'formulario'"
+                  class="px-5 py-2 text-white font-semibold rounded-lg shadow-md bg-linear-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:-translate-y-0.5">
+                  OK (Modificar)
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- MODAL FORMULARIO -->
+        <div v-if="estadoModal === 'formulario'"
+          class="fixed inset-0 bg-blue-100/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md">
+            <header class="p-5 text-center text-white bg-linear-to-r from-blue-500 to-indigo-600 rounded-t-3xl">
+              <h3 class="text-2xl font-semibold">Reprogramar Cita</h3>
+            </header>
+
+            <form @submit.prevent="verificarDisponibilidad" class="p-6">
+              <div v-if="mensajeModal" :class="[
+                'p-4 mb-4 rounded-lg font-medium',
+                isExito ? 'bg-green-100 text-green-800 border border-green-300' : 'bg-red-100 text-red-800 border border-red-300'
+              ]">
+                {{ mensajeModal }}
+              </div>
+
+              <p v-if="!isExito && mensajeModal" class="mb-4 text-center">
+                <button @click="resetFormularioErrores" type="button"
+                  class="mt-2 px-4 py-2 text-white bg-gray-500 rounded-lg font-semibold hover:bg-gray-600 hover:-translate-y-0.5">
+                  Presionar OK para continuar
+                </button>
+              </p>
+
+              <div v-if="!mensajeModal || !isExito">
+                <div class="mb-4">
+                  <label for="nuevaFecha" class="block text-sm font-medium text-gray-700 mb-2">Nueva Fecha</label>
+                  <input type="date" id="nuevaFecha" v-model="nuevaFecha" :min="hoyFecha"
+                    class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    required />
+                </div>
+
+                <div class="mb-6">
+                  <label for="nuevaHora" class="block text-sm font-medium text-gray-700 mb-2">Nueva Hora</label>
+                  <input type="time" id="nuevaHora" v-model="nuevaHora"
+                    class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    required />
+                </div>
+
+                <div class="flex justify-between space-x-3">
+                  <button type="button" @click="estadoModal = null; citaSeleccionada = null"
+                    class="px-5 py-2 text-gray-700 bg-red-100 rounded-lg font-semibold hover:bg-red-200 hover:-translate-y-0.5">
+                    Cerrar
+                  </button>
+
+                  <div class="flex space-x-3">
+                    <button type="button" @click="estadoModal = 'confirmacion'"
+                      class="px-5 py-2 text-gray-700 bg-gray-200 rounded-lg font-semibold hover:bg-gray-300 hover:-translate-y-0.5">
+                      Regresar
+                    </button>
+
+                    <button type="submit"
+                      class="px-5 py-2 text-white font-semibold rounded-lg shadow-md bg-linear-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:-translate-y-0.5">
+                      Verificar y Confirmar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- MODAL ÉXITO -->
+        <div v-if="estadoModal === 'exito'"
+          class="fixed inset-0 bg-blue-100/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md">
+            <header class="p-5 text-center text-white bg-linear-to-r from-green-500 to-emerald-600 rounded-t-3xl">
+              <h3 class="text-2xl font-semibold">¡Éxito!</h3>
+            </header>
+
+            <div class="p-6 text-center">
+              <p class="mb-6 font-semibold text-green-700">
+                La cita ha sido modificada con éxito para el {{ nuevaFecha }} a las {{ nuevaHora }}.
+              </p>
+              <p class="mb-6 text-gray-700">¿Quieres modificar otra cita?</p>
+
+              <div class="flex justify-center space-x-4 mt-4">
+                <button type="button" @click="volverALista"
+                  class="px-5 py-2 text-white font-semibold rounded-lg shadow-md bg-linear-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:-translate-y-0.5">
+                  Sí (Modificar Otra)
+                </button>
+
+                <button type="button" @click="$router.push('/mainpage')"
+                  class="px-5 py-2 text-gray-700 bg-gray-200 rounded-lg font-semibold hover:bg-gray-300 hover:-translate-y-0.5">
+                  No (Ir a Menú)
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+</template>

@@ -35,7 +35,7 @@ const services = [
           @click="activeTab = 'servicios'"
           :class="[
             'px-6 py-3 transition-colors duration-200 flex-1',
-            activeTab === 'servicios' ? 'bg-blue-500 text-black' : 'hover:bg-blue-500 hover:text-black'
+            activeTab === 'servicios' ? 'bg-blue-500 text-black' : 'hover:bg-blue-500 hover:text-black '
           ]"
         >
           Servicios
@@ -44,7 +44,7 @@ const services = [
           @click="activeTab = 'especialistas'"
           :class="[
             'px-6 py-3 transition-colors duration-200 flex-1',
-            activeTab === 'especialistas' ? 'bg-blue-500 text-black' : 'hover:bg-blue-500 hover:text-black'
+            activeTab === 'especialistas' ? 'bg-blue-500 text-black' : 'hover:bg-blue-500 hover:text-black '
           ]"
         >
           Especialistas
@@ -58,12 +58,12 @@ const services = [
           <div
             v-for="service in services"
             :key="service.name"
-            class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+            class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer hover:-translate-y-0.5 hover:bg-blue-500/50"
             @click="router.push(service.path)"
           >
             <img :src="service.image" :alt="service.name" class="w-full h-48 object-cover" />
-            <div class="p-4">
-              <h3 class="text-xl font-semibold text-gray-800">{{ service.name }}</h3>
+            <div class="p-4 ">
+              <h3 class="text-xl font-bold text-gray-800 ">{{ service.name }}</h3>
             </div>
           </div>
         </div>

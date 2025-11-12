@@ -64,15 +64,15 @@ const userRole = computed(() => usuario.value?.rol?.toLowerCase() || '')
 
 // Items con restricción de roles
 const navItems = [
-  { name: 'Inicio', to: '/mainpage', icon: HomeIcon, roles: ['especialista','paciente'] },
-  { name: 'Perfil', to: '/profile', icon: UserIcon, roles: ['especialista','paciente'] },
-  { name: 'Notificaciones', to: '/notifications', icon: BellIcon, roles: ['especialista','paciente'] },
-  { name: 'Citas', to: '/mis-citas', icon: SquaresPlusIcon, roles: ['especialista','paciente'] },
-  { name: 'Atención al Cliente', to: '/configuration', icon: CogIcon, roles: ['especialista','paciente'] },
-  { name: 'Información', to: '/information', icon: DocumentIcon, roles: ['especialista','paciente'] },
+  { name: 'Inicio', to: '/mainpage', icon: HomeIcon, roles: ['especialista', 'paciente'] },
+  { name: 'Perfil', to: '/profile', icon: UserIcon, roles: ['especialista', 'paciente'] },
+  { name: 'Notificaciones', to: '/notifications', icon: BellIcon, roles: ['especialista', 'paciente'] },
+  { name: 'Citas', to: '/mis-citas', icon: SquaresPlusIcon, roles: ['especialista', 'paciente'] },
+  { name: 'Atención al Cliente', to: '/configuration', icon: CogIcon, roles: ['especialista', 'paciente'] },
+  { name: 'Información', to: '/information', icon: DocumentIcon, roles: ['especialista', 'paciente'] },
   { name: 'Consultar Citas ', to: '/consultar-citas-esp', icon: EyeIcon, roles: ['especialista'] },
   { name: 'Modificar Citas ', to: '/modificar-citas-esp', icon: PencilIcon, roles: ['especialista'] },
-  { name: 'Salir', to: '/', icon: XMarkIcon, roles: ['especialista','paciente'] },
+  { name: 'Salir', to: '/', icon: XMarkIcon, roles: ['especialista', 'paciente'] },
 ]
 
 const isActive = (path: string) => route.path === path
@@ -87,12 +87,10 @@ onMounted(() => {
 
 
 <template>
-  <aside
-    :class="[
-      'fixed top-0 left-0 h-screen bg-gray-900 text-white flex flex-col z-50 transition-all duration-300',
-      props.isCollapsed ? 'w-20' : 'w-64'
-    ]"
-  >
+  <aside :class="[
+    'fixed top-0 left-0 h-screen bg-gray-900 text-white flex flex-col z-50 transition-all duration-300',
+    props.isCollapsed ? 'w-20' : 'w-64'
+  ]">
     <!-- Header -->
     <div class="flex items-center justify-between p-4 border-b border-blue-700">
       <span v-if="!props.isCollapsed" class="text-xl font-bold">PodiGest</span>
@@ -105,25 +103,21 @@ onMounted(() => {
     <nav class="flex-1 overflow-y-auto">
       <ul>
         <li v-for="item in navItems.filter(i => i.roles.includes(userRole))" :key="item.name">
-          <RouterLink
-            :to="item.to"
-            class="group flex items-center gap-3 px-4 py-3 hover:bg-blue-500 transition-colors duration-200"
-            :class="{ 'bg-gray-800': isActive(item.to) }"
-          >
+          <RouterLink :to="item.to" class="group flex items-center gap-3 px-4 py-3 transition-colors duration-200"
+            :class="[
+              isActive(item.to) ? 'bg-gray-800' : '',
+              item.name === 'Salir' ? 'hover:bg-red-500/90' : 'hover:bg-blue-500'
+            ]">
+
             <div class="relative">
               <component :is="item.icon" class="text-white group-hover:text-black w-5 h-5" />
               <!-- Badge de notificaciones (solo se muestra si no está silenciado) -->
-              <span
-                v-if="item.name === 'Notificaciones' && notificationCount > 0 && !isMuted"
-                class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center"
-              >
+              <span v-if="item.name === 'Notificaciones' && notificationCount > 0 && !isMuted"
+                class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center">
                 {{ notificationCount > 9 ? '9+' : notificationCount }}
               </span>
             </div>
-            <span
-              v-if="!props.isCollapsed"
-              class="text-white group-hover:text-black transition-all duration-200"
-            >
+            <span v-if="!props.isCollapsed" class="text-white group-hover:text-black transition-all duration-200">
               {{ item.name }}
             </span>
           </RouterLink>
