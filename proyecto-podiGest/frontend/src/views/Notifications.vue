@@ -4,6 +4,8 @@ import SideBar from '../components/SideBar.vue'
 import {
   fetchNotificationById,
   fetchNotifications,
+  muteNotification,
+  unmuteNotification,
   type NotificationSummary
 } from '../services/notificationsService'
 import { useNotificationCount } from '../composables/useNotificationCount'
@@ -15,7 +17,9 @@ const errorMessage = ref('')
 const selectedNotification = ref<NotificationSummary | null>(null)
 const loadingDetails = ref(false)
 const showDetailView = ref(false)
-const { loadNotificationCount, isMuted, toggleMute } = useNotificationCount()
+const mutingNotificationId = ref<string | null>(null)
+const unmutingNotificationId = ref<string | null>(null)
+const { loadNotificationCount, decrementCount, incrementCount, isMuted, toggleMute } = useNotificationCount()
 
 const toggleSidebar = () => {
   isCollapsed.value = !isCollapsed.value
@@ -52,6 +56,70 @@ const backToList = () => {
   showDetailView.value = false
   selectedNotification.value = null
   errorMessage.value = ''
+}
+
+const handleMuteNotification = async (id: string, event: Event) => {
+  event.stopPropagation() // Evitar que se abra la notificación al hacer clic en silenciar
+  
+  mutingNotificationId.value = id
+  errorMessage.value = ''
+  
+  try {
+    const success = await muteNotification(id)
+    
+    if (success) {
+      // Actualizar la notificación en la lista local
+      const notification = notifications.value.find(n => n.id === id)
+      if (notification) {
+        notification.silenciada = true
+      }
+      
+      // Decrementar el contador de notificaciones
+      decrementCount()
+      
+      // Mostrar mensaje de éxito temporal
+      console.log(`Notificación ${id} silenciada exitosamente`)
+    } else {
+      errorMessage.value = 'No se pudo silenciar la notificación. Intente nuevamente.'
+    }
+  } catch (error) {
+    console.error('Error al silenciar notificación:', error)
+    errorMessage.value = 'Ocurrió un error al silenciar la notificación.'
+  } finally {
+    mutingNotificationId.value = null
+  }
+}
+
+const handleUnmuteNotification = async (id: string, event: Event) => {
+  event.stopPropagation() // Evitar que se abra la notificación al hacer clic en dessilenciar
+  
+  unmutingNotificationId.value = id
+  errorMessage.value = ''
+  
+  try {
+    const success = await unmuteNotification(id)
+    
+    if (success) {
+      // Actualizar la notificación en la lista local
+      const notification = notifications.value.find(n => n.id === id)
+      if (notification) {
+        notification.silenciada = false
+      }
+      
+      // Incrementar el contador de notificaciones
+      incrementCount()
+      
+      // Mostrar mensaje de éxito temporal
+      console.log(`Notificación ${id} dessilenciada exitosamente`)
+    } else {
+      errorMessage.value = 'No se pudo dessilenciar la notificación. Intente nuevamente.'
+    }
+  } catch (error) {
+    console.error('Error al dessilenciar notificación:', error)
+    errorMessage.value = 'Ocurrió un error al dessilenciar la notificación.'
+  } finally {
+    unmutingNotificationId.value = null
+  }
 }
 
 onMounted(() => {
@@ -150,11 +218,14 @@ onMounted(() => {
             <li
               v-for="notification in notifications"
               :key="notification.id"
-              class="px-6 py-4 cursor-pointer hover:bg-blue-50 transition-colors duration-200"
-              @click="openNotification(notification.id)"
+              :class="[
+                'px-6 py-4 transition-colors duration-200',
+                notification.silenciada ? 'bg-gray-50 opacity-60' : 'cursor-pointer hover:bg-blue-50'
+              ]"
+              @click="!notification.silenciada && openNotification(notification.id)"
             >
-              <div class="flex items-start justify-between">
-                <div class="flex-1">
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex-1 min-w-0">
                   <div class="flex items-center gap-2 mb-1">
                     <p class="text-xs text-gray-500">
                       {{ new Date(notification.fechaEnvio).toLocaleString('es-ES', {
@@ -165,16 +236,99 @@ onMounted(() => {
                         minute: '2-digit'
                       }) }}
                     </p>
+                    <span 
+                      v-if="notification.silenciada" 
+                      class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-700"
+                    >
+                      <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-.707-1.707l1.586-1.586a1 1 0 01.707-.293h3.172a1 1 0 00.707-.293l2.414-2.414A1 1 0 0113.586 8H15m5.586 7H22a1 1 0 00.707-1.707l-1.586-1.586a1 1 0 00-.707-.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 0010.414 8H9M3 3l18 18" />
+                      </svg>
+                      Silenciada
+                    </span>
                   </div>
-                  <h3 class="text-lg font-semibold text-gray-800 mb-1">
+                  <h3 :class="[
+                    'text-lg font-semibold mb-1',
+                    notification.silenciada ? 'text-gray-500' : 'text-gray-800'
+                  ]">
                     {{ notification.asunto }}
                   </h3>
-                  <p class="text-sm text-gray-600">
+                  <p :class="[
+                    'text-sm',
+                    notification.silenciada ? 'text-gray-400' : 'text-gray-600'
+                  ]">
                     <span class="font-medium">Remitente:</span> {{ notification.remitente }}
                   </p>
                 </div>
-                <div class="ml-4">
+                <div class="flex items-center gap-2 shrink-0">
+                  <!-- Botón de silenciar (solo si NO está silenciada) -->
+                  <button
+                    v-if="!notification.silenciada"
+                    @click="handleMuteNotification(notification.id, $event)"
+                    :disabled="mutingNotificationId === notification.id"
+                    :class="[
+                      'p-2 rounded-lg transition-all duration-200',
+                      mutingNotificationId === notification.id
+                        ? 'bg-gray-200 cursor-not-allowed'
+                        : 'hover:bg-red-50 text-gray-500 hover:text-red-600'
+                    ]"
+                    :title="mutingNotificationId === notification.id ? 'Silenciando...' : 'Silenciar notificación'"
+                  >
+                    <svg 
+                      v-if="mutingNotificationId === notification.id"
+                      class="w-5 h-5 animate-spin" 
+                      fill="none" 
+                      viewBox="0 0 24 24"
+                    >
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <svg 
+                      v-else
+                      class="w-5 h-5" 
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      stroke="currentColor"
+                    >
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-.707-1.707l1.586-1.586a1 1 0 01.707-.293h3.172a1 1 0 00.707-.293l2.414-2.414A1 1 0 0113.586 8H15m5.586 7H22a1 1 0 00.707-1.707l-1.586-1.586a1 1 0 00-.707-.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 0010.414 8H9M3 3l18 18" />
+                    </svg>
+                  </button>
+
+                  <!-- Botón de dessilenciar (solo si ESTÁ silenciada) -->
+                  <button
+                    v-if="notification.silenciada"
+                    @click="handleUnmuteNotification(notification.id, $event)"
+                    :disabled="unmutingNotificationId === notification.id"
+                    :class="[
+                      'p-2 rounded-lg transition-all duration-200',
+                      unmutingNotificationId === notification.id
+                        ? 'bg-gray-200 cursor-not-allowed'
+                        : 'hover:bg-green-50 text-gray-500 hover:text-green-600'
+                    ]"
+                    :title="unmutingNotificationId === notification.id ? 'Activando...' : 'Activar notificación'"
+                  >
+                    <svg 
+                      v-if="unmutingNotificationId === notification.id"
+                      class="w-5 h-5 animate-spin" 
+                      fill="none" 
+                      viewBox="0 0 24 24"
+                    >
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <svg 
+                      v-else
+                      class="w-5 h-5" 
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      stroke="currentColor"
+                    >
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                    </svg>
+                  </button>
+                  
+                  <!-- Flecha para abrir (solo si no está silenciada) -->
                   <svg
+                    v-if="!notification.silenciada"
                     class="w-6 h-6 text-blue-600"
                     fill="none"
                     viewBox="0 0 24 24"

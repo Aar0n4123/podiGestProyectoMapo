@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { fetchNotifications } from '../services/notificationsService'
+import { fetchNotificationCount } from '../services/notificationsService'
 
 // Estado global compartido
 const notificationCount = ref(0)
@@ -19,8 +19,9 @@ export function useNotificationCount() {
   const loadNotificationCount = async () => {
     isLoading.value = true
     try {
-      const notifications = await fetchNotifications()
-      notificationCount.value = notifications.length
+      // Usar el nuevo endpoint que cuenta solo notificaciones no silenciadas
+      const count = await fetchNotificationCount()
+      notificationCount.value = count
     } catch (error) {
       console.error('Error al cargar el conteo de notificaciones:', error)
       notificationCount.value = 0
@@ -31,6 +32,16 @@ export function useNotificationCount() {
 
   const resetCount = () => {
     notificationCount.value = 0
+  }
+
+  const decrementCount = () => {
+    if (notificationCount.value > 0) {
+      notificationCount.value--
+    }
+  }
+
+  const incrementCount = () => {
+    notificationCount.value++
   }
 
   const toggleMute = () => {
@@ -50,6 +61,8 @@ export function useNotificationCount() {
     isMuted,
     loadNotificationCount,
     resetCount,
+    decrementCount,
+    incrementCount,
     toggleMute,
     setMuted
   }

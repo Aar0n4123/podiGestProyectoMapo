@@ -4,145 +4,214 @@
   "asunto" : "Recordatorio de cita",
   "remitente" : "Clínica Podológica",
   "mensaje" : "Estimado paciente, le recordamos su cita programada para el 12 de enero de 2025 a las 10:00 AM.",
-  "correoDestinatario" : "o@o.com"
+  "correoDestinatario" : "o@o.com",
+  "silenciada" : false
 }, {
   "id" : "notif-002",
   "fechaEnvio" : "2025-01-08T15:30:00",
   "asunto" : "Actualización de cita",
   "remitente" : "Clínica Podológica",
   "mensaje" : "Su cita del 15 de enero ha sido reprogramada para el 16 de enero a las 11:30 AM.",
-  "correoDestinatario" : "o@o.com"
+  "correoDestinatario" : "o@o.com",
+  "silenciada" : false
 }, {
   "id" : "notif-003",
   "fechaEnvio" : "2024-12-25T08:15:00",
   "asunto" : "Cita cancelada",
   "remitente" : "Clínica Podológica",
   "mensaje" : "Lamentamos informarle que su cita del 27 de diciembre ha sido cancelada. Por favor, comuníquese para reagendar.",
-  "correoDestinatario" : "gabrielbrachobf@gmail.com"
+  "correoDestinatario" : "gabrielbrachobf@gmail.com",
+  "silenciada" : false
 }, {
   "id" : "NOTIF-1762881548223-1762881548221-w5gk7358z",
   "fechaEnvio" : "2025-11-11T13:19:08",
   "asunto" : "Confirmación de cita agendada",
   "remitente" : "Clínica Podológica",
   "mensaje" : "Estimado/a Omar Cafe,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Elsee\nFecha: 2030-11-11\nHora: 11:01\nMotivo: necesito cafe\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
-  "correoDestinatario" : "o@o.com"
+  "correoDestinatario" : "o@o.com",
+  "silenciada" : false
 }, {
   "id" : "NOTIF-1762885900700-1762885900689-dmd3bola3",
   "fechaEnvio" : "2025-11-11T14:31:40",
   "asunto" : "Confirmación de cita agendada",
   "remitente" : "Clínica Podológica",
   "mensaje" : "Estimado/a Gabriel Bracho,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Elsee\nFecha: 2025-12-27\nHora: 07:00\nMotivo: Ayuda\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
-  "correoDestinatario" : "gebracho.23@est.ucab.edu.ve"
+  "correoDestinatario" : "gebracho.23@est.ucab.edu.ve",
+  "silenciada" : false
 }, {
   "id" : "NOTIF-1762886630396-1762886630384-4bqmcng4t",
   "fechaEnvio" : "2025-11-11T14:43:50",
   "asunto" : "Confirmación de cita agendada",
   "remitente" : "Clínica Podológica",
   "mensaje" : "Estimado/a Gabriel Bracho,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Marylyn\nFecha: 2026-09-27\nHora: 19:00\nMotivo: ayuda\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
-  "correoDestinatario" : "gabrielbrachobf@gmail.com"
+  "correoDestinatario" : "gabrielbrachobf@gmail.com",
+  "silenciada" : false
 }, {
   "id" : "NOTIF-1762886694262-1762886694259-i8so0aojf",
   "fechaEnvio" : "2025-11-11T14:44:54",
   "asunto" : "Confirmación de cita agendada",
   "remitente" : "Clínica Podológica",
   "mensaje" : "Estimado/a Gabriel Bracho,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Elsee\nFecha: 2027-09-27\nHora: 07:00\nMotivo: quepaso\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
-  "correoDestinatario" : "gebracho.23@est.ucab.edu.ve"
+  "correoDestinatario" : "gebracho.23@est.ucab.edu.ve",
+  "silenciada" : false
 }, {
   "id" : "NOTIF-1762887477637-1762887477630-m4gexi5f0",
   "fechaEnvio" : "2025-11-11T14:57:57",
   "asunto" : "Confirmación de cita agendada",
   "remitente" : "Clínica Podológica",
   "mensaje" : "Estimado/a Gabriel Bracho,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Marylyn\nFecha: 2021-09-27\nHora: 10:00\nMotivo: Ayudame porfa\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
-  "correoDestinatario" : "gebracho.23@est.ucab.edu.ve"
+  "correoDestinatario" : "gebracho.23@est.ucab.edu.ve",
+  "silenciada" : false
 }, {
   "id" : "NOTIF-1762887763398-1762887763388-1bfld7890",
   "fechaEnvio" : "2025-11-11T15:02:43",
   "asunto" : "Confirmación de cita agendada",
   "remitente" : "Clínica Podológica",
   "mensaje" : "Estimado/a Gabriel Bracho,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Elsee\nFecha: 2025-11-11\nHora: 13:00\nMotivo: todavia quiero ayuda\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
-  "correoDestinatario" : "gebracho.23@est.ucab.edu.ve"
+  "correoDestinatario" : "gebracho.23@est.ucab.edu.ve",
+  "silenciada" : false
 }, {
   "id" : "NOTIF-1762888971324-1762888971315-lzdztb31w",
   "fechaEnvio" : "2025-11-11T15:22:51",
   "asunto" : "Confirmación de cita agendada",
   "remitente" : "Clínica Podológica",
   "mensaje" : "Estimado/a Gabriel Bracho,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Elsee\nFecha: 2026-09-27\nHora: 09:00\nMotivo: ayuda\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
-  "correoDestinatario" : "gebracho.23@est.ucab.edu.ve"
+  "correoDestinatario" : "gebracho.23@est.ucab.edu.ve",
+  "silenciada" : false
 }, {
   "id" : "NOTIF-1762889105695-1762889105691-lpj3os6w5",
   "fechaEnvio" : "2025-11-11T15:25:05",
   "asunto" : "Confirmación de cita agendada",
   "remitente" : "Clínica Podológica",
   "mensaje" : "Estimado/a Gabriel Bracho,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Elsee\nFecha: 2026-09-27\nHora: 08:00\nMotivo: 51\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
-  "correoDestinatario" : "gebracho.23@est.ucab.edu.ve"
+  "correoDestinatario" : "gebracho.23@est.ucab.edu.ve",
+  "silenciada" : false
 }, {
   "id" : "NOTIF-1762889159991-1762889159988-eoz3qa9p9",
   "fechaEnvio" : "2025-11-11T15:25:59",
   "asunto" : "Confirmación de cita agendada",
   "remitente" : "Clínica Podológica",
   "mensaje" : "Estimado/a Gabriel Bracho,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Elsee\nFecha: 2026-09-27\nHora: 12:00\nMotivo: 15651\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
-  "correoDestinatario" : "gebracho.23@est.ucab.edu.ve"
+  "correoDestinatario" : "gebracho.23@est.ucab.edu.ve",
+  "silenciada" : false
 }, {
   "id" : "NOTIF-1762888708153-1762888708137-vyg5e4smi",
   "fechaEnvio" : "2025-11-11T20:18:28",
   "asunto" : "Confirmación de cita agendada",
   "remitente" : "Clínica Podológica",
   "mensaje" : "Estimado/a Victoria Carmona,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Marylyn\nFecha: 2025-11-13\nHora: 08:20\nMotivo: me duele la uña chiquita\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
-  "correoDestinatario" : "victoria@gmail.com"
+  "correoDestinatario" : "victoria@gmail.com",
+  "silenciada" : false
 }, {
   "id" : "NOTIF-1762893561211-1762893561206-39hz4jxqz",
   "fechaEnvio" : "2025-11-11T16:39:21",
   "asunto" : "Confirmación de cita agendada",
   "remitente" : "Clínica Podológica",
   "mensaje" : "Estimado/a Omar Cafe,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Marylyn\nFecha: 2025-11-20\nHora: 13:00\nMotivo: CAFEEEEE\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
-  "correoDestinatario" : "o@o.com"
+  "correoDestinatario" : "o@o.com",
+  "silenciada" : false
 }, {
   "id" : "NOTIF-1762894326257-1762894326243-i4yssepzu",
   "fechaEnvio" : "2025-11-11T16:52:06",
   "asunto" : "Confirmación de cita agendada",
   "remitente" : "Clínica Podológica",
   "mensaje" : "Estimado/a Omar Cafe,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Elsee\nFecha: 2025-11-19\nHora: 13:00\nMotivo: kk\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
-  "correoDestinatario" : "o@o.com"
+  "correoDestinatario" : "o@o.com",
+  "silenciada" : false
 }, {
   "id" : "NOTIF-1762896842341-1762896842325-b4ovouket",
   "fechaEnvio" : "2025-11-11T22:34:02",
   "asunto" : "Confirmación de cita agendada",
   "remitente" : "Clínica Podológica",
   "mensaje" : "Estimado/a Victoria Carmona,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Marylyn\nFecha: 2025-11-20\nHora: 11:00\nMotivo: hongo gigante\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
-  "correoDestinatario" : "victoria@gmail.com"
+  "correoDestinatario" : "victoria@gmail.com",
+  "silenciada" : false
 }, {
   "id" : "NOTIF-1762903626090-1762903626016-maqkaf1qg",
   "fechaEnvio" : "2025-11-11T19:27:06",
   "asunto" : "Confirmación de cita agendada",
   "remitente" : "Clínica Podológica",
   "mensaje" : "Estimado/a Elsee Aguilar,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Elsee\nFecha: 2026-02-20\nHora: 13:00\nMotivo: Me duele el dedo gordo del pie \n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
-  "correoDestinatario" : "elsee@gmail.com"
+  "correoDestinatario" : "elsee@gmail.com",
+  "silenciada" : false
 }, {
   "id" : "NOTIF-1762905617407-1762905617387-olibizbd3",
   "fechaEnvio" : "2025-11-11T20:00:17",
   "asunto" : "Confirmación de cita agendada",
   "remitente" : "Clínica Podológica",
   "mensaje" : "Estimado/a Penelope De Luque,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Elsee\nFecha: 2027-12-12\nHora: 17:00\nMotivo: Dolor en todo el pie\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
-  "correoDestinatario" : "p@gmail.com"
+  "correoDestinatario" : "p@gmail.com",
+  "silenciada" : false
 }, {
   "id" : "NOTIF-1762914140809-1762914140803-8g30mzq9e",
   "fechaEnvio" : "2025-11-12T03:22:20",
   "asunto" : "Confirmación de cita agendada",
   "remitente" : "Clínica Podológica",
   "mensaje" : "Estimado/a andres ccc,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Marylyn\nFecha: 2025-11-13\nHora: 10:00\nMotivo: me duele la pestaña\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
-  "correoDestinatario" : "andres@gmail.com"
+  "correoDestinatario" : "andres@gmail.com",
+  "silenciada" : false
 }, {
   "id" : "NOTIF-1762914734348-1762914734343-3sy507w0n",
   "fechaEnvio" : "2025-11-11T22:32:14",
   "asunto" : "Confirmación de cita agendada",
   "remitente" : "Clínica Podológica",
   "mensaje" : "Estimado/a Penelope De Luque,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Marylyn\nFecha: 2030-07-07\nHora: 13:00\nMotivo: JJJJJJ\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
-  "correoDestinatario" : "p@gmail.com"
+  "correoDestinatario" : "p@gmail.com",
+  "silenciada" : false
 }, {
   "id" : "NOTIF-1762957000427-1762957000412-1io903i8g",
   "fechaEnvio" : "2025-11-12T10:16:40",
   "asunto" : "Confirmación de cita agendada",
   "remitente" : "Clínica Podológica",
   "mensaje" : "Estimado/a Penelope De Luque,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Marylyn\nFecha: 2026-02-02\nHora: 13:00\nMotivo: Me duele un de'o \n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
-  "correoDestinatario" : "p@gmail.com"
+  "correoDestinatario" : "p@gmail.com",
+  "silenciada" : false
+}, {
+  "id" : "NOTIF-1762959215105-1762959215099-2zy9p2sr1",
+  "fechaEnvio" : "2025-11-12T10:53:35",
+  "asunto" : "Confirmación de cita agendada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a Penelope De Luque,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Marylyn Rojas\nFecha: 2025-11-20\nHora: 18:00\nMotivo: me pegue en el dedo chiquito\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
+  "correoDestinatario" : "p@gmail.com",
+  "silenciada" : false
+}, {
+  "id" : "NOTIF-ESP-1762959215105-1762959215099-2zy9p2sr1",
+  "fechaEnvio" : "2025-11-12T10:53:35",
+  "asunto" : "Nueva cita agendada - Penelope De Luque",
+  "remitente" : "Sistema de Gestión de Citas",
+  "mensaje" : "Estimado/a Dr./Dra. Marylyn Rojas,\n\nSe ha agendado una nueva cita con usted:\n\nPaciente: Penelope De Luque\nFecha: 2025-11-20\nHora: 18:00\nMotivo de consulta: me pegue en el dedo chiquito\nTeléfono del paciente: 99999999\n\nPor favor, revise su agenda y prepárese para la consulta.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
+  "correoDestinatario" : "Marylyn@gmail.com",
+  "silenciada" : false
+}, {
+  "id" : "NOTIF-MOD-1762959301410-1762834037443-zrbbodd3v",
+  "fechaEnvio" : "2025-11-12T10:55:01",
+  "asunto" : "Modificación de cita - Información actualizada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a andres ccc,\n\nLe informamos que su cita ha sido modificada.\n\nINFORMACIÓN ANTERIOR:\nFecha: 2025-11-12\nHora: 06:10\n\nNUEVA INFORMACIÓN:\nEspecialista: Marylyn\nFecha: 2025-11-12\nHora: 06:02\nMotivo: me duele la cabeza\n\nPor favor, tome nota de los nuevos datos y llegue 10 minutos antes de su cita.\nSi tiene alguna duda o necesita realizar cambios adicionales, comuníquese con nosotros.\n\nGracias por su comprensión.",
+  "correoDestinatario" : "andres@gmail.com",
+  "silenciada" : false
+}, {
+  "id" : "NOTIF-ESP-MOD-1762959301416-1762834037443-zrbbodd3v",
+  "fechaEnvio" : "2025-11-12T10:55:01",
+  "asunto" : "Modificación de cita - andres ccc",
+  "remitente" : "Sistema de Gestión de Citas",
+  "mensaje" : "Estimado/a Dr./Dra. Marylyn,\n\nSe ha modificado una cita en su agenda:\n\nINFORMACIÓN ANTERIOR:\nFecha: 2025-11-12\nHora: 06:10\n\nNUEVA INFORMACIÓN:\nPaciente: andres ccc\nFecha: 2025-11-12\nHora: 06:02\nMotivo de consulta: me duele la cabeza\nTeléfono del paciente: 04242739633\n\nPor favor, tome nota de los cambios en su agenda.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
+  "correoDestinatario" : "Marylyn@gmail.com",
+  "silenciada" : false
+}, {
+  "id" : "NOTIF-MOD-1762959322952-1762914734343-3sy507w0n",
+  "fechaEnvio" : "2025-11-12T10:55:22",
+  "asunto" : "Modificación de cita - Información actualizada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a Penelope De Luque,\n\nLe informamos que su cita ha sido modificada.\n\nINFORMACIÓN ANTERIOR:\nFecha: 2030-07-07\nHora: 13:00\n\nNUEVA INFORMACIÓN:\nEspecialista: Marylyn\nFecha: 2030-07-07\nHora: 14:00\nMotivo: JJJJJJ\n\nPor favor, tome nota de los nuevos datos y llegue 10 minutos antes de su cita.\nSi tiene alguna duda o necesita realizar cambios adicionales, comuníquese con nosotros.\n\nGracias por su comprensión.",
+  "correoDestinatario" : "p@gmail.com",
+  "silenciada" : false
+}, {
+  "id" : "NOTIF-ESP-MOD-1762959322952-1762914734343-3sy507w0n",
+  "fechaEnvio" : "2025-11-12T10:55:22",
+  "asunto" : "Modificación de cita - Penelope De Luque",
+  "remitente" : "Sistema de Gestión de Citas",
+  "mensaje" : "Estimado/a Dr./Dra. Marylyn,\n\nSe ha modificado una cita en su agenda:\n\nINFORMACIÓN ANTERIOR:\nFecha: 2030-07-07\nHora: 13:00\n\nNUEVA INFORMACIÓN:\nPaciente: Penelope De Luque\nFecha: 2030-07-07\nHora: 14:00\nMotivo de consulta: JJJJJJ\nTeléfono del paciente: 002793794\n\nPor favor, tome nota de los cambios en su agenda.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
+  "correoDestinatario" : "Marylyn@gmail.com",
+  "silenciada" : false
 } ]

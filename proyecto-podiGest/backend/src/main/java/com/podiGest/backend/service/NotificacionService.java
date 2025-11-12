@@ -141,4 +141,82 @@ public class NotificacionService {
         System.out.println("INFO: Notificaciones filtradas para " + correoUsuario + ": " + notificacionesFiltradas.size());
         return notificacionesFiltradas;
     }
+
+    /**
+     * Silencia una notificación específica
+     * 
+     * @param id El ID de la notificación a silenciar
+     * @return true si se silenció exitosamente, false si no se encontró
+     * @throws IOException si hay error al guardar
+     */
+    public boolean silenciarNotificacion(String id) throws IOException {
+        System.out.println("INFO: Intentando silenciar notificación con ID: " + id);
+        
+        List<Notificacion> notificaciones = new ArrayList<>(obtenerNotificaciones());
+        boolean encontrada = false;
+        
+        for (Notificacion notificacion : notificaciones) {
+            if (notificacion.getId().equals(id)) {
+                notificacion.setSilenciada(true);
+                encontrada = true;
+                System.out.println("INFO: Notificación " + id + " marcada como silenciada");
+                break;
+            }
+        }
+        
+        if (encontrada) {
+            guardarNotificacionesAJson(notificaciones);
+            System.out.println("INFO: Cambios guardados exitosamente");
+        } else {
+            System.out.println("ADVERTENCIA: No se encontró la notificación con ID: " + id);
+        }
+        
+        return encontrada;
+    }
+
+    /**
+     * Dessilencia una notificación específica
+     * 
+     * @param id El ID de la notificación a dessilenciar
+     * @return true si se dessilenció exitosamente, false si no se encontró
+     * @throws IOException si hay error al guardar
+     */
+    public boolean dessilenciarNotificacion(String id) throws IOException {
+        System.out.println("INFO: Intentando dessilenciar notificación con ID: " + id);
+        
+        List<Notificacion> notificaciones = new ArrayList<>(obtenerNotificaciones());
+        boolean encontrada = false;
+        
+        for (Notificacion notificacion : notificaciones) {
+            if (notificacion.getId().equals(id)) {
+                notificacion.setSilenciada(false);
+                encontrada = true;
+                System.out.println("INFO: Notificación " + id + " marcada como NO silenciada");
+                break;
+            }
+        }
+        
+        if (encontrada) {
+            guardarNotificacionesAJson(notificaciones);
+            System.out.println("INFO: Cambios guardados exitosamente");
+        } else {
+            System.out.println("ADVERTENCIA: No se encontró la notificación con ID: " + id);
+        }
+        
+        return encontrada;
+    }
+
+    /**
+     * Obtiene el conteo de notificaciones no silenciadas de un usuario
+     * 
+     * @param correoUsuario El correo del usuario
+     * @return Cantidad de notificaciones no silenciadas
+     * @throws IOException si hay error al leer
+     */
+    public long contarNotificacionesNoSilenciadas(String correoUsuario) throws IOException {
+        return obtenerNotificacionesPorUsuario(correoUsuario)
+                .stream()
+                .filter(notificacion -> !notificacion.isSilenciada())
+                .count();
+    }
 }

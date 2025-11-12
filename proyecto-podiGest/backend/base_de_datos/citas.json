@@ -18,7 +18,7 @@
   "especialista" : "Marylyn",
   "especialidadBuscada" : "",
   "fecha" : "2025-11-12",
-  "hora" : "06:10",
+  "hora" : "06:02",
   "razonConsulta" : "me duele la cabeza",
   "estado" : "pendiente",
   "fechaCreacion" : "2025-11-11T04:07:17.443Z"
@@ -54,7 +54,7 @@
   "especialista" : "Marylyn",
   "especialidadBuscada" : "",
   "fecha" : "2030-07-07",
-  "hora" : "13:00",
+  "hora" : "14:00",
   "razonConsulta" : "JJJJJJ",
   "estado" : "pendiente",
   "fechaCreacion" : "2025-11-12T02:32:14.343Z"
@@ -70,4 +70,16 @@
   "razonConsulta" : "Me duele un de'o ",
   "estado" : "pendiente",
   "fechaCreacion" : "2025-11-12T14:16:40.412Z"
+}, {
+  "id" : "CITA-1762959215099-2zy9p2sr1",
+  "pacienteNombre" : "Penelope De Luque",
+  "pacienteCorreo" : "p@gmail.com",
+  "pacienteTelefono" : "99999999",
+  "especialista" : "Marylyn Rojas",
+  "especialidadBuscada" : "",
+  "fecha" : "2025-11-20",
+  "hora" : "18:00",
+  "razonConsulta" : "me pegue en el dedo chiquito",
+  "estado" : "pendiente",
+  "fechaCreacion" : "2025-11-12T14:53:35.099Z"
 } ]

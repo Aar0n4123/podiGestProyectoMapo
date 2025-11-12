@@ -87,4 +87,112 @@ public class NotificacionController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @PutMapping("/{id}/silenciar")
+    public ResponseEntity<?> silenciarNotificacion(@PathVariable String id) {
+        try {
+            // Obtener el usuario activo de la sesión
+            Optional<Usuario> usuarioActivo = perfilService.obtenerPerfilActivo();
+            
+            if (usuarioActivo.isEmpty()) {
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body("No hay una sesión activa. Por favor, inicie sesión.");
+            }
+            
+            // Verificar que la notificación existe y pertenece al usuario
+            Optional<Notificacion> notificacion = notificacionService.obtenerNotificacionPorId(id);
+            
+            if (notificacion.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            
+            String correoUsuario = usuarioActivo.get().getCorreoElectronico();
+            if (notificacion.get().getCorreoDestinatario() == null 
+                    || !notificacion.get().getCorreoDestinatario().equalsIgnoreCase(correoUsuario)) {
+                return ResponseEntity
+                        .status(HttpStatus.FORBIDDEN)
+                        .body("No tiene permiso para silenciar esta notificación.");
+            }
+            
+            // Silenciar la notificación
+            boolean silenciada = notificacionService.silenciarNotificacion(id);
+            
+            if (silenciada) {
+                System.out.println("INFO: Notificación " + id + " silenciada exitosamente para el usuario " + correoUsuario);
+                return ResponseEntity.ok().body("Notificación silenciada exitosamente");
+            } else {
+                return ResponseEntity.internalServerError().body("Error al silenciar la notificación");
+            }
+        } catch (IOException e) {
+            System.err.println("Error al silenciar notificación: " + e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PutMapping("/{id}/dessilenciar")
+    public ResponseEntity<?> dessilenciarNotificacion(@PathVariable String id) {
+        try {
+            // Obtener el usuario activo de la sesión
+            Optional<Usuario> usuarioActivo = perfilService.obtenerPerfilActivo();
+            
+            if (usuarioActivo.isEmpty()) {
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body("No hay una sesión activa. Por favor, inicie sesión.");
+            }
+            
+            // Verificar que la notificación existe y pertenece al usuario
+            Optional<Notificacion> notificacion = notificacionService.obtenerNotificacionPorId(id);
+            
+            if (notificacion.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            
+            String correoUsuario = usuarioActivo.get().getCorreoElectronico();
+            if (notificacion.get().getCorreoDestinatario() == null 
+                    || !notificacion.get().getCorreoDestinatario().equalsIgnoreCase(correoUsuario)) {
+                return ResponseEntity
+                        .status(HttpStatus.FORBIDDEN)
+                        .body("No tiene permiso para dessilenciar esta notificación.");
+            }
+            
+            // Dessilenciar la notificación
+            boolean dessilenciada = notificacionService.dessilenciarNotificacion(id);
+            
+            if (dessilenciada) {
+                System.out.println("INFO: Notificación " + id + " dessilenciada exitosamente para el usuario " + correoUsuario);
+                return ResponseEntity.ok().body("Notificación dessilenciada exitosamente");
+            } else {
+                return ResponseEntity.internalServerError().body("Error al dessilenciar la notificación");
+            }
+        } catch (IOException e) {
+            System.err.println("Error al dessilenciar notificación: " + e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<?> contarNotificacionesNoSilenciadas() {
+        try {
+            // Obtener el usuario activo de la sesión
+            Optional<Usuario> usuarioActivo = perfilService.obtenerPerfilActivo();
+            
+            if (usuarioActivo.isEmpty()) {
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body("No hay una sesión activa. Por favor, inicie sesión.");
+            }
+            
+            String correoUsuario = usuarioActivo.get().getCorreoElectronico();
+            long count = notificacionService.contarNotificacionesNoSilenciadas(correoUsuario);
+            
+            System.out.println("INFO: Usuario " + correoUsuario + " tiene " + count + " notificaciones no silenciadas");
+            
+            return ResponseEntity.ok(count);
+        } catch (IOException e) {
+            System.err.println("Error al contar notificaciones: " + e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }
