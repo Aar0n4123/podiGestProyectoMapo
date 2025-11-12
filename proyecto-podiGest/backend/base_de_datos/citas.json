@@ -46,4 +46,16 @@
   "razonConsulta" : "me duele la pestaña",
   "estado" : "pendiente",
   "fechaCreacion" : "2025-11-12T02:22:20.803Z"
+}, {
+  "id" : "CITA-1762914734343-3sy507w0n",
+  "pacienteNombre" : "Penelope De Luque",
+  "pacienteCorreo" : "p@gmail.com",
+  "pacienteTelefono" : "002793794",
+  "especialista" : "Marylyn",
+  "especialidadBuscada" : "",
+  "fecha" : "2030-07-07",
+  "hora" : "13:00",
+  "razonConsulta" : "JJJJJJ",
+  "estado" : "pendiente",
+  "fechaCreacion" : "2025-11-12T02:32:14.343Z"
 } ]
