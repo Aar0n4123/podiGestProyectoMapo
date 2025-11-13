@@ -161,7 +161,7 @@ const toggleFAQ = (index: number) => {
           <!-- Mapa -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
           <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2018131.5281201438!2d-62.51022167272291!3d8.910875035804416!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c34f07cf89e979d%3A0x66fd85b3fe72ee00!2sDelta%20Amacuro%2C%20Venezuela!5e0!3m2!1sen!2snl!4v1762789738172!5m2!1sen!2snl"
+              src="//www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3923.127118356742!2d-66.8653831!3d10.4906441!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2a597b11ad1b71%3A0xddbf8025821ef453!2sGabinete%20Podologico!5e0!3m2!1sen!2sus!4v1763000532727!5m2!1sen!2sus"
               width="100%"
               height="500"
               style="border: 0"
