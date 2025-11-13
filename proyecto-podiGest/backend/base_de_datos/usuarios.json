@@ -23,14 +23,6 @@
   "contrasenia" : "123",
   "rol" : "paciente"
 }, {
-  "cedula" : "127861",
-  "nombre" : "Ricardo",
-  "apellido" : "Barrios",
-  "fechaNacimiento" : [ 1999, 9, 27 ],
-  "correoElectronico" : "ricardo@gmail.com",
-  "contrasenia" : "123",
-  "rol" : "paciente"
-}, {
   "cedula" : "139861",
   "nombre" : "Jesus",
   "apellido" : "Figueroa",

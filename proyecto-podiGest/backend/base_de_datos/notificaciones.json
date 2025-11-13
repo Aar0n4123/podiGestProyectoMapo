@@ -214,4 +214,20 @@
   "mensaje" : "Estimado/a Dr./Dra. Marylyn,\n\nSe ha modificado una cita en su agenda:\n\nINFORMACIÓN ANTERIOR:\nFecha: 2030-07-07\nHora: 13:00\n\nNUEVA INFORMACIÓN:\nPaciente: Penelope De Luque\nFecha: 2030-07-07\nHora: 14:00\nMotivo de consulta: JJJJJJ\nTeléfono del paciente: 002793794\n\nPor favor, tome nota de los cambios en su agenda.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
   "correoDestinatario" : "Marylyn@gmail.com",
   "silenciada" : false
+}, {
+  "id" : "NOTIF-MOD-1762995324967-1762828432775-sdapea6q8",
+  "fechaEnvio" : "2025-11-12T20:55:24",
+  "asunto" : "Modificación de cita - Información actualizada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a Victoria Carmona,\n\nLe informamos que su cita ha sido modificada.\n\nINFORMACIÓN ANTERIOR:\nFecha: 2026-02-22\nHora: 10:09\n\nNUEVA INFORMACIÓN:\nEspecialista: Elsee\nFecha: 2026-02-22\nHora: 10:09\nMotivo: 11\n\nPor favor, tome nota de los nuevos datos y llegue 10 minutos antes de su cita.\nSi tiene alguna duda o necesita realizar cambios adicionales, comuníquese con nosotros.\n\nGracias por su comprensión.",
+  "correoDestinatario" : "m@m.com",
+  "silenciada" : false
+}, {
+  "id" : "NOTIF-ESP-MOD-1762995325010-1762828432775-sdapea6q8",
+  "fechaEnvio" : "2025-11-12T20:55:25",
+  "asunto" : "Modificación de cita - Victoria Carmona",
+  "remitente" : "Sistema de Gestión de Citas",
+  "mensaje" : "Estimado/a Dr./Dra. Elsee,\n\nSe ha modificado una cita en su agenda:\n\nINFORMACIÓN ANTERIOR:\nFecha: 2026-02-22\nHora: 10:09\n\nNUEVA INFORMACIÓN:\nPaciente: Victoria Carmona\nFecha: 2026-02-22\nHora: 10:09\nMotivo de consulta: 11\nTeléfono del paciente: 04141302753\n\nPor favor, tome nota de los cambios en su agenda.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
+  "correoDestinatario" : "elsee@gmail.com",
+  "silenciada" : false
 } ]

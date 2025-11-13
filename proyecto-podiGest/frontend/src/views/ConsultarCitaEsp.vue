@@ -4,6 +4,9 @@ import { useRouter } from 'vue-router';
 import SideBar from '../components/SideBar.vue'
 
 const router = useRouter();
+
+
+
 const BASE_URL = 'http://localhost:8080/api';
 
 // --- ESTADOS REACTIVOS ---
@@ -14,6 +17,10 @@ const isCollapsed = ref(false)
 
 const toggleSidebar = () => {
   isCollapsed.value = !isCollapsed.value
+}
+
+function goToMainPage() {
+  router.push('/mainpage')
 }
 // --- HOOKS Y MÉTODOS DE CARGA ---
 
@@ -155,10 +162,11 @@ function getFilteredDetails(cita: any): [string, any][] {
               </svg>
               <p class="mt-4 text-xl font-semibold text-gray-700">¡Genial! No tienes citas pendientes.</p>
               <p class="mt-2 text-gray-500">Todo tu calendario está libre.</p>
-              <router-link to="/"
-                class="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-600 transition-colors">
-                Volver al Panel Principal
-              </router-link>
+              <button @click="goToMainPage"
+                class="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white hover:-translate-y-0.5 bg-blue-500 hover:bg-blue-600 transition-colors">
+                Volver al Menu Principal
+              </button>
+
             </div>
 
             <!-- Lista de Citas (Acordeón) -->

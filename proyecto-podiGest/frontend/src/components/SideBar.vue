@@ -67,7 +67,7 @@ const navItems = [
   { name: 'Inicio', to: '/mainpage', icon: HomeIcon, roles: ['especialista', 'paciente'] },
   { name: 'Perfil', to: '/profile', icon: UserIcon, roles: ['especialista', 'paciente'] },
   { name: 'Notificaciones', to: '/notifications', icon: BellIcon, roles: ['especialista', 'paciente'] },
-  { name: 'Citas', to: '/mis-citas', icon: SquaresPlusIcon, roles: ['especialista', 'paciente'] },
+  { name: 'Citas', to: '/mis-citas', icon: SquaresPlusIcon, roles: ['paciente'] },
   { name: 'Atención al Cliente', to: '/configuration', icon: CogIcon, roles: ['especialista', 'paciente'] },
   { name: 'Información', to: '/information', icon: DocumentIcon, roles: ['especialista', 'paciente'] },
   { name: 'Consultar Citas ', to: '/consultar-citas-esp', icon: EyeIcon, roles: ['especialista'] },

@@ -25,7 +25,9 @@ const nuevaHora = ref('');
 const estadoModal = ref<string | null>(null);
 const mensajeModal = ref('');
 const isExito = ref(false);
-
+function goToMainPage() {
+  router.push('/mainpage')
+}
 
 // --- HOOKS Y MÉTODOS INICIALES ---
 
@@ -175,10 +177,10 @@ function volverALista() {
           <!-- SIN CITAS -->
           <section v-else-if="citas.length === 0" class="p-6 text-center">
             <p class="text-lg text-gray-500">No tienes citas agendadas.</p>
-            <router-link to="/mainpage"
-              class="mt-4 inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-md shadow-sm text-white bg-gray-500 hover:bg-gray-600 transition-colors">
-              Volver al Menú
-            </router-link>
+            <button @click="goToMainPage"
+                class="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white hover:-translate-y-0.5 bg-blue-500 hover:bg-blue-600 transition-colors">
+                Volver al Menu Principal
+              </button>
           </section>
 
           <!-- LISTA DE CITAS -->

@@ -152,7 +152,7 @@ onMounted(() => {
 
               <div class="flex flex-col md:flex-row p-4 bg-gray-50 rounded-lg border border-gray-200">
                 <span class="font-semibold text-blue-500 w-full md:w-1/3">Fecha de Nacimiento:</span>
-                <span class="text-gray-800 w-full md:w-2/3">{{ formatFecha(usuario.fechaNacimiento) }}</span>
+                <span class="text-gray-800 w-full md:w-2/3 mt-2">{{ formatFecha(usuario.fechaNacimiento) }}</span>
               </div>
 
 
