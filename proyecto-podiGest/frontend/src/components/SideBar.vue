@@ -73,6 +73,7 @@ const navItems = [
   { name: 'Consultar Citas ', to: '/consultar-citas-esp', icon: EyeIcon, roles: ['especialista'] },
   { name: 'Modificar Citas ', to: '/modificar-citas-esp', icon: PencilIcon, roles: ['especialista'] },
   { name: 'Salir', to: '/', icon: XMarkIcon, roles: ['especialista', 'paciente'] },
+
 ]
 
 const isActive = (path: string) => route.path === path

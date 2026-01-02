@@ -115,4 +115,39 @@ public class PerfilController {
                     .body("Error al leer los datos del perfil.");
         }
     }
+
+
+    // -------------------------------------------------------------------
+    // NUEVO ENDPOINT: SPRINT 2 - MODIFICAR PERFIL
+    // -------------------------------------------------------------------
+    @PutMapping
+    public ResponseEntity<?> actualizarPerfil(@RequestBody Usuario usuarioModificado) {
+        try {
+            // Llamamos al servicio que acabamos de crear
+            Usuario actualizado = usuarioService.actualizarPerfil(usuarioModificado);
+            return ResponseEntity.ok(actualizado);
+
+        } catch (IOException e) {
+            System.err.println("Error al actualizar perfil: " + e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al actualizar los datos en el servidor.");
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // NUEVO ENDPOINT: ELIMINAR CUENTA
+    // -------------------------------------------------------------------
+    @DeleteMapping
+    public ResponseEntity<?> eliminarPerfil() {
+        try {
+            usuarioService.eliminarPerfilActual();
+            return ResponseEntity.ok("{\"mensaje\": \"Perfil eliminado correctamente\"}");
+        } catch (IOException e) {
+            System.err.println("Error al eliminar perfil: " + e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al eliminar el perfil: " + e.getMessage());
+        }
+    }
 }
