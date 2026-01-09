@@ -21,6 +21,7 @@ import PlantillasPersonalizadas from '../views/PlantillasPersonalizadas.vue'
 import EvaluacionIntegral from '../views/EvaluacionIntegral.vue'
 import PodologiaDeportiva from '../views/PodologiaDeportiva.vue'
 
+
 // Define las URLS y el componente asociado
 const routes = [
     {
@@ -117,6 +118,7 @@ const routes = [
         name: 'podologia-deportiva',
         component: PodologiaDeportiva
     },
+
     
 ]
 

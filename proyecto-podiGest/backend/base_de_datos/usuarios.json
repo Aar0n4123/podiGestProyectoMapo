@@ -63,14 +63,6 @@
   "contrasenia" : "12345",
   "rol" : "paciente"
 }, {
-  "cedula" : "1234108",
-  "nombre" : "andres",
-  "apellido" : "ccc",
-  "fechaNacimiento" : [ 1991, 12, 30 ],
-  "correoElectronico" : "andres@gmail.com",
-  "contrasenia" : "123",
-  "rol" : "paciente"
-}, {
   "cedula" : "1234567",
   "nombre" : "alicia",
   "apellido" : "e",

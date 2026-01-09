@@ -195,4 +195,80 @@ public class PerfilService {
         return Optional.of(sesion.get(0));
     }
 
+
+    // -------------------------------------------------------------------
+    // MÉTODO DEFINITIVO: ACTUALIZA DATOS (INCLUYE CONTRASEÑA) - CÉDULA FIJA
+    // -------------------------------------------------------------------
+    public Usuario actualizarPerfil(Usuario usuarioConDatosNuevos) throws IOException {
+
+        // 1. Averiguamos quién es el usuario REAL consultando la sesión
+        Optional<Usuario> sesionActual = obtenerPerfilActivo();
+
+        if (sesionActual.isEmpty()) {
+            throw new IOException("No se puede actualizar: No hay sesión activa.");
+        }
+
+        // Esta es la cédula intocable. Usamos la de la sesión, no la que viene del front
+        String cedulaFija = sesionActual.get().getCedula();
+
+        // POR SEGURIDAD: Forzamos a que el objeto nuevo tenga la cédula original.
+        // Así, aunque alguien intente trucar el frontend, el backend protege el ID.
+        usuarioConDatosNuevos.setCedula(cedulaFija);
+
+        boolean encontrado = false;
+
+        // 2. Buscamos al usuario en la lista general para actualizarlo
+        for (int i = 0; i < listaUsuarios.size(); i++) {
+            Usuario u = listaUsuarios.get(i);
+
+            if (u.getCedula().equals(cedulaFija)) {
+                // 3. ENCONTRADO: Reemplazamos el usuario viejo con el nuevo.
+                // Esto actualiza automáticamente Nombre, Correo, Fecha y CONTRASEÑA.
+                listaUsuarios.set(i, usuarioConDatosNuevos);
+                encontrado = true;
+                break;
+            }
+        }
+
+        if (!encontrado) {
+            throw new IOException("Error: El usuario no se encuentra en la base de datos.");
+        }
+
+        // 4. Guardamos los cambios en el JSON general
+        guardarUsuariosAJson(listaUsuarios, USUARIOS_JSON_FILE);
+
+        // 5. Actualizamos la sesión con los datos nuevos (para que se vea el cambio al instante)
+        guardarUsuarioSesion(usuarioConDatosNuevos);
+
+        return usuarioConDatosNuevos;
+    }
+    // -------------------------------------------------------------------
+    // MÉTODO: ELIMINAR PERFIL ACTUAL (Seguro y Definitivo)
+    // -------------------------------------------------------------------
+    public void eliminarPerfilActual() throws IOException {
+
+        // 1. Obtener quién está conectado
+        Optional<Usuario> sesionActual = obtenerPerfilActivo();
+        if (sesionActual.isEmpty()) {
+            throw new IOException("No hay sesión activa para eliminar.");
+        }
+
+        String cedulaBorrar = sesionActual.get().getCedula();
+
+        // 2. Borrar de la lista en memoria
+        // (Esto elimina al usuario de la lista cargada en RAM)
+        boolean borrado = listaUsuarios.removeIf(u -> u.getCedula().equals(cedulaBorrar));
+
+        if (!borrado) {
+            throw new IOException("Error: El usuario no se encuentra en la lista local.");
+        }
+
+        // 3. Sobrescribir el archivo usuarios.json con la lista actualizada
+        // USAMOS TU MÉTODO EXISTENTE que ya funciona bien con las fechas
+        guardarUsuariosAJson(listaUsuarios, USUARIOS_JSON_FILE);
+
+        // 4. Borrar el archivo de sesión (Cerrar sesión forzosamente)
+        Path pathSesion = PathConfigService.getSeedFilePath(USUARIO_SESION_JSON_FILE);
+        Files.deleteIfExists(pathSesion);
+    }
 }
