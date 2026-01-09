@@ -152,7 +152,7 @@ public class CitasController {
 
             Usuario usuario = usuarioSesion.get();
 
-            List<Cita> citasFiltradas = citasService.obtenerCitasPorEspecialista(usuario.getNombre());
+            List<Cita> citasFiltradas = citasService.obtenerCitasPorEspecialista(usuario.getCedula());
 
             return ResponseEntity.ok(citasFiltradas);
 

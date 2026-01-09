@@ -238,4 +238,68 @@
   "mensaje" : "Estimado/a Dr./Dra. Elsee Aguilar,\n\nSe ha agendado una nueva cita con usted:\n\nPaciente: LEITO COSMICO\nFecha: 2026-01-21\nHora: 09:00\nMotivo de consulta: LOOOOSSS GRINGOOOOSSS\nTeléfono del paciente: 0414256377\n\nPor favor, revise su agenda y prepárese para la consulta.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
   "correoDestinatario" : "elsee@gmail.com",
   "silenciada" : false
+}, {
+  "id" : "NOTIF-1767929022312-1767929022300-hcdyuebj0",
+  "fechaEnvio" : "2026-01-08T23:23:42",
+  "asunto" : "Confirmación de cita agendada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a LEITO COSMICO,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Marylyn Rojas\nFecha: 2026-01-21\nHora: 13:00\nMotivo: creo que la kgue con los especialista pero nadie se dara cuenta\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
+  "correoDestinatario" : "123@1.com",
+  "silenciada" : false
+}, {
+  "id" : "NOTIF-ESP-1767929022322-1767929022300-hcdyuebj0",
+  "fechaEnvio" : "2026-01-08T23:23:42",
+  "asunto" : "Nueva cita agendada - LEITO COSMICO",
+  "remitente" : "Sistema de Gestión de Citas",
+  "mensaje" : "Estimado/a Dr./Dra. Marylyn Rojas,\n\nSe ha agendado una nueva cita con usted:\n\nPaciente: LEITO COSMICO\nFecha: 2026-01-21\nHora: 13:00\nMotivo de consulta: creo que la kgue con los especialista pero nadie se dara cuenta\nTeléfono del paciente: 9999999\n\nPor favor, revise su agenda y prepárese para la consulta.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
+  "correoDestinatario" : "Marylyn@gmail.com",
+  "silenciada" : false
+}, {
+  "id" : "NOTIF-1767930586766-1767930586758-7560w0mkr",
+  "fechaEnvio" : "2026-01-08T23:49:46",
+  "asunto" : "Confirmación de cita agendada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a LEITO COSMICO,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Elsee Aguilar\nFecha: 2026-01-21\nHora: 10:00\nMotivo: creo que lo arregle <3\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
+  "correoDestinatario" : "123@1.com",
+  "silenciada" : false
+}, {
+  "id" : "NOTIF-ESP-1767930586774-1767930586758-7560w0mkr",
+  "fechaEnvio" : "2026-01-08T23:49:46",
+  "asunto" : "Nueva cita agendada - LEITO COSMICO",
+  "remitente" : "Sistema de Gestión de Citas",
+  "mensaje" : "Estimado/a Dr./Dra. Elsee Aguilar,\n\nSe ha agendado una nueva cita con usted:\n\nPaciente: LEITO COSMICO\nFecha: 2026-01-21\nHora: 10:00\nMotivo de consulta: creo que lo arregle <3\nTeléfono del paciente: 9999999\n\nPor favor, revise su agenda y prepárese para la consulta.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
+  "correoDestinatario" : "elsee@gmail.com",
+  "silenciada" : false
+}, {
+  "id" : "NOTIF-MOD-1767930871555-1762828432775-sdapea6q8",
+  "fechaEnvio" : "2026-01-08T23:54:31",
+  "asunto" : "Modificación de cita - Información actualizada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a Victoria Carmona,\n\nLe informamos que su cita ha sido modificada.\n\nINFORMACIÓN ANTERIOR:\nFecha: 2026-02-22\nHora: 10:09\n\nNUEVA INFORMACIÓN:\nEspecialista: Elsee\nFecha: 2026-02-22\nHora: 10:07\nMotivo: 11\n\nPor favor, tome nota de los nuevos datos y llegue 10 minutos antes de su cita.\nSi tiene alguna duda o necesita realizar cambios adicionales, comuníquese con nosotros.\n\nGracias por su comprensión.",
+  "correoDestinatario" : "m@m.com",
+  "silenciada" : false
+}, {
+  "id" : "NOTIF-ESP-MOD-1767930871566-1762828432775-sdapea6q8",
+  "fechaEnvio" : "2026-01-08T23:54:31",
+  "asunto" : "Modificación de cita - Victoria Carmona",
+  "remitente" : "Sistema de Gestión de Citas",
+  "mensaje" : "Estimado/a Dr./Dra. Elsee,\n\nSe ha modificado una cita en su agenda:\n\nINFORMACIÓN ANTERIOR:\nFecha: 2026-02-22\nHora: 10:09\n\nNUEVA INFORMACIÓN:\nPaciente: Victoria Carmona\nFecha: 2026-02-22\nHora: 10:07\nMotivo de consulta: 11\nTeléfono del paciente: 04141302753\n\nPor favor, tome nota de los cambios en su agenda.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
+  "correoDestinatario" : "elsee@gmail.com",
+  "silenciada" : false
+}, {
+  "id" : "NOTIF-1767934197038-1767934197020-zemhi806o",
+  "fechaEnvio" : "2026-01-09T00:49:57",
+  "asunto" : "Confirmación de cita agendada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a LEITO COSMICO,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Marylyno Rojas\nFecha: 2026-01-21\nHora: 18:00\nMotivo: AL FIIIIIINNN FUNCIOOONAAAA\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
+  "correoDestinatario" : "123@1.com",
+  "silenciada" : false
+}, {
+  "id" : "NOTIF-ESP-1767934197040-1767934197020-zemhi806o",
+  "fechaEnvio" : "2026-01-09T00:49:57",
+  "asunto" : "Nueva cita agendada - LEITO COSMICO",
+  "remitente" : "Sistema de Gestión de Citas",
+  "mensaje" : "Estimado/a Dr./Dra. Marylyno Rojas,\n\nSe ha agendado una nueva cita con usted:\n\nPaciente: LEITO COSMICO\nFecha: 2026-01-21\nHora: 18:00\nMotivo de consulta: AL FIIIIIINNN FUNCIOOONAAAA\nTeléfono del paciente: 88888888\n\nPor favor, revise su agenda y prepárese para la consulta.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
+  "correoDestinatario" : "Marylyn@gmail.com",
+  "silenciada" : false
 } ]

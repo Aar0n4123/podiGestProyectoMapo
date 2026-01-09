@@ -16,10 +16,10 @@
   "rol" : "paciente"
 }, {
   "cedula" : "127861",
-  "nombre" : "Marylyn",
-  "apellido" : "Rojas",
+  "nombre" : "Elsee",
+  "apellido" : "Aguilar",
   "fechaNacimiento" : [ 1978, 9, 27 ],
-  "correoElectronico" : "Marylyn@gmail.com",
+  "correoElectronico" : "elsee@gmail.com",
   "contrasenia" : "123",
   "rol" : "especialista"
 }, {
@@ -31,7 +31,7 @@
   "contrasenia" : "123",
   "rol" : "paciente"
 }, {
-  "cedula" : "127861",
+  "cedula" : "127862",
   "nombre" : "Victoria",
   "apellido" : "Carmona",
   "fechaNacimiento" : [ 1999, 9, 27 ],
@@ -39,15 +39,7 @@
   "contrasenia" : "v123",
   "rol" : "paciente"
 }, {
-  "cedula" : "127861",
-  "nombre" : "Elsee",
-  "apellido" : "Aguilar",
-  "fechaNacimiento" : [ 1978, 9, 27 ],
-  "correoElectronico" : "elsee@gmail.com",
-  "contrasenia" : "123",
-  "rol" : "especialista"
-}, {
-  "cedula" : "127861",
+  "cedula" : "127863",
   "nombre" : "Marylyn",
   "apellido" : "Rojas",
   "fechaNacimiento" : [ 1978, 9, 27 ],

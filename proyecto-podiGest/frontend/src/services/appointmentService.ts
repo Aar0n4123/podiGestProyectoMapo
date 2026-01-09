@@ -4,6 +4,7 @@ export interface Cita {
   pacienteCorreo: string
   pacienteTelefono: string
   especialista: string
+  cedulaEspecialista: string
   especialidadBuscada: string
   fecha: string
   hora: string

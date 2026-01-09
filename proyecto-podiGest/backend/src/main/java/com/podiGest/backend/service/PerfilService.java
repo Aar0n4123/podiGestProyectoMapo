@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.podiGest.backend.model.Usuario;
+import com.podiGest.backend.model.Cita;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +26,13 @@ public class PerfilService {
     private static final String USUARIOS_JSON_FILE = "usuarios.json";
     private static final String USUARIO_SESION_JSON_FILE = "usuarioInicioSesion.json";
     private final ObjectMapper mapper;
+    
+    private final ObjectProvider<CitasService> citasServiceProvider;
 
-    public PerfilService() {
+    public PerfilService(ObjectProvider<CitasService> citasServiceProvider) {
         this.mapper = new ObjectMapper();
         this.mapper.registerModule(new JavaTimeModule());
+        this.citasServiceProvider = citasServiceProvider;
 
         this.listaUsuarios = cargarUsuariosDesdeJson(USUARIOS_JSON_FILE);
 
@@ -216,15 +221,14 @@ public class PerfilService {
         usuarioConDatosNuevos.setCedula(cedulaFija);
 
         boolean encontrado = false;
+        int indiceEncontrado = -1;
 
         // 2. Buscamos al usuario en la lista general para actualizarlo
         for (int i = 0; i < listaUsuarios.size(); i++) {
             Usuario u = listaUsuarios.get(i);
 
             if (u.getCedula().equals(cedulaFija)) {
-                // 3. ENCONTRADO: Reemplazamos el usuario viejo con el nuevo.
-                // Esto actualiza automáticamente Nombre, Correo, Fecha y CONTRASEÑA.
-                listaUsuarios.set(i, usuarioConDatosNuevos);
+                indiceEncontrado = i;
                 encontrado = true;
                 break;
             }
@@ -234,11 +238,37 @@ public class PerfilService {
             throw new IOException("Error: El usuario no se encuentra en la base de datos.");
         }
 
-        // 4. Guardamos los cambios en el JSON general
+        // 3. Reemplazamos SOLO el usuario encontrado con el nuevo
+        listaUsuarios.set(indiceEncontrado, usuarioConDatosNuevos);
+
+        // 4. IMPORTANTE: Eliminar duplicados por cédula (en caso de haberlos)
+        // Esto previene que se creen múltiples registros con la misma cédula
+        List<Usuario> sinDuplicados = new ArrayList<>();
+        java.util.Set<String> cedulasVistas = new java.util.HashSet<>();
+        
+        for (Usuario u : listaUsuarios) {
+            if (!cedulasVistas.contains(u.getCedula())) {
+                sinDuplicados.add(u);
+                cedulasVistas.add(u.getCedula());
+            }
+        }
+        
+        listaUsuarios = sinDuplicados;
+
+        // 5. Guardamos los cambios en el JSON general (sin duplicados)
         guardarUsuariosAJson(listaUsuarios, USUARIOS_JSON_FILE);
 
-        // 5. Actualizamos la sesión con los datos nuevos (para que se vea el cambio al instante)
+        // 6. Actualizamos la sesión con los datos nuevos (para que se vea el cambio al instante)
         guardarUsuarioSesion(usuarioConDatosNuevos);
+        
+        // 7. Si es un especialista, actualizar sus citas con su cedula
+        if (usuarioConDatosNuevos.getRol() != null && "especialista".equalsIgnoreCase(usuarioConDatosNuevos.getRol())) {
+            try {
+                actualizarCitasEspecialista(cedulaFija, usuarioConDatosNuevos);
+            } catch (IOException e) {
+                System.err.println("ADVERTENCIA: No se pudieron actualizar las citas del especialista: " + e.getMessage());
+            }
+        }
 
         return usuarioConDatosNuevos;
     }
@@ -270,5 +300,40 @@ public class PerfilService {
         // 4. Borrar el archivo de sesión (Cerrar sesión forzosamente)
         Path pathSesion = PathConfigService.getSeedFilePath(USUARIO_SESION_JSON_FILE);
         Files.deleteIfExists(pathSesion);
+    }
+    
+    // -------------------------------------------------------------------
+    // MÉTODO: Actualizar citas de un especialista con su cedula
+    // -------------------------------------------------------------------
+    private void actualizarCitasEspecialista(String cedula, Usuario especialista) throws IOException {
+        CitasService citasService = citasServiceProvider.getIfAvailable();
+        if (citasService == null) {
+            System.out.println("INFO: CitasService no disponible, saltando actualización de citas");
+            return;
+        }
+        
+        try {
+            List<Cita> citas = citasService.obtenerCitas();
+            String nombreCompleto = especialista.getNombre() + " " + especialista.getApellido();
+            
+            boolean actualizado = false;
+            for (Cita cita : citas) {
+                // Si la cita pertenece a este especialista (por nombre) y no tiene cedula asignada
+                if (cita.getEspecialista() != null && cita.getEspecialista().equals(nombreCompleto) && 
+                    (cita.getCedulaEspecialista() == null || cita.getCedulaEspecialista().isEmpty())) {
+                    cita.setCedulaEspecialista(cedula);
+                    actualizado = true;
+                    System.out.println("INFO: Actualizada cita " + cita.getId() + " con cedula del especialista");
+                }
+            }
+            
+            if (actualizado) {
+                citasService.guardarCitasAJson(citas);
+                System.out.println("INFO: Citas del especialista " + nombreCompleto + " actualizadas con cedula: " + cedula);
+            }
+        } catch (IOException e) {
+            System.err.println("ERROR: No se pudieron actualizar las citas: " + e.getMessage());
+            throw e;
+        }
     }
 }

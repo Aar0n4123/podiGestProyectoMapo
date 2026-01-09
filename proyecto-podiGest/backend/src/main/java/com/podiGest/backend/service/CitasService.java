@@ -91,7 +91,8 @@ public class CitasService {
             .anyMatch(cita -> 
                 cita.getFecha().equals(nuevaCita.getFecha()) &&
                 cita.getHora().equals(nuevaCita.getHora()) &&
-                cita.getEspecialista().equals(nuevaCita.getEspecialista()) &&
+                (cita.getCedulaEspecialista() != null && cita.getCedulaEspecialista().equals(nuevaCita.getCedulaEspecialista()) ||
+                 cita.getCedulaEspecialista() == null && cita.getEspecialista().equals(nuevaCita.getEspecialista())) &&
                 !cita.getEstado().equals("cancelada")
             );
         
@@ -425,7 +426,8 @@ public class CitasService {
     public List<Cita> obtenerCitasPorEspecialista(String especialista) throws IOException {
         return obtenerCitas()
                 .stream()
-                .filter(cita -> cita.getEspecialista().equals(especialista))
+                .filter(cita -> cita.getEspecialista().equals(especialista) ||
+                        (cita.getCedulaEspecialista() != null && cita.getCedulaEspecialista().equals(especialista)))
                 .toList();
     }
 
@@ -485,7 +487,7 @@ public class CitasService {
      * Revisa si un horario específico ya está ocupado por un especialista,
      * excluyendo una cita específica (la que se está modificando).
      *
-     * @param especialistaNombre El nombre del especialista.
+     * @param especialistaNombre El nombre del especialista (usado como fallback).
      * @param nuevaFecha         La nueva fecha a verificar.
      * @param nuevaHora          La nueva hora a verificar.
      * @param citaIdExcluir      El ID de la cita que estamos intentando modificar (para no chocar con ella misma).
@@ -494,10 +496,17 @@ public class CitasService {
     public boolean isHorarioDisponible(String especialistaNombre, String nuevaFecha, String nuevaHora, String citaIdExcluir) throws IOException {
         List<Cita> citas = obtenerCitas();
 
+        // Primero, obtener la cita que vamos a modificar para saber su cedula
+        Optional<Cita> citaAModificar = citas.stream()
+                .filter(cita -> cita.getId().equals(citaIdExcluir))
+                .findFirst();
+
         Optional<Cita> citaOcupada = citas.stream()
                 .filter(cita ->
                         !cita.getId().equals(citaIdExcluir) &&
-                                cita.getEspecialista().equals(especialistaNombre) &&
+                                (cita.getCedulaEspecialista() != null && citaAModificar.isPresent() && 
+                                    cita.getCedulaEspecialista().equals(citaAModificar.get().getCedulaEspecialista()) ||
+                                 cita.getCedulaEspecialista() == null && cita.getEspecialista().equals(especialistaNombre)) &&
                                 cita.getFecha().equals(nuevaFecha) &&
                                 cita.getHora().equals(nuevaHora) &&
                                 !cita.getEstado().equals("cancelada")

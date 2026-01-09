@@ -54,6 +54,16 @@
             <p class="text-sm text-gray-600">Consulta las citas disponibles</p>
           </router-link>
 
+          <!-- Mis Citas -->
+          <router-link
+            to="/historial-citas"
+            class="bg-white rounded-xl p-8 shadow-md transition transform text-center flex flex-col items-center relative hover:-translate-y-2 hover:shadow-xl"
+          >
+            <div class="text-6xl mb-5">📋</div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">Mis Citas</h3>
+            <p class="text-sm text-gray-600">Visualiza todas tus citas agendadas</p>
+          </router-link>
+
           <!-- Modificar (disabled) -->
           <div
             class="bg-white rounded-xl p-8 shadow-md text-center flex flex-col items-center relative opacity-60 cursor-not-allowed"

@@ -206,6 +206,7 @@ interface Formulario {
   pacienteCorreo: string
   pacienteTelefono: string
   especialista: string
+  cedulaEspecialista: string
   fecha: string
   hora: string
   razonConsulta: string
@@ -225,6 +226,7 @@ export default defineComponent({
         pacienteCorreo: '',
         pacienteTelefono: '',
         especialista: '',
+        cedulaEspecialista: '',
         fecha: '',
         hora: '',
         razonConsulta: '',
@@ -312,6 +314,7 @@ export default defineComponent({
     },
     seleccionarEspecialista(especialista: Usuario) {
       this.formulario.especialista = `${especialista.nombre} ${especialista.apellido}`
+      this.formulario.cedulaEspecialista = especialista.cedula
     },
     async cargarHorariosDisponibles() {
       if (!this.formulario.fecha || !this.formulario.especialista) {
@@ -442,6 +445,7 @@ export default defineComponent({
           pacienteCorreo: this.formulario.pacienteCorreo,
           pacienteTelefono: this.formulario.pacienteTelefono,
           especialista: this.formulario.especialista,
+          cedulaEspecialista: this.formulario.cedulaEspecialista,
           especialidadBuscada: '',
           fecha: this.formulario.fecha,
           hora: this.formulario.hora,

@@ -9,6 +9,7 @@ public class Cita {
     private String pacienteCorreo;
     private String pacienteTelefono;
     private String especialista;
+    private String cedulaEspecialista;
     private String especialidadBuscada;
     private String fecha;
     private String hora;
@@ -20,13 +21,14 @@ public class Cita {
     }
 
     public Cita(String id, String pacienteNombre, String pacienteCorreo, String pacienteTelefono,
-                String especialista, String especialidadBuscada, String fecha, String hora,
+                String especialista, String cedulaEspecialista, String especialidadBuscada, String fecha, String hora,
                 String razonConsulta, String estado, String fechaCreacion) {
         this.id = id;
         this.pacienteNombre = pacienteNombre;
         this.pacienteCorreo = pacienteCorreo;
         this.pacienteTelefono = pacienteTelefono;
         this.especialista = especialista;
+        this.cedulaEspecialista = cedulaEspecialista;
         this.especialidadBuscada = especialidadBuscada;
         this.fecha = fecha;
         this.hora = hora;
