@@ -230,4 +230,12 @@
   "mensaje" : "Estimado/a Dr./Dra. Elsee,\n\nSe ha modificado una cita en su agenda:\n\nINFORMACIÓN ANTERIOR:\nFecha: 2026-02-22\nHora: 10:09\n\nNUEVA INFORMACIÓN:\nPaciente: Victoria Carmona\nFecha: 2026-02-22\nHora: 10:09\nMotivo de consulta: 11\nTeléfono del paciente: 04141302753\n\nPor favor, tome nota de los cambios en su agenda.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
   "correoDestinatario" : "elsee@gmail.com",
   "silenciada" : false
+}, {
+  "id" : "NOTIF-ESP-1767926576314-1767926576293-yixijqnjx",
+  "fechaEnvio" : "2026-01-08T22:42:56",
+  "asunto" : "Nueva cita agendada - LEITO COSMICO",
+  "remitente" : "Sistema de Gestión de Citas",
+  "mensaje" : "Estimado/a Dr./Dra. Elsee Aguilar,\n\nSe ha agendado una nueva cita con usted:\n\nPaciente: LEITO COSMICO\nFecha: 2026-01-21\nHora: 09:00\nMotivo de consulta: LOOOOSSS GRINGOOOOSSS\nTeléfono del paciente: 0414256377\n\nPor favor, revise su agenda y prepárese para la consulta.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
+  "correoDestinatario" : "elsee@gmail.com",
+  "silenciada" : false
 } ]

@@ -195,4 +195,31 @@ public class NotificacionController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @DeleteMapping
+    public ResponseEntity<?> eliminarTodasNotificaciones() {
+        try {
+            // Obtener el usuario activo de la sesión
+            Optional<Usuario> usuarioActivo = perfilService.obtenerPerfilActivo();
+            
+            if (usuarioActivo.isEmpty()) {
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body("No hay una sesión activa. Por favor, inicie sesión.");
+            }
+            
+            String correoUsuario = usuarioActivo.get().getCorreoElectronico();
+            boolean eliminadas = notificacionService.eliminarTodasNotificacionesPorUsuario(correoUsuario);
+            
+            if (eliminadas) {
+                System.out.println("INFO: Todas las notificaciones del usuario " + correoUsuario + " han sido eliminadas exitosamente");
+                return ResponseEntity.ok().body("Todas las notificaciones han sido eliminadas exitosamente");
+            } else {
+                return ResponseEntity.ok().body("No hay notificaciones para eliminar");
+            }
+        } catch (IOException e) {
+            System.err.println("Error al eliminar notificaciones: " + e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }

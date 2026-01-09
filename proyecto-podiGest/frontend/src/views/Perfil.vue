@@ -73,6 +73,7 @@ onMounted(() => {
 // --- LÓGICA PARA MODIFICAR PERFIL ---
 
 const editando = ref(false);
+const mostrarConfirmacion = ref(false);
 const usuarioEditado = ref<Usuario>({
   cedula: '',
   nombre: '',
@@ -85,7 +86,6 @@ const usuarioEditado = ref<Usuario>({
 
 const activarEdicion = () => {
   if (usuario.value) {
-    // Copiamos los datos actuales al formulario de edición
     usuarioEditado.value = { ...usuario.value };
     editando.value = true;
   }
@@ -93,6 +93,14 @@ const activarEdicion = () => {
 
 const cancelarEdicion = () => {
   editando.value = false;
+};
+
+const confirmarGuardado = () => {
+  mostrarConfirmacion.value = true;
+};
+
+const cancelarConfirmacion = () => {
+  mostrarConfirmacion.value = false;
 };
 
 const guardarCambios = async () => {
@@ -109,6 +117,7 @@ const guardarCambios = async () => {
       const dataActualizada = await response.json();
       usuario.value = dataActualizada;
       editando.value = false;
+      mostrarConfirmacion.value = false;
       alert("¡Perfil actualizado con éxito!");
     } else {
       alert("Error al actualizar el perfil.");
@@ -241,16 +250,45 @@ const eliminarPerfil = async () => {
                   <button @click="cancelarEdicion" class="px-6 py-2 bg-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-400 transition-colors">
                     Cancelar
                   </button>
-                  <button @click="guardarCambios" class="px-6 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition-colors shadow-md">
+                  <button @click="confirmarGuardado" class="px-6 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition-colors shadow-md">
                     Guardar Cambios
                   </button>
                 </template>
               </div>
-
             </div>
           </div>
         </div>
       </div>
     </main>
+
+    <div v-if="mostrarConfirmacion" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm mx-4">
+        <div class="text-center">
+          <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 mb-4">
+            <svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4v2m0 0a9 9 0 11-9-9m9 9a9 9 0 119-9"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mt-4">Confirmar cambios</h3>
+          <p class="mt-2 text-sm text-gray-600">
+            ¿Estás seguro de que deseas guardar los cambios en tu perfil? Esta acción actualizará todos los datos.
+          </p>
+        </div>
+        <div class="flex gap-4 mt-8">
+          <button 
+            @click="cancelarConfirmacion"
+            class="flex-1 px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition-colors"
+          >
+            Cancelar
+          </button>
+          <button 
+            @click="guardarCambios"
+            class="flex-1 px-4 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition-colors shadow-md"
+          >
+            Confirmar y Guardar
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>

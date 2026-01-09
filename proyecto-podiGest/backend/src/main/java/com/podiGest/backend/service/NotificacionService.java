@@ -219,4 +219,36 @@ public class NotificacionService {
                 .filter(notificacion -> !notificacion.isSilenciada())
                 .count();
     }
+
+    /**
+     * Elimina todas las notificaciones de un usuario específico
+     * 
+     * @param correoUsuario El correo del usuario
+     * @return true si se eliminaron notificaciones exitosamente, false si no hay notificaciones
+     * @throws IOException si hay error al guardar
+     */
+    public boolean eliminarTodasNotificacionesPorUsuario(String correoUsuario) throws IOException {
+        System.out.println("INFO: Eliminando todas las notificaciones para el usuario: " + correoUsuario);
+        
+        List<Notificacion> todasLasNotificaciones = new ArrayList<>(obtenerNotificaciones());
+        int notificacionesAntesDeEliminar = todasLasNotificaciones.size();
+        
+        // Filtrar para mantener solo las notificaciones que NO pertenecen al usuario
+        List<Notificacion> notificacionesFiltradas = todasLasNotificaciones
+                .stream()
+                .filter(notificacion -> notificacion.getCorreoDestinatario() == null 
+                        || !notificacion.getCorreoDestinatario().equalsIgnoreCase(correoUsuario))
+                .toList();
+        
+        int notificacionesEliminadas = notificacionesAntesDeEliminar - notificacionesFiltradas.size();
+        
+        if (notificacionesEliminadas > 0) {
+            guardarNotificacionesAJson(new ArrayList<>(notificacionesFiltradas));
+            System.out.println("INFO: Se eliminaron " + notificacionesEliminadas + " notificaciones del usuario " + correoUsuario);
+            return true;
+        } else {
+            System.out.println("ADVERTENCIA: No hay notificaciones para eliminar del usuario: " + correoUsuario);
+            return false;
+        }
+    }
 }

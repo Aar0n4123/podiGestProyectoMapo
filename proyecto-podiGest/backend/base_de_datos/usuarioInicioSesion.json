@@ -1,9 +1,9 @@
 [ {
   "cedula" : "127861",
-  "nombre" : "Victoria",
-  "apellido" : "Carmona",
-  "fechaNacimiento" : [ 1999, 9, 27 ],
-  "correoElectronico" : "victoria@gmail.com",
-  "contrasenia" : "v123",
-  "rol" : "paciente"
+  "nombre" : "Marylyn",
+  "apellido" : "Rojas",
+  "fechaNacimiento" : [ 1978, 9, 27 ],
+  "correoElectronico" : "Marylyn@gmail.com",
+  "contrasenia" : "123",
+  "rol" : "especialista"
 } ]

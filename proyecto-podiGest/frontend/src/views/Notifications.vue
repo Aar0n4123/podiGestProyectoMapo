@@ -7,6 +7,7 @@ import {
   fetchNotifications,
   muteNotification,
   unmuteNotification,
+  deleteAllNotifications,
   type NotificationSummary
 } from '../services/notificationsService'
 import { useNotificationCount } from '../composables/useNotificationCount'
@@ -20,6 +21,8 @@ const loadingDetails = ref(false)
 const showDetailView = ref(false)
 const mutingNotificationId = ref<string | null>(null)
 const unmutingNotificationId = ref<string | null>(null)
+const showDeleteConfirmation = ref(false)
+const deletingAllNotifications = ref(false)
 const { loadNotificationCount, decrementCount, incrementCount, isMuted, toggleMute } = useNotificationCount()
 
 const toggleSidebar = () => {
@@ -123,6 +126,38 @@ const handleUnmuteNotification = async (id: string, event: Event) => {
   }
 }
 
+const openDeleteConfirmation = () => {
+  showDeleteConfirmation.value = true
+  errorMessage.value = ''
+}
+
+const closeDeleteConfirmation = () => {
+  showDeleteConfirmation.value = false
+}
+
+const handleDeleteAllNotifications = async () => {
+  deletingAllNotifications.value = true
+  errorMessage.value = ''
+
+  try {
+    const success = await deleteAllNotifications()
+
+    if (success) {
+      notifications.value = []
+      showDeleteConfirmation.value = false
+      loadNotificationCount()
+      console.log('Todas las notificaciones han sido eliminadas exitosamente')
+    } else {
+      errorMessage.value = 'No se pudieron eliminar las notificaciones. Intente nuevamente.'
+    }
+  } catch (error) {
+    console.error('Error al eliminar notificaciones:', error)
+    errorMessage.value = 'Ocurrió un error al eliminar las notificaciones.'
+  } finally {
+    deletingAllNotifications.value = false
+  }
+}
+
 onMounted(() => {
   loadNotifications()
 })
@@ -162,6 +197,20 @@ onMounted(() => {
           <div class="flex items-center justify-end px-6 py-4 border-b border-blue-100">
 
             <div class="flex items-center gap-3">
+              <!-- Botón de eliminar todas las notificaciones -->
+              <button @click="openDeleteConfirmation" :class="[
+                'flex items-center hover:-translate-y-0.5 gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200',
+                notifications.length === 0
+                  ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                  : 'bg-orange-100 text-orange-700 hover:bg-orange-200'
+              ]" :disabled="notifications.length === 0" title="Eliminar todas las notificaciones">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                <span>Eliminar registro</span>
+              </button>
+
               <!-- Botón de silenciar/activar alertas -->
               <button @click="toggleMute" :class="[
                 'flex items-center hover:-translate-y-0.5 gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200',
@@ -175,7 +224,7 @@ onMounted(() => {
                 </svg>
                 <svg v-else class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M5.586 15H4a1 1 0 01-.707-1.707l1.586-1.586a1 1 0 01.707-.293h3.172a1 1 0 00.707-.293l2.414-2.414A1 1 0 0113.586 8H15m5.586 7H22a1 1 0 00.707-1.707l-1.586-1.586a1 1 0 00-.707-.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 0010.414 8H9M3 3l18 18" />
+                    d="M5.586 15H4a1 1 0 01-.707-1.707l1.586-1.586a1 1 0 01.707-.293h3.172a1 1 0 00.707-.293l2.414-2.414A1 1 0 0113.586 8H15m5.586 7H22a1 1 0 00.707-1.707l-1.586-1.586a1 1 0 00-.707-.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 0110.414 8H9M3 3l18 18" />
                 </svg>
                 <span>{{ isMuted ? 'Alertas silenciadas' : 'Silenciar alertas' }}</span>
               </button>
@@ -386,6 +435,48 @@ onMounted(() => {
           ⚠️ {{ errorMessage }}
         </p>
       </section>
+
+      <!-- Modal de confirmación para eliminar todas las notificaciones -->
+      <div v-if="showDeleteConfirmation" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full mx-4">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="flex-shrink-0 w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+              <svg class="w-6 h-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 9v2m0 4v2m0 4v2m0-12.5V3m0 18v0M3 12a9 9 0 1118 0 9 9 0 01-18 0z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-gray-900">Eliminar todas las notificaciones</h3>
+              <p class="text-sm text-gray-600 mt-1">Esta acción no se puede deshacer</p>
+            </div>
+          </div>
+
+          <p class="text-gray-700 mb-6">
+            ¿Estás seguro de que deseas eliminar todas tus notificaciones? Esta acción eliminará permanentemente
+            <strong>{{ notifications.length }}</strong> notificación{{ notifications.length !== 1 ? 'es' : '' }}.
+          </p>
+
+          <div class="flex gap-3">
+            <button @click="closeDeleteConfirmation"
+              :disabled="deletingAllNotifications"
+              class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+              Cancelar
+            </button>
+            <button @click="handleDeleteAllNotifications"
+              :disabled="deletingAllNotifications"
+              class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+              <svg v-if="deletingAllNotifications" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                </path>
+              </svg>
+              <span>{{ deletingAllNotifications ? 'Eliminando...' : 'Eliminar todo' }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </main>
   </div>
 </template>

@@ -16,12 +16,12 @@
   "rol" : "paciente"
 }, {
   "cedula" : "127861",
-  "nombre" : "Ricardo",
-  "apellido" : "Barrios",
-  "fechaNacimiento" : [ 1999, 9, 27 ],
-  "correoElectronico" : "ricardo@gmail.com",
+  "nombre" : "Marylyn",
+  "apellido" : "Rojas",
+  "fechaNacimiento" : [ 1978, 9, 27 ],
+  "correoElectronico" : "Marylyn@gmail.com",
   "contrasenia" : "123",
-  "rol" : "paciente"
+  "rol" : "especialista"
 }, {
   "cedula" : "139861",
   "nombre" : "Jesus",
@@ -56,8 +56,8 @@
   "rol" : "especialista"
 }, {
   "cedula" : "V-1234567",
-  "nombre" : "Mapo",
-  "apellido" : "MAPO",
+  "nombre" : "LEITO",
+  "apellido" : "COSMICO",
   "fechaNacimiento" : [ 2006, 11, 23 ],
   "correoElectronico" : "123@1.com",
   "contrasenia" : "12345",

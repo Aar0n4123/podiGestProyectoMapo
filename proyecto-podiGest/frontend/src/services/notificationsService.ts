@@ -98,3 +98,24 @@ export const fetchNotificationCount = async (): Promise<number> => {
     return 0
   }
 }
+
+// Elimina todas las notificaciones del usuario
+export const deleteAllNotifications = async (): Promise<boolean> => {
+  try {
+    const response = await fetch(API_URL, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (!response.ok) {
+      throw new Error(`Error al eliminar notificaciones: ${response.status}`)
+    }
+
+    return true
+  } catch (error) {
+    console.error('No fue posible eliminar las notificaciones', error)
+    return false
+  }
+}
