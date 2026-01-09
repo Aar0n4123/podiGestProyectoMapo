@@ -10,11 +10,16 @@ public class Notificacion {
     private String asunto;
     private String remitente;
     private String mensaje;
-    private String correoDestinatario; // Correo del usuario al que pertenece la notificación
-    private boolean silenciada; // Indica si la notificación ha sido silenciada por el usuario
+    private String correoDestinatario;
+    private boolean silenciada;
+    private boolean tieneRecordatorio;
+    private String fechaRecordatorio;
+    private boolean recordatorioActivo;
 
     public Notificacion() {
-        this.silenciada = false; // Por defecto, las notificaciones no están silenciadas
+        this.silenciada = false;
+        this.tieneRecordatorio = false;
+        this.recordatorioActivo = false;
     }
 
     public Notificacion(String id, String fechaEnvio, String asunto, String remitente, String mensaje, String correoDestinatario) {
@@ -24,6 +29,8 @@ public class Notificacion {
         this.remitente = remitente;
         this.mensaje = mensaje;
         this.correoDestinatario = correoDestinatario;
-        this.silenciada = false; // Por defecto, las notificaciones no están silenciadas
+        this.silenciada = false;
+        this.tieneRecordatorio = false;
+        this.recordatorioActivo = false;
     }
 }

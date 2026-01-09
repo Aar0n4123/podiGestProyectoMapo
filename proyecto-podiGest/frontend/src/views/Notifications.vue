@@ -8,6 +8,9 @@ import {
   muteNotification,
   unmuteNotification,
   deleteAllNotifications,
+  setReminder,
+  updateReminder,
+  deleteReminder,
   type NotificationSummary
 } from '../services/notificationsService'
 import { useNotificationCount } from '../composables/useNotificationCount'
@@ -23,6 +26,10 @@ const mutingNotificationId = ref<string | null>(null)
 const unmutingNotificationId = ref<string | null>(null)
 const showDeleteConfirmation = ref(false)
 const deletingAllNotifications = ref(false)
+const showReminderModal = ref(false)
+const reminderNotificationId = ref<string | null>(null)
+const reminderDateTime = ref('')
+const settingReminder = ref(false)
 const { loadNotificationCount, decrementCount, incrementCount, isMuted, toggleMute } = useNotificationCount()
 
 const toggleSidebar = () => {
@@ -39,7 +46,6 @@ const loadNotifications = async () => {
   }
   notifications.value = response
   loading.value = false
-  // Actualizar el contador en el sidebar
   loadNotificationCount()
 }
 
@@ -63,7 +69,7 @@ const backToList = () => {
 }
 
 const handleMuteNotification = async (id: string, event: Event) => {
-  event.stopPropagation() // Evitar que se abra la notificación al hacer clic en silenciar
+  event.stopPropagation()
 
   mutingNotificationId.value = id
   errorMessage.value = ''
@@ -72,16 +78,13 @@ const handleMuteNotification = async (id: string, event: Event) => {
     const success = await muteNotification(id)
 
     if (success) {
-      // Actualizar la notificación en la lista local
       const notification = notifications.value.find(n => n.id === id)
       if (notification) {
         notification.silenciada = true
       }
 
-      // Decrementar el contador de notificaciones
       decrementCount()
 
-      // Mostrar mensaje de éxito temporal
       console.log(`Notificación ${id} silenciada exitosamente`)
     } else {
       errorMessage.value = 'No se pudo silenciar la notificación. Intente nuevamente.'
@@ -95,7 +98,7 @@ const handleMuteNotification = async (id: string, event: Event) => {
 }
 
 const handleUnmuteNotification = async (id: string, event: Event) => {
-  event.stopPropagation() // Evitar que se abra la notificación al hacer clic en dessilenciar
+  event.stopPropagation()
 
   unmutingNotificationId.value = id
   errorMessage.value = ''
@@ -104,16 +107,13 @@ const handleUnmuteNotification = async (id: string, event: Event) => {
     const success = await unmuteNotification(id)
 
     if (success) {
-      // Actualizar la notificación en la lista local
       const notification = notifications.value.find(n => n.id === id)
       if (notification) {
         notification.silenciada = false
       }
 
-      // Incrementar el contador de notificaciones
       incrementCount()
 
-      // Mostrar mensaje de éxito temporal
       console.log(`Notificación ${id} dessilenciada exitosamente`)
     } else {
       errorMessage.value = 'No se pudo dessilenciar la notificación. Intente nuevamente.'
@@ -158,6 +158,89 @@ const handleDeleteAllNotifications = async () => {
   }
 }
 
+const openReminderModal = (id: string, event: Event) => {
+  event.stopPropagation()
+  reminderNotificationId.value = id
+  const notif = notifications.value.find(n => n.id === id)
+  reminderDateTime.value = notif?.fechaRecordatorio || ''
+  showReminderModal.value = true
+  errorMessage.value = ''
+}
+
+const closeReminderModal = () => {
+  showReminderModal.value = false
+  reminderNotificationId.value = null
+  reminderDateTime.value = ''
+}
+
+const handleSetReminder = async () => {
+  if (!reminderNotificationId.value || !reminderDateTime.value) {
+    errorMessage.value = 'Por favor selecciona una fecha y hora válida.'
+    return
+  }
+
+  settingReminder.value = true
+  errorMessage.value = ''
+
+  try {
+    const notification = notifications.value.find(n => n.id === reminderNotificationId.value)
+    let success = false
+
+    if (notification && notification.tieneRecordatorio) {
+      success = await updateReminder(reminderNotificationId.value, reminderDateTime.value)
+    } else {
+      success = await setReminder(reminderNotificationId.value, reminderDateTime.value)
+    }
+
+    if (success) {
+      if (notification) {
+        notification.tieneRecordatorio = true
+        notification.fechaRecordatorio = reminderDateTime.value
+        notification.recordatorioActivo = true
+      }
+      if (selectedNotification.value && selectedNotification.value.id === reminderNotificationId.value) {
+        selectedNotification.value.tieneRecordatorio = true
+        selectedNotification.value.fechaRecordatorio = reminderDateTime.value
+        selectedNotification.value.recordatorioActivo = true
+      }
+      closeReminderModal()
+      console.log(`Recordatorio establecido para notificación ${reminderNotificationId.value}`)
+    } else {
+      errorMessage.value = 'No se pudo establecer el recordatorio. Intente nuevamente.'
+    }
+  } catch (error) {
+    console.error('Error al establecer recordatorio:', error)
+    errorMessage.value = 'Ocurrió un error al establecer el recordatorio.'
+  } finally {
+    settingReminder.value = false
+  }
+}
+
+const handleDeleteReminder = async (id: string, event: Event) => {
+  event.stopPropagation()
+  errorMessage.value = ''
+
+  try {
+    const success = await deleteReminder(id)
+
+    if (success) {
+      const notification = notifications.value.find(n => n.id === id)
+      if (notification) {
+        notification.recordatorioActivo = false
+      }
+      if (selectedNotification.value && selectedNotification.value.id === id) {
+        selectedNotification.value.recordatorioActivo = false
+      }
+      console.log(`Recordatorio desactivado para notificación ${id}`)
+    } else {
+      errorMessage.value = 'No se pudo desactivar el recordatorio. Intente nuevamente.'
+    }
+  } catch (error) {
+    console.error('Error al desactivar recordatorio:', error)
+    errorMessage.value = 'Ocurrió un error al desactivar el recordatorio.'
+  }
+}
+
 onMounted(() => {
   loadNotifications()
 })
@@ -179,7 +262,6 @@ onMounted(() => {
           </p>
         </header>
 
-        <!-- Mensaje informativo cuando las alertas están silenciadas -->
         <div v-if="isMuted" class="bg-gray-100 border border-gray-300 rounded-lg p-4 flex items-center gap-3">
           <svg class="w-6 h-6 text-gray-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -187,17 +269,14 @@ onMounted(() => {
           </svg>
           <div class="flex-1">
             <p class="text-gray-800 font-medium">Las alertas de notificaciones están silenciadas</p>
-            <p class="text-gray-600 text-sm">No verás el badge rojo en el icono de notificaciones hasta que las actives
-              nuevamente.</p>
+            <p class="text-gray-600 text-sm">No verás el badge rojo en el icono de notificaciones hasta que las actives nuevamente.</p>
           </div>
         </div>
 
         <article class="bg-white rounded-lg shadow border border-blue-200">
           <h2 class="text-2xl font-bold text-blue-500 mt-4">Bandeja de Entrada</h2>
           <div class="flex items-center justify-end px-6 py-4 border-b border-blue-100">
-
             <div class="flex items-center gap-3">
-              <!-- Botón de eliminar todas las notificaciones -->
               <button @click="openDeleteConfirmation" :class="[
                 'flex items-center hover:-translate-y-0.5 gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200',
                 notifications.length === 0
@@ -211,7 +290,6 @@ onMounted(() => {
                 <span>Eliminar registro</span>
               </button>
 
-              <!-- Botón de silenciar/activar alertas -->
               <button @click="toggleMute" :class="[
                 'flex items-center hover:-translate-y-0.5 gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200',
                 isMuted
@@ -271,9 +349,17 @@ onMounted(() => {
                       class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-700">
                       <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M5.586 15H4a1 1 0 01-.707-1.707l1.586-1.586a1 1 0 01.707-.293h3.172a1 1 0 00.707-.293l2.414-2.414A1 1 0 0113.586 8H15m5.586 7H22a1 1 0 00.707-1.707l-1.586-1.586a1 1 0 00-.707-.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 0010.414 8H9M3 3l18 18" />
+                          d="M5.586 15H4a1 1 0 01-.707-1.707l1.586-1.586a1 1 0 01.707-.293h3.172a1 1 0 00.707-.293l2.414-2.414A1 1 0 0113.586 8H15m5.586 7H22a1 1 0 00.707-1.707l-1.586-1.586a1 1 0 00-.707-.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 0110.414 8H9M3 3l18 18" />
                       </svg>
                       Silenciada
+                    </span>
+                    <span v-if="notification.recordatorioActivo"
+                      class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">
+                      <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Recordatorio activo
                     </span>
                   </div>
                   <h3 :class="[
@@ -290,7 +376,30 @@ onMounted(() => {
                   </p>
                 </div>
                 <div class="flex items-center gap-2 shrink-0">
-                  <!-- Botón de silenciar (solo si NO está silenciada) -->
+                  <button v-if="!notification.silenciada" @click="openReminderModal(notification.id, $event)"
+                    :class="[
+                      'p-2 rounded-lg transition-all duration-200',
+                      notification.recordatorioActivo
+                        ? 'hover:bg-yellow-50 text-yellow-600'
+                        : 'hover:bg-blue-50 text-gray-500 hover:text-blue-600'
+                    ]" :title="notification.recordatorioActivo ? 'Editar recordatorio' : 'Programar notificación'">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </button>
+
+                  <button v-if="notification.recordatorioActivo" @click="handleDeleteReminder(notification.id, $event)"
+                    :class="[
+                      'p-2 rounded-lg transition-all duration-200',
+                      'hover:bg-red-50 text-yellow-600 hover:text-red-600'
+                    ]" :title="'Eliminar recordatorio'">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+
                   <button v-if="!notification.silenciada" @click="handleMuteNotification(notification.id, $event)"
                     :disabled="mutingNotificationId === notification.id" :class="[
                       'p-2 rounded-lg transition-all duration-200',
@@ -307,11 +416,10 @@ onMounted(() => {
                     </svg>
                     <svg v-else class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M5.586 15H4a1 1 0 01-.707-1.707l1.586-1.586a1 1 0 01.707-.293h3.172a1 1 0 00.707-.293l2.414-2.414A1 1 0 0113.586 8H15m5.586 7H22a1 1 0 00.707-1.707l-1.586-1.586a1 1 0 00-.707-.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 0010.414 8H9M3 3l18 18" />
+                        d="M5.586 15H4a1 1 0 01-.707-1.707l1.586-1.586a1 1 0 01.707-.293h3.172a1 1 0 00.707-.293l2.414-2.414A1 1 0 0113.586 8H15m5.586 7H22a1 1 0 00.707-1.707l-1.586-1.586a1 1 0 00-.707-.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 0110.414 8H9M3 3l18 18" />
                     </svg>
                   </button>
 
-                  <!-- Botón de dessilenciar (solo si ESTÁ silenciada) -->
                   <button v-if="notification.silenciada" @click="handleUnmuteNotification(notification.id, $event)"
                     :disabled="unmutingNotificationId === notification.id" :class="[
                       'p-2 rounded-lg transition-all duration-200',
@@ -332,7 +440,6 @@ onMounted(() => {
                     </svg>
                   </button>
 
-                  <!-- Flecha para abrir (solo si no está silenciada) -->
                   <svg v-if="!notification.silenciada" class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -350,7 +457,6 @@ onMounted(() => {
 
       <!-- VISTA DETALLADA DE NOTIFICACIÓN -->
       <section v-else class="max-w-4xl mx-auto space-y-6">
-        <!-- Botón de retroceso -->
         <div>
           <button @click="backToList"
             class="inline-flex items-center gap-2 px-4 py-2 text-blue-700 hover:text-blue-900 hover:bg-blue-50 rounded-lg transition-colors duration-200 font-medium">
@@ -361,7 +467,6 @@ onMounted(() => {
           </button>
         </div>
 
-        <!-- Contenido de la notificación -->
         <div v-if="loadingDetails" class="bg-white rounded-lg shadow border border-blue-200 p-12 text-center">
           <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
           <p class="mt-4 text-gray-600">Cargando notificación...</p>
@@ -369,7 +474,6 @@ onMounted(() => {
 
         <article v-else-if="selectedNotification"
           class="bg-white rounded-lg shadow border border-blue-200 overflow-hidden">
-          <!-- Encabezado de la notificación -->
           <header class="bg-linear-to-r from-blue-50 to-blue-100 px-8 py-6 border-b border-blue-200">
             <div class="flex items-start gap-4">
               <div class="shrink-0 w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
@@ -408,7 +512,6 @@ onMounted(() => {
             </div>
           </header>
 
-          <!-- Cuerpo del mensaje -->
           <div class="px-8 py-8">
             <div class="prose max-w-none">
               <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
@@ -419,15 +522,41 @@ onMounted(() => {
             </div>
           </div>
 
-          <!-- Footer con acciones -->
+          <div v-if="selectedNotification.recordatorioActivo" class="bg-yellow-50 border-t border-yellow-200 px-8 py-4">
+            <p class="text-sm text-yellow-700">
+              <strong>Recordatorio programado:</strong> {{ new Date(selectedNotification.fechaRecordatorio).toLocaleString('es-ES', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+              }) }}
+            </p>
+          </div>
+
           <footer class="bg-gray-50 px-8 py-4 border-t border-gray-200 flex justify-between items-center">
             <p class="text-sm text-gray-500">
-              ID de notificación: {{ selectedNotification.id }}
+              ID: {{ selectedNotification.id }}
             </p>
-            <button @click="backToList"
-              class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200">
-              Cerrar
-            </button>
+            <div class="flex gap-2">
+              <button v-if="!selectedNotification.silenciada" @click="openReminderModal(selectedNotification.id, $event)"
+                :class="[
+                  'px-4 py-2 rounded-lg font-medium text-sm transition-colors duration-200 flex items-center gap-2',
+                  selectedNotification.recordatorioActivo
+                    ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'
+                    : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+                ]">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                {{ selectedNotification.recordatorioActivo ? 'Editar recordatorio' : 'Programar notificación' }}
+              </button>
+              <button @click="backToList"
+                class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200">
+                Cerrar
+              </button>
+            </div>
           </footer>
         </article>
 
@@ -436,7 +565,7 @@ onMounted(() => {
         </p>
       </section>
 
-      <!-- Modal de confirmación para eliminar todas las notificaciones -->
+      <!-- MODAL DE CONFIRMACIÓN PARA ELIMINAR TODAS LAS NOTIFICACIONES -->
       <div v-if="showDeleteConfirmation" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full mx-4">
           <div class="flex items-center gap-4 mb-4">
@@ -473,6 +602,54 @@ onMounted(() => {
                 </path>
               </svg>
               <span>{{ deletingAllNotifications ? 'Eliminando...' : 'Eliminar todo' }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL DE RECORDATORIO/ALARMA -->
+      <div v-if="showReminderModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-lg p-8 max-w-md w-full mx-4">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+              <svg class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold text-gray-900">Programar notificación</h3>
+          </div>
+
+          <p class="text-gray-600 mb-6">
+            Selecciona la fecha y hora en la que deseas que la notificación reaparezca como una alerta.
+          </p>
+
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Fecha y hora</label>
+            <input v-model="reminderDateTime" type="datetime-local" 
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+          </div>
+
+          <div v-if="errorMessage" class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+            <p class="text-sm text-red-600">{{ errorMessage }}</p>
+          </div>
+
+          <div class="flex gap-3">
+            <button @click="closeReminderModal"
+              :disabled="settingReminder"
+              class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+              Cancelar
+            </button>
+            <button @click="handleSetReminder"
+              :disabled="settingReminder"
+              class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+              <svg v-if="settingReminder" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                </path>
+              </svg>
+              <span>{{ settingReminder ? 'Guardando...' : 'Guardar recordatorio' }}</span>
             </button>
           </div>
         </div>

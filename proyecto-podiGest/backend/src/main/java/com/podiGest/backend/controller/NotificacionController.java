@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -219,6 +220,178 @@ public class NotificacionController {
             }
         } catch (IOException e) {
             System.err.println("Error al eliminar notificaciones: " + e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PostMapping("/{id}/recordatorio")
+    public ResponseEntity<?> establecerRecordatorio(@PathVariable String id, @RequestBody Map<String, String> request) {
+        try {
+            // Obtener el usuario activo de la sesión
+            Optional<Usuario> usuarioActivo = perfilService.obtenerPerfilActivo();
+            
+            if (usuarioActivo.isEmpty()) {
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body("No hay una sesión activa. Por favor, inicie sesión.");
+            }
+            
+            // Verificar que la notificación existe y pertenece al usuario
+            Optional<Notificacion> notificacion = notificacionService.obtenerNotificacionPorId(id);
+            
+            if (notificacion.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            
+            String correoUsuario = usuarioActivo.get().getCorreoElectronico();
+            if (notificacion.get().getCorreoDestinatario() == null 
+                    || !notificacion.get().getCorreoDestinatario().equalsIgnoreCase(correoUsuario)) {
+                return ResponseEntity
+                        .status(HttpStatus.FORBIDDEN)
+                        .body("No tiene permiso para establecer recordatorio a esta notificación.");
+            }
+            
+            // Obtener la fecha del recordatorio del request
+            String fechaRecordatorio = request.get("fechaRecordatorio");
+            if (fechaRecordatorio == null || fechaRecordatorio.isBlank()) {
+                return ResponseEntity
+                        .badRequest()
+                        .body("La fecha del recordatorio es requerida (formato: yyyy-MM-dd HH:mm:ss)");
+            }
+            
+            // Establecer el recordatorio
+            boolean establecido = notificacionService.establecerRecordatorio(id, fechaRecordatorio);
+            
+            if (establecido) {
+                System.out.println("INFO: Recordatorio establecido para notificación " + id + " del usuario " + correoUsuario);
+                return ResponseEntity.ok().body("Recordatorio establecido exitosamente");
+            } else {
+                return ResponseEntity.internalServerError().body("Error al establecer el recordatorio");
+            }
+        } catch (IOException e) {
+            System.err.println("Error al establecer recordatorio: " + e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PutMapping("/{id}/recordatorio")
+    public ResponseEntity<?> actualizarRecordatorio(@PathVariable String id, @RequestBody Map<String, String> request) {
+        try {
+            // Obtener el usuario activo de la sesión
+            Optional<Usuario> usuarioActivo = perfilService.obtenerPerfilActivo();
+            
+            if (usuarioActivo.isEmpty()) {
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body("No hay una sesión activa. Por favor, inicie sesión.");
+            }
+            
+            // Verificar que la notificación existe y pertenece al usuario
+            Optional<Notificacion> notificacion = notificacionService.obtenerNotificacionPorId(id);
+            
+            if (notificacion.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            
+            String correoUsuario = usuarioActivo.get().getCorreoElectronico();
+            if (notificacion.get().getCorreoDestinatario() == null 
+                    || !notificacion.get().getCorreoDestinatario().equalsIgnoreCase(correoUsuario)) {
+                return ResponseEntity
+                        .status(HttpStatus.FORBIDDEN)
+                        .body("No tiene permiso para actualizar recordatorio a esta notificación.");
+            }
+            
+            // Obtener la nueva fecha del recordatorio del request
+            String nuevaFechaRecordatorio = request.get("fechaRecordatorio");
+            if (nuevaFechaRecordatorio == null || nuevaFechaRecordatorio.isBlank()) {
+                return ResponseEntity
+                        .badRequest()
+                        .body("La nueva fecha del recordatorio es requerida (formato: yyyy-MM-dd HH:mm:ss)");
+            }
+            
+            // Actualizar el recordatorio
+            boolean actualizado = notificacionService.actualizarRecordatorio(id, nuevaFechaRecordatorio);
+            
+            if (actualizado) {
+                System.out.println("INFO: Recordatorio actualizado para notificación " + id + " del usuario " + correoUsuario);
+                return ResponseEntity.ok().body("Recordatorio actualizado exitosamente");
+            } else {
+                return ResponseEntity.internalServerError().body("Error al actualizar el recordatorio");
+            }
+        } catch (IOException e) {
+            System.err.println("Error al actualizar recordatorio: " + e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @DeleteMapping("/{id}/recordatorio")
+    public ResponseEntity<?> desactivarRecordatorio(@PathVariable String id) {
+        try {
+            // Obtener el usuario activo de la sesión
+            Optional<Usuario> usuarioActivo = perfilService.obtenerPerfilActivo();
+            
+            if (usuarioActivo.isEmpty()) {
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body("No hay una sesión activa. Por favor, inicie sesión.");
+            }
+            
+            // Verificar que la notificación existe y pertenece al usuario
+            Optional<Notificacion> notificacion = notificacionService.obtenerNotificacionPorId(id);
+            
+            if (notificacion.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            
+            String correoUsuario = usuarioActivo.get().getCorreoElectronico();
+            if (notificacion.get().getCorreoDestinatario() == null 
+                    || !notificacion.get().getCorreoDestinatario().equalsIgnoreCase(correoUsuario)) {
+                return ResponseEntity
+                        .status(HttpStatus.FORBIDDEN)
+                        .body("No tiene permiso para desactivar recordatorio de esta notificación.");
+            }
+            
+            // Desactivar el recordatorio
+            boolean desactivado = notificacionService.desactivarRecordatorio(id);
+            
+            if (desactivado) {
+                System.out.println("INFO: Recordatorio desactivado para notificación " + id + " del usuario " + correoUsuario);
+                return ResponseEntity.ok().body("Recordatorio desactivado exitosamente");
+            } else {
+                return ResponseEntity.internalServerError().body("Error al desactivar el recordatorio");
+            }
+        } catch (IOException e) {
+            System.err.println("Error al desactivar recordatorio: " + e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/recordatorios/pendientes")
+    public ResponseEntity<?> obtenerRecordatoriosPendientes() {
+        try {
+            // Obtener el usuario activo de la sesión
+            Optional<Usuario> usuarioActivo = perfilService.obtenerPerfilActivo();
+            
+            if (usuarioActivo.isEmpty()) {
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body("No hay una sesión activa. Por favor, inicie sesión.");
+            }
+            
+            String correoUsuario = usuarioActivo.get().getCorreoElectronico();
+            
+            // Obtener todas las notificaciones con recordatorios pendientes
+            List<Notificacion> recordatoriosPendientes = notificacionService.obtenerNotificacionesConRecordatorioPendiente()
+                    .stream()
+                    .filter(notificacion -> notificacion.getCorreoDestinatario() != null 
+                            && notificacion.getCorreoDestinatario().equalsIgnoreCase(correoUsuario))
+                    .toList();
+            
+            System.out.println("INFO: Se encontraron " + recordatoriosPendientes.size() + " recordatorios pendientes para el usuario " + correoUsuario);
+            
+            return ResponseEntity.ok(recordatoriosPendientes);
+        } catch (IOException e) {
+            System.err.println("Error al obtener recordatorios pendientes: " + e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
     }

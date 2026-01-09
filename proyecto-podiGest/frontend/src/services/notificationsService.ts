@@ -5,6 +5,9 @@ export interface NotificationSummary {
   remitente: string
   mensaje: string
   silenciada: boolean
+  tieneRecordatorio: boolean
+  fechaRecordatorio?: string
+  recordatorioActivo: boolean
 }
 
 const API_URL = 'http://localhost:8080/api/notificaciones'
@@ -117,5 +120,86 @@ export const deleteAllNotifications = async (): Promise<boolean> => {
   } catch (error) {
     console.error('No fue posible eliminar las notificaciones', error)
     return false
+  }
+}
+
+// Establece un recordatorio para una notificación
+export const setReminder = async (id: string, fechaRecordatorio: string): Promise<boolean> => {
+  try {
+    const response = await fetch(`${API_URL}/${id}/recordatorio`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ fechaRecordatorio })
+    })
+
+    if (!response.ok) {
+      throw new Error(`Error al establecer recordatorio: ${response.status}`)
+    }
+
+    return true
+  } catch (error) {
+    console.error(`No fue posible establecer recordatorio para notificación ${id}`, error)
+    return false
+  }
+}
+
+// Actualiza el recordatorio de una notificación
+export const updateReminder = async (id: string, fechaRecordatorio: string): Promise<boolean> => {
+  try {
+    const response = await fetch(`${API_URL}/${id}/recordatorio`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ fechaRecordatorio })
+    })
+
+    if (!response.ok) {
+      throw new Error(`Error al actualizar recordatorio: ${response.status}`)
+    }
+
+    return true
+  } catch (error) {
+    console.error(`No fue posible actualizar recordatorio para notificación ${id}`, error)
+    return false
+  }
+}
+
+// Desactiva el recordatorio de una notificación
+export const deleteReminder = async (id: string): Promise<boolean> => {
+  try {
+    const response = await fetch(`${API_URL}/${id}/recordatorio`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (!response.ok) {
+      throw new Error(`Error al desactivar recordatorio: ${response.status}`)
+    }
+
+    return true
+  } catch (error) {
+    console.error(`No fue posible desactivar recordatorio para notificación ${id}`, error)
+    return false
+  }
+}
+
+// Obtiene notificaciones con recordatorios pendientes
+export const fetchPendingReminders = async (): Promise<NotificationSummary[]> => {
+  try {
+    const response = await fetch(`${API_URL}/recordatorios/pendientes`)
+
+    if (!response.ok) {
+      throw new Error(`Error al obtener recordatorios pendientes: ${response.status}`)
+    }
+
+    return await response.json()
+  } catch (error) {
+    console.error('No fue posible obtener recordatorios pendientes', error)
+    return []
   }
 }

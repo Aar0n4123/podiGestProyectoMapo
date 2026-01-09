@@ -4,11 +4,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.podiGest.backend.model.Notificacion;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -27,13 +25,9 @@ public class NotificacionService {
         this.objectMapper = new ObjectMapper();
         this.objectMapper.registerModule(new JavaTimeModule());
         
-        // Carga las notificaciones iniciales si el archivo no existe
         inicializarNotificaciones();
     }
 
-    /**
-     * Inicializa el archivo de notificaciones si no existe o está vacío
-     */
     private void inicializarNotificaciones() {
         try {
             if (!Files.exists(notificacionesPath) || Files.size(notificacionesPath) == 0) {
@@ -47,9 +41,6 @@ public class NotificacionService {
         }
     }
 
-    /**
-     * Carga las notificaciones iniciales desde la carpeta base_de_datos
-     */
     private List<Notificacion> cargarDesdeClasspath() {
         try {
             Path seedPath = PathConfigService.getSeedFilePath(NOTIFICACIONES_JSON_FILE);
@@ -81,24 +72,10 @@ public class NotificacionService {
                 .findFirst();
     }
 
-    /**
-     * Guarda las notificaciones en el archivo JSON (sobrescribiendo el contenido anterior)
-     * 
-     * @param notificaciones Lista de notificaciones a guardar
-     * @throws IOException si hay error al escribir el archivo
-     */
     private void guardarNotificacionesAJson(List<Notificacion> notificaciones) throws IOException {
-        // Sobrescribe el archivo con los datos actuales en base_de_datos/notificaciones.json
         objectMapper.writerWithDefaultPrettyPrinter().writeValue(notificacionesPath.toFile(), notificaciones);
     }
 
-    /**
-     * Crea y guarda una nueva notificación
-     * 
-     * @param notificacion La notificación a crear
-     * @return La notificación creada
-     * @throws IOException si hay error al guardar
-     */
     public Notificacion crearNotificacion(Notificacion notificacion) throws IOException {
         System.out.println("INFO: Creando notificación con ID: " + notificacion.getId());
         System.out.println("INFO: Ruta del archivo: " + notificacionesPath.toAbsolutePath());
@@ -115,13 +92,6 @@ public class NotificacionService {
         return notificacion;
     }
 
-    /**
-     * Obtiene las notificaciones de un usuario específico por su correo electrónico
-     * 
-     * @param correoUsuario El correo del usuario
-     * @return Lista de notificaciones del usuario
-     * @throws IOException si hay error al leer
-     */
     public List<Notificacion> obtenerNotificacionesPorUsuario(String correoUsuario) throws IOException {
         List<Notificacion> todasLasNotificaciones = obtenerNotificaciones();
         System.out.println("INFO: Total de notificaciones en el archivo: " + todasLasNotificaciones.size());
@@ -142,13 +112,6 @@ public class NotificacionService {
         return notificacionesFiltradas;
     }
 
-    /**
-     * Silencia una notificación específica
-     * 
-     * @param id El ID de la notificación a silenciar
-     * @return true si se silenció exitosamente, false si no se encontró
-     * @throws IOException si hay error al guardar
-     */
     public boolean silenciarNotificacion(String id) throws IOException {
         System.out.println("INFO: Intentando silenciar notificación con ID: " + id);
         
@@ -174,13 +137,6 @@ public class NotificacionService {
         return encontrada;
     }
 
-    /**
-     * Dessilencia una notificación específica
-     * 
-     * @param id El ID de la notificación a dessilenciar
-     * @return true si se dessilenció exitosamente, false si no se encontró
-     * @throws IOException si hay error al guardar
-     */
     public boolean dessilenciarNotificacion(String id) throws IOException {
         System.out.println("INFO: Intentando dessilenciar notificación con ID: " + id);
         
@@ -206,13 +162,6 @@ public class NotificacionService {
         return encontrada;
     }
 
-    /**
-     * Obtiene el conteo de notificaciones no silenciadas de un usuario
-     * 
-     * @param correoUsuario El correo del usuario
-     * @return Cantidad de notificaciones no silenciadas
-     * @throws IOException si hay error al leer
-     */
     public long contarNotificacionesNoSilenciadas(String correoUsuario) throws IOException {
         return obtenerNotificacionesPorUsuario(correoUsuario)
                 .stream()
@@ -220,20 +169,12 @@ public class NotificacionService {
                 .count();
     }
 
-    /**
-     * Elimina todas las notificaciones de un usuario específico
-     * 
-     * @param correoUsuario El correo del usuario
-     * @return true si se eliminaron notificaciones exitosamente, false si no hay notificaciones
-     * @throws IOException si hay error al guardar
-     */
     public boolean eliminarTodasNotificacionesPorUsuario(String correoUsuario) throws IOException {
         System.out.println("INFO: Eliminando todas las notificaciones para el usuario: " + correoUsuario);
         
         List<Notificacion> todasLasNotificaciones = new ArrayList<>(obtenerNotificaciones());
         int notificacionesAntesDeEliminar = todasLasNotificaciones.size();
         
-        // Filtrar para mantener solo las notificaciones que NO pertenecen al usuario
         List<Notificacion> notificacionesFiltradas = todasLasNotificaciones
                 .stream()
                 .filter(notificacion -> notificacion.getCorreoDestinatario() == null 
@@ -250,5 +191,94 @@ public class NotificacionService {
             System.out.println("ADVERTENCIA: No hay notificaciones para eliminar del usuario: " + correoUsuario);
             return false;
         }
+    }
+
+    public boolean establecerRecordatorio(String id, String fechaRecordatorio) throws IOException {
+        System.out.println("INFO: Estableciendo recordatorio para notificación con ID: " + id + " en la fecha: " + fechaRecordatorio);
+        
+        List<Notificacion> notificaciones = new ArrayList<>(obtenerNotificaciones());
+        boolean encontrada = false;
+        
+        for (Notificacion notificacion : notificaciones) {
+            if (notificacion.getId().equals(id)) {
+                notificacion.setTieneRecordatorio(true);
+                notificacion.setFechaRecordatorio(fechaRecordatorio);
+                notificacion.setRecordatorioActivo(true);
+                encontrada = true;
+                System.out.println("INFO: Recordatorio establecido para la notificación " + id);
+                break;
+            }
+        }
+        
+        if (encontrada) {
+            guardarNotificacionesAJson(notificaciones);
+            System.out.println("INFO: Cambios guardados exitosamente");
+        } else {
+            System.out.println("ADVERTENCIA: No se encontró la notificación con ID: " + id);
+        }
+        
+        return encontrada;
+    }
+
+    public boolean actualizarRecordatorio(String id, String nuevaFechaRecordatorio) throws IOException {
+        System.out.println("INFO: Actualizando recordatorio para notificación con ID: " + id + " a la fecha: " + nuevaFechaRecordatorio);
+        
+        List<Notificacion> notificaciones = new ArrayList<>(obtenerNotificaciones());
+        boolean encontrada = false;
+        
+        for (Notificacion notificacion : notificaciones) {
+            if (notificacion.getId().equals(id)) {
+                if (notificacion.isTieneRecordatorio()) {
+                    notificacion.setFechaRecordatorio(nuevaFechaRecordatorio);
+                    notificacion.setRecordatorioActivo(true);
+                    encontrada = true;
+                    System.out.println("INFO: Recordatorio actualizado para la notificación " + id);
+                } else {
+                    System.out.println("ADVERTENCIA: La notificación " + id + " no tiene recordatorio establecido");
+                }
+                break;
+            }
+        }
+        
+        if (encontrada) {
+            guardarNotificacionesAJson(notificaciones);
+            System.out.println("INFO: Cambios guardados exitosamente");
+        }
+        
+        return encontrada;
+    }
+
+    public boolean desactivarRecordatorio(String id) throws IOException {
+        System.out.println("INFO: Desactivando recordatorio para notificación con ID: " + id);
+        
+        List<Notificacion> notificaciones = new ArrayList<>(obtenerNotificaciones());
+        boolean encontrada = false;
+        
+        for (Notificacion notificacion : notificaciones) {
+            if (notificacion.getId().equals(id)) {
+                notificacion.setRecordatorioActivo(false);
+                encontrada = true;
+                System.out.println("INFO: Recordatorio desactivado para la notificación " + id);
+                break;
+            }
+        }
+        
+        if (encontrada) {
+            guardarNotificacionesAJson(notificaciones);
+            System.out.println("INFO: Cambios guardados exitosamente");
+        } else {
+            System.out.println("ADVERTENCIA: No se encontró la notificación con ID: " + id);
+        }
+        
+        return encontrada;
+    }
+
+    public List<Notificacion> obtenerNotificacionesConRecordatorioPendiente() throws IOException {
+        List<Notificacion> todasLasNotificaciones = obtenerNotificaciones();
+        
+        return todasLasNotificaciones
+                .stream()
+                .filter(notificacion -> notificacion.isTieneRecordatorio() && notificacion.isRecordatorioActivo())
+                .toList();
     }
 }

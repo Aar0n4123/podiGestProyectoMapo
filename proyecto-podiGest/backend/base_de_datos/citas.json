@@ -141,4 +141,17 @@
   "razonConsulta" : "AL FIIIIIINNN FUNCIOOONAAAA",
   "estado" : "pendiente",
   "fechaCreacion" : "2026-01-09T04:49:57.020Z"
+}, {
+  "id" : "CITA-1767934988619-9jq500tu4",
+  "pacienteNombre" : "LEITO COSMICO",
+  "pacienteCorreo" : "123@1.com",
+  "pacienteTelefono" : "99999",
+  "especialista" : "Elsee Aguilar",
+  "cedulaEspecialista" : "127861",
+  "especialidadBuscada" : "",
+  "fecha" : "2026-01-21",
+  "hora" : "15:00",
+  "razonConsulta" : "nnn",
+  "estado" : "pendiente",
+  "fechaCreacion" : "2026-01-09T05:03:08.619Z"
 } ]
