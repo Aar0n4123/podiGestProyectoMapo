@@ -14,7 +14,9 @@ import MisCitas from '../views/MisCitas.vue'
 import ConsultarCitas from '../views/ConsultarCitas.vue'
 import ConsultarCitaEsp from '../views/ConsultarCitaEsp.vue'
 import ModificarCitaAgendada from '../views/ModificarCitaAgendada.vue'
+import ModificarMisCitas from '../views/ModificarMisCitas.vue'
 import HistorialCitas from '../views/HistorialCitas.vue'
+import CancelarCitas from '../views/CancelarCitas.vue'
 import PodologiaGeneral from '../views/PodologiaGeneral.vue'
 import PodologiaPediatrica from '../views/PodologiaPediatrica.vue'
 import Quiropodia from '../views/Quiropodia.vue'
@@ -85,6 +87,11 @@ const routes = [
         component: HistorialCitas
     },
     {
+        path: '/cancelar-citas',
+        name: 'cancelar-citas',
+        component: CancelarCitas
+    },
+    {
         path: '/consultar-citas-esp',
         name: 'consultar-citas-esp',
         component: ConsultarCitaEsp
@@ -93,6 +100,11 @@ const routes = [
         path: '/modificar-citas-esp',
         name: 'modificar-citas-esp',
         component: ModificarCitaAgendada
+    },
+    {
+        path: '/modificar-mis-citas',
+        name: 'modificar-mis-citas',
+        component: ModificarMisCitas
     },
     {
         path: '/configuration/podologia-general',

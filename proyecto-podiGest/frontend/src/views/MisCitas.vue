@@ -64,33 +64,25 @@
             <p class="text-sm text-gray-600">Visualiza todas tus citas agendadas</p>
           </router-link>
 
-          <!-- Modificar (disabled) -->
-          <div
-            class="bg-white rounded-xl p-8 shadow-md text-center flex flex-col items-center relative opacity-60 cursor-not-allowed"
+          <!-- Modificar -->
+          <router-link
+            to="/modificar-mis-citas"
+            class="bg-white rounded-xl p-8 shadow-md transition transform text-center flex flex-col items-center relative hover:-translate-y-2 hover:shadow-xl"
           >
             <div class="text-6xl mb-5">✏️</div>
             <h3 class="text-xl font-semibold text-gray-800 mb-3">Modificar Citas</h3>
             <p class="text-sm text-gray-600">Modifica tus citas agendadas</p>
-            <span
-              class="absolute top-3 right-3 bg-linear-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide"
-            >
-              Próximamente
-            </span>
-          </div>
+          </router-link>
 
-          <!-- Cancelar (disabled) -->
-          <div
-            class="bg-white rounded-xl p-8 shadow-md text-center flex flex-col items-center relative opacity-60 cursor-not-allowed"
+          <!-- Cancelar -->
+          <router-link
+            to="/cancelar-citas"
+            class="bg-white rounded-xl p-8 shadow-md transition transform text-center flex flex-col items-center relative hover:-translate-y-2 hover:shadow-xl"
           >
             <div class="text-6xl mb-5">❌</div>
             <h3 class="text-xl font-semibold text-gray-800 mb-3">Cancelar Citas</h3>
             <p class="text-sm text-gray-600">Cancela tus citas agendadas</p>
-            <span
-              class="absolute top-3 right-3 bg-linear-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide"
-            >
-              Próximamente
-            </span>
-          </div>
+          </router-link>
         </div>
       </div>
     </main>

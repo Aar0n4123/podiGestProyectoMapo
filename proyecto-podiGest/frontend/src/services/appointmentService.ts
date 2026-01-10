@@ -147,6 +147,41 @@ export const cancelarCita = async (citaId: string): Promise<boolean> => {
   }
 }
 
+export const cancelarCitaPaciente = async (citaId: string): Promise<{ success: boolean; message: string }> => {
+  try {
+    const response = await fetch(API_URL + '/' + citaId + '/paciente', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    const responseText = await response.text()
+    
+    if (response.ok) {
+      eliminarCitaLocalmente(citaId)
+      return { success: true, message: 'Cita cancelada exitosamente' }
+    }
+    
+    if (response.status === 401) {
+      return { success: false, message: 'Debe iniciar sesión para cancelar citas' }
+    }
+    
+    if (response.status === 403) {
+      return { success: false, message: responseText || 'No tiene permiso para cancelar esta cita' }
+    }
+    
+    if (response.status === 404) {
+      return { success: false, message: 'Cita no encontrada' }
+    }
+    
+    return { success: false, message: responseText || 'Error al cancelar la cita' }
+  } catch (error) {
+    console.error('Error al cancelar cita:', error)
+    return { success: false, message: 'Error de conexión al cancelar la cita' }
+  }
+}
+
 const eliminarCitaLocalmente = (citaId: string) => {
   try {
     const citasLocales = JSON.parse(localStorage.getItem('citasLocales') || '[]') as Cita[]
