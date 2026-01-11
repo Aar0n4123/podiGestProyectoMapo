@@ -11,7 +11,8 @@ import {
   DocumentIcon,
   XMarkIcon,
   PencilIcon,
-  EyeIcon
+  EyeIcon,
+  ClipboardDocumentListIcon
 } from '@heroicons/vue/24/outline'
 import { useNotificationCount } from '../composables/useNotificationCount'
 
@@ -72,6 +73,7 @@ const navItems = [
   { name: 'Información', to: '/information', icon: DocumentIcon, roles: ['especialista', 'paciente'] },
   { name: 'Consultar Citas ', to: '/consultar-citas-esp', icon: EyeIcon, roles: ['especialista'] },
   { name: 'Modificar Citas ', to: '/modificar-citas-esp', icon: PencilIcon, roles: ['especialista'] },
+  { name: 'Historial de Citas', to: '/historial-citas-especialista', icon: ClipboardDocumentListIcon, roles: ['especialista'] },
   { name: 'Salir', to: '/', icon: XMarkIcon, roles: ['especialista', 'paciente'] },
 
 ]

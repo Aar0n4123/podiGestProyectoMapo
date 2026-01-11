@@ -194,7 +194,7 @@ import SideBar from '../components/SideBar.vue'
 import { crearCita, getEspecialistas, obtenerCitas } from '../services/appointmentService'
 
 interface Usuario {
-  id: string
+  cedula: string
   nombre: string
   apellido: string
   correoElectronico: string
@@ -300,6 +300,14 @@ export default defineComponent({
       const query = this.$route.query
       if (query.especialista) {
         this.formulario.especialista = query.especialista as string
+        
+        const especialistaEncontrado = this.especialistas.find(esp => 
+          `${esp.nombre} ${esp.apellido}` === this.formulario.especialista
+        )
+        if (especialistaEncontrado) {
+          this.formulario.cedulaEspecialista = especialistaEncontrado.cedula
+        }
+        
         this.paso = 2
       }
       if (query.fecha) {

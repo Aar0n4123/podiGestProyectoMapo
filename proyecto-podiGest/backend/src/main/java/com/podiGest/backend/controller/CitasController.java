@@ -83,6 +83,39 @@ public class CitasController {
         }
     }
 
+    @DeleteMapping("/{id}/paciente")
+    public ResponseEntity<?> cancelarCitaPaciente(@PathVariable String id) {
+        try {
+            Optional<Usuario> usuarioSesion = perfilService.obtenerPerfilActivo();
+
+            if (usuarioSesion.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Debe iniciar sesión para cancelar citas.");
+            }
+
+            Usuario usuario = usuarioSesion.get();
+            Optional<Cita> citaOpt = citasService.obtenerCitaPorId(id);
+
+            if (citaOpt.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cita no encontrada");
+            }
+
+            Cita cita = citaOpt.get();
+
+            if (!cita.getPacienteCorreo().equals(usuario.getCorreoElectronico())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tiene permiso para cancelar esta cita");
+            }
+
+            boolean cancelada = citasService.cancelarCita(id);
+            if (cancelada) {
+                return ResponseEntity.ok("Cita cancelada exitosamente");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
     @GetMapping("/paciente/{correoElectronico}")
     public ResponseEntity<List<Cita>> obtenerCitasPorPaciente(@PathVariable String correoElectronico) {
         try {
@@ -143,7 +176,6 @@ public class CitasController {
     @GetMapping("/propias")
     public ResponseEntity<?> obtenerCitasPropias() {
         try {
-
             Optional<Usuario> usuarioSesion = perfilService.obtenerPerfilActivo();
 
             if (usuarioSesion.isEmpty()) {
@@ -151,9 +183,19 @@ public class CitasController {
             }
 
             Usuario usuario = usuarioSesion.get();
+            
+            if (usuario.getRol() == null || !usuario.getRol().equalsIgnoreCase("especialista")) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Solo los especialistas pueden ver su historial de citas.");
+            }
+            
+            System.out.println("INFO: Obteniendo historial de citas para especialista: " + usuario.getNombre() + " " + usuario.getApellido() + " (Cédula: " + usuario.getCedula() + ")");
 
-            List<Cita> citasFiltradas = citasService.obtenerCitasPorEspecialista(usuario.getCedula());
+            List<Cita> citasFiltradas = citasService.obtenerCitasDelEspecialista(
+                usuario.getNombre() + " " + usuario.getApellido(),
+                usuario.getCedula()
+            );
 
+            System.out.println("INFO: Se encontraron " + citasFiltradas.size() + " citas para el especialista");
             return ResponseEntity.ok(citasFiltradas);
 
         } catch (IOException e) {

@@ -402,6 +402,130 @@ public class CitasService {
         }
     }
 
+    /**
+     * Genera una notificación automática cuando se cancela una cita
+     * 
+     * @param cita La cita que se acaba de cancelar
+     */
+    private void generarNotificacionCancelacionCita(Cita cita) {
+        try {
+            System.out.println("INFO: Iniciando generación de notificación de cancelación para la cita: " + cita.getId());
+            System.out.println("INFO: Correo del paciente: " + cita.getPacienteCorreo());
+            
+            String notificacionId = "NOTIF-CAN-" + System.currentTimeMillis() + "-" + cita.getId().substring(5);
+            
+            LocalDateTime ahora = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            String fechaEnvio = ahora.format(formatter);
+            
+            String asunto = "Cancelación de cita";
+            
+            String mensaje = String.format(
+                "Estimado/a %s,\n\n" +
+                "Le informamos que su cita ha sido cancelada.\n\n" +
+                "DETALLES DE LA CITA CANCELADA:\n" +
+                "Especialista: %s\n" +
+                "Fecha: %s\n" +
+                "Hora: %s\n" +
+                "Motivo: %s\n\n" +
+                "Si desea agendar una nueva cita, puede hacerlo a través de nuestro sistema.\n" +
+                "Si tiene alguna duda o necesita asistencia, no dude en contactarnos.\n\n" +
+                "Gracias por su comprensión.",
+                cita.getPacienteNombre(),
+                cita.getEspecialista(),
+                cita.getFecha(),
+                cita.getHora(),
+                cita.getRazonConsulta()
+            );
+            
+            Notificacion notificacion = new Notificacion(
+                notificacionId,
+                fechaEnvio,
+                asunto,
+                "Clínica Podológica",
+                mensaje,
+                cita.getPacienteCorreo()
+            );
+            
+            System.out.println("INFO: Notificación de cancelación creada con ID: " + notificacionId);
+            System.out.println("INFO: Correo destinatario: " + notificacion.getCorreoDestinatario());
+            
+            notificacionService.crearNotificacion(notificacion);
+            
+            System.out.println("INFO: Notificación de cancelación guardada exitosamente para la cita: " + cita.getId());
+        } catch (IOException e) {
+            System.err.println("ERROR: Error al generar notificación de cancelación para la cita " + cita.getId() + ": " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Genera una notificación automática para el especialista cuando se cancela una cita
+     * 
+     * @param cita La cita que se acaba de cancelar
+     */
+    private void generarNotificacionCancelacionCitaParaEspecialista(Cita cita) {
+        try {
+            System.out.println("INFO: Iniciando generación de notificación de cancelación para el especialista: " + cita.getEspecialista());
+            
+            Optional<String> correoEspecialista = perfilService.obtenerCorreoEspecialistaPorNombre(cita.getEspecialista());
+            
+            if (correoEspecialista.isEmpty()) {
+                System.err.println("ADVERTENCIA: No se encontró el correo del especialista: " + cita.getEspecialista());
+                return;
+            }
+            
+            System.out.println("INFO: Correo del especialista: " + correoEspecialista.get());
+            
+            String notificacionId = "NOTIF-ESP-CAN-" + System.currentTimeMillis() + "-" + cita.getId().substring(5);
+            
+            LocalDateTime ahora = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            String fechaEnvio = ahora.format(formatter);
+            
+            String asunto = "Cancelación de cita - " + cita.getPacienteNombre();
+            
+            String mensaje = String.format(
+                "Estimado/a Dr./Dra. %s,\n\n" +
+                "Se ha cancelado una cita en su agenda:\n\n" +
+                "DETALLES DE LA CITA CANCELADA:\n" +
+                "Paciente: %s\n" +
+                "Fecha: %s\n" +
+                "Hora: %s\n" +
+                "Motivo de consulta: %s\n" +
+                "Teléfono del paciente: %s\n\n" +
+                "Por favor, tome nota de que esta cita ha sido eliminada de su agenda.\n\n" +
+                "Saludos cordiales,\n" +
+                "Sistema de Gestión de Citas",
+                cita.getEspecialista(),
+                cita.getPacienteNombre(),
+                cita.getFecha(),
+                cita.getHora(),
+                cita.getRazonConsulta(),
+                cita.getPacienteTelefono()
+            );
+            
+            Notificacion notificacion = new Notificacion(
+                notificacionId,
+                fechaEnvio,
+                asunto,
+                "Sistema de Gestión de Citas",
+                mensaje,
+                correoEspecialista.get()
+            );
+            
+            System.out.println("INFO: Notificación de cancelación para especialista creada con ID: " + notificacionId);
+            System.out.println("INFO: Correo destinatario: " + notificacion.getCorreoDestinatario());
+            
+            notificacionService.crearNotificacion(notificacion);
+            
+            System.out.println("INFO: Notificación de cancelación para especialista guardada exitosamente para la cita: " + cita.getId());
+        } catch (IOException e) {
+            System.err.println("ERROR: Error al generar notificación de cancelación para el especialista " + cita.getEspecialista() + ": " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     public void guardarCitasAJson(List<Cita> citas) throws IOException {
         // Sobrescribe el archivo con los datos actuales en base_de_datos/citas.json
         objectMapper.writerWithDefaultPrettyPrinter().writeValue(citasPath.toFile(), citas);
@@ -409,11 +533,19 @@ public class CitasService {
 
     public boolean cancelarCita(String citaId) throws IOException {
         List<Cita> citas = obtenerCitas();
-        boolean removed = citas.removeIf(cita -> cita.getId().equals(citaId));
-        if (removed) {
-            guardarCitasAJson(citas);
+        
+        for (Cita cita : citas) {
+            if (cita.getId().equals(citaId)) {
+                cita.setEstado("cancelada");
+                guardarCitasAJson(citas);
+                
+                generarNotificacionCancelacionCita(cita);
+                generarNotificacionCancelacionCitaParaEspecialista(cita);
+                
+                return true;
+            }
         }
-        return removed;
+        return false;
     }
 
     public List<Cita> obtenerCitasPorPaciente(String correoElectronico) throws IOException {
@@ -516,6 +648,22 @@ public class CitasService {
         return citaOcupada.isEmpty();
     }
 
+    public List<Cita> obtenerCitasDelEspecialista(String nombreEspecialista, String cedulaEspecialista) throws IOException {
+        System.out.println("INFO: Buscando citas para especialista: " + nombreEspecialista + " (Cédula: " + cedulaEspecialista + ")");
+        
+        List<Cita> todasLasCitas = obtenerCitas();
+        
+        List<Cita> citasEspecialista = todasLasCitas.stream()
+                .filter(cita -> {
+                    boolean coincideNombre = cita.getEspecialista() != null && cita.getEspecialista().equalsIgnoreCase(nombreEspecialista);
+                    boolean coincideCedula = cita.getCedulaEspecialista() != null && cita.getCedulaEspecialista().equals(cedulaEspecialista);
+                    return coincideNombre || coincideCedula;
+                })
+                .toList();
+        
+        System.out.println("INFO: Se encontraron " + citasEspecialista.size() + " citas para el especialista");
+        return citasEspecialista;
+    }
 
 }
 

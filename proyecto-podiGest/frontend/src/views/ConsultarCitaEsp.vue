@@ -47,7 +47,8 @@ async function cargarCitasEspecialista() {
       throw new Error(response.status === 401 ? "Tu sesión ha expirado o no tienes permisos." : errorText || "Error al cargar citas.");
     }
 
-    citas.value = await response.json();
+    const allCitas = await response.json();
+    citas.value = allCitas.filter((cita: any) => cita.estado && cita.estado.toLowerCase() === 'pendiente');
 
   } catch (error: any) {
     console.error("Error al cargar citas:", error.message);

@@ -1,9 +1,9 @@
 [ {
-  "cedula" : "V-1234567",
-  "nombre" : "LEITO",
-  "apellido" : "COSMICO",
-  "fechaNacimiento" : [ 2006, 11, 23 ],
-  "correoElectronico" : "123@1.com",
-  "contrasenia" : "12345",
-  "rol" : "paciente"
+  "cedula" : "127861",
+  "nombre" : "Elsee",
+  "apellido" : "Aguilar",
+  "fechaNacimiento" : [ 1978, 9, 27 ],
+  "correoElectronico" : "elsee@gmail.com",
+  "contrasenia" : "123",
+  "rol" : "especialista"
 } ]

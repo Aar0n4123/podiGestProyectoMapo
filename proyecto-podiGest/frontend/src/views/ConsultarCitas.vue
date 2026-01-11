@@ -256,7 +256,7 @@ export default defineComponent({
                 class="w-full p-3 border rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
               >
                 <option value="">Todos los especialistas</option>
-                <option v-for="esp in especialistas" :key="esp.correoElectronico" :value="esp.nombre">
+                <option v-for="esp in especialistas" :key="esp.correoElectronico" :value="`${esp.nombre} ${esp.apellido}`">
                   {{ esp.nombre }} {{ esp.apellido }}
                 </option>
               </select>

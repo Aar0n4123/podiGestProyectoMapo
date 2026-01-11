@@ -152,19 +152,19 @@
   "fecha" : "2026-01-21",
   "hora" : "15:00",
   "razonConsulta" : "nnn",
-  "estado" : "pendiente",
+  "estado" : "cancelada",
   "fechaCreacion" : "2026-01-09T05:03:08.619Z"
 }, {
-  "id" : "CITA-1768079948099-9lc9z91sk",
+  "id" : "CITA-1768155128543-aou6253wj",
   "pacienteNombre" : "LEITO COSMICO",
   "pacienteCorreo" : "123@1.com",
-  "pacienteTelefono" : "987897423",
-  "especialista" : "Elsee",
-  "cedulaEspecialista" : "",
+  "pacienteTelefono" : "8888",
+  "especialista" : "Elsee Aguilar",
+  "cedulaEspecialista" : "127861",
   "especialidadBuscada" : "",
-  "fecha" : "2026-01-14",
+  "fecha" : "2026-01-12",
   "hora" : "08:00",
-  "razonConsulta" : "ayuuuda",
+  "razonConsulta" : "sera?",
   "estado" : "pendiente",
-  "fechaCreacion" : "2026-01-10T21:19:08.099Z"
+  "fechaCreacion" : "2026-01-11T18:12:08.543Z"
 } ]

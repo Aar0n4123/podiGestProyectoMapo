@@ -16,6 +16,7 @@ import ConsultarCitaEsp from '../views/ConsultarCitaEsp.vue'
 import ModificarCitaAgendada from '../views/ModificarCitaAgendada.vue'
 import ModificarMisCitas from '../views/ModificarMisCitas.vue'
 import HistorialCitas from '../views/HistorialCitas.vue'
+import HistorialCitasEspecialista from '../views/HistorialCitasEspecialista.vue'
 import CancelarCitas from '../views/CancelarCitas.vue'
 import PodologiaGeneral from '../views/PodologiaGeneral.vue'
 import PodologiaPediatrica from '../views/PodologiaPediatrica.vue'
@@ -85,6 +86,11 @@ const routes = [
         path: '/historial-citas',
         name: 'historial-citas',
         component: HistorialCitas
+    },
+    {
+        path: '/historial-citas-especialista',
+        name: 'historial-citas-especialista',
+        component: HistorialCitasEspecialista
     },
     {
         path: '/cancelar-citas',
