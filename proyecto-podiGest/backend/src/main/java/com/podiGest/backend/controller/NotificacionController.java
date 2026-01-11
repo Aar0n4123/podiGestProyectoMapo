@@ -395,4 +395,17 @@ public class NotificacionController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @PostMapping("/procesar-recordatorios-test")
+    public ResponseEntity<?> procesarRecordatoriosTest() {
+        try {
+            System.out.println("\n========== TEST MANUAL DE RECORDATORIOS ==========");
+            notificacionService.procesarRecordatoriosPendientes();
+            System.out.println("========== FIN TEST MANUAL ==========\n");
+            return ResponseEntity.ok().body("Recordatorios procesados manualmente");
+        } catch (IOException e) {
+            System.err.println("Error al procesar recordatorios: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Error: " + e.getMessage());
+        }
+    }
 }

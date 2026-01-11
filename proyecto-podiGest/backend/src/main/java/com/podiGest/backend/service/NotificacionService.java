@@ -9,9 +9,12 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class NotificacionService {
@@ -280,5 +283,93 @@ public class NotificacionService {
                 .stream()
                 .filter(notificacion -> notificacion.isTieneRecordatorio() && notificacion.isRecordatorioActivo())
                 .toList();
+    }
+
+    private LocalDateTime parsearFecha(String fechaString) throws Exception {
+        if (fechaString == null || fechaString.trim().isEmpty()) {
+            throw new IllegalArgumentException("La fecha no puede estar vacía");
+        }
+        
+        try {
+            return LocalDateTime.parse(fechaString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        } catch (Exception e1) {
+            try {
+                return LocalDateTime.parse(fechaString, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            } catch (Exception e2) {
+                try {
+                    return LocalDateTime.parse(fechaString + ":00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                } catch (Exception e3) {
+                    throw new IllegalArgumentException("Formato de fecha no válido: " + fechaString);
+                }
+            }
+        }
+    }
+
+    public void procesarRecordatoriosPendientes() throws IOException {
+        try {
+            System.out.println("INFO: [SCHEDULER] Verificando recordatorios pendientes...");
+            
+            List<Notificacion> notificaciones = new ArrayList<>(obtenerNotificaciones());
+            List<Notificacion> nuevosRecordatorios = new ArrayList<>();
+            LocalDateTime ahora = LocalDateTime.now();
+            DateTimeFormatter formatterOutput = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            boolean cambiosRealizados = false;
+            
+            System.out.println("INFO: [SCHEDULER] Hora actual: " + ahora.format(formatterOutput));
+            System.out.println("INFO: [SCHEDULER] Total de notificaciones a verificar: " + notificaciones.size());
+            
+            for (int i = 0; i < notificaciones.size(); i++) {
+                Notificacion notificacion = notificaciones.get(i);
+                
+                if (notificacion != null && notificacion.isTieneRecordatorio() && notificacion.isRecordatorioActivo()) {
+                    System.out.println("INFO: [SCHEDULER] Notificación con recordatorio activo encontrada: " + notificacion.getId());
+                    System.out.println("INFO: [SCHEDULER] Fecha del recordatorio: " + notificacion.getFechaRecordatorio());
+                    
+                    try {
+                        LocalDateTime fechaRecordatorio = parsearFecha(notificacion.getFechaRecordatorio());
+                        System.out.println("INFO: [SCHEDULER] Fecha parseada: " + fechaRecordatorio.format(formatterOutput));
+                        System.out.println("INFO: [SCHEDULER] ¿Ha llegado la fecha? " + (ahora.isAfter(fechaRecordatorio) || ahora.isEqual(fechaRecordatorio)));
+                        
+                        if (ahora.isAfter(fechaRecordatorio) || ahora.isEqual(fechaRecordatorio)) {
+                            System.out.println("INFO: [SCHEDULER] ¡¡¡ LA FECHA DEL RECORDATORIO HA LLEGADO para la notificación " + notificacion.getId() + " !!!");
+                            
+                            Notificacion recordatorio = new Notificacion();
+                            recordatorio.setId("REMINDER-" + UUID.randomUUID().toString());
+                            recordatorio.setFechaEnvio(ahora.format(formatterOutput));
+                            recordatorio.setAsunto("[RECORDATORIO] " + (notificacion.getAsunto() != null ? notificacion.getAsunto() : "Sin asunto"));
+                            recordatorio.setRemitente(notificacion.getRemitente() != null ? notificacion.getRemitente() : "Sistema");
+                            recordatorio.setMensaje("RECORDATORIO: " + (notificacion.getMensaje() != null ? notificacion.getMensaje() : ""));
+                            recordatorio.setCorreoDestinatario(notificacion.getCorreoDestinatario());
+                            recordatorio.setSilenciada(false);
+                            recordatorio.setTieneRecordatorio(false);
+                            recordatorio.setRecordatorioActivo(false);
+                            
+                            nuevosRecordatorios.add(recordatorio);
+                            System.out.println("INFO: [SCHEDULER] Nueva notificación recordatorio creada con ID: " + recordatorio.getId());
+                            
+                            notificacion.setRecordatorioActivo(false);
+                            System.out.println("INFO: [SCHEDULER] Recordatorio de la notificación " + notificacion.getId() + " desactivado");
+                            
+                            cambiosRealizados = true;
+                        }
+                    } catch (Exception e) {
+                        System.err.println("ERROR: [SCHEDULER] No se pudo procesar recordatorio para notificación " + notificacion.getId() + ": " + e.getMessage());
+                    }
+                }
+            }
+            
+            if (cambiosRealizados) {
+                notificaciones.addAll(nuevosRecordatorios);
+                System.out.println("INFO: [SCHEDULER] Guardando " + notificaciones.size() + " notificaciones al archivo...");
+                guardarNotificacionesAJson(notificaciones);
+                System.out.println("INFO: [SCHEDULER] Cambios en notificaciones guardados exitosamente");
+            } else {
+                System.out.println("INFO: [SCHEDULER] No hay recordatorios pendientes para procesar");
+            }
+        } catch (Exception e) {
+            System.err.println("ERROR: [SCHEDULER] Error general en procesarRecordatoriosPendientes: " + e.getMessage());
+            e.printStackTrace();
+            throw new IOException(e);
+        }
     }
 }

@@ -86,4 +86,12 @@
   "correoElectronico" : "p@gmail.com",
   "contrasenia" : "12345",
   "rol" : "paciente"
+}, {
+  "cedula" : "123456789",
+  "nombre" : "Aaron",
+  "apellido" : "Rojas",
+  "fechaNacimiento" : [ 2002, 2, 22 ],
+  "correoElectronico" : "a@e",
+  "contrasenia" : "12345",
+  "rol" : "paciente"
 } ]

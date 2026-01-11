@@ -154,4 +154,17 @@
   "razonConsulta" : "nnn",
   "estado" : "pendiente",
   "fechaCreacion" : "2026-01-09T05:03:08.619Z"
+}, {
+  "id" : "CITA-1768079948099-9lc9z91sk",
+  "pacienteNombre" : "LEITO COSMICO",
+  "pacienteCorreo" : "123@1.com",
+  "pacienteTelefono" : "987897423",
+  "especialista" : "Elsee",
+  "cedulaEspecialista" : "",
+  "especialidadBuscada" : "",
+  "fecha" : "2026-01-14",
+  "hora" : "08:00",
+  "razonConsulta" : "ayuuuda",
+  "estado" : "pendiente",
+  "fechaCreacion" : "2026-01-10T21:19:08.099Z"
 } ]

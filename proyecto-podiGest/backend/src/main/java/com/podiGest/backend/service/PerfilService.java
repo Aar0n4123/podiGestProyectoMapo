@@ -94,12 +94,39 @@ public class PerfilService {
         return Period.between(fechaNacimiento, LocalDate.now()).getYears() >= 18;
     }
 
+    public boolean esNombreValido(String nombre) {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            return false;
+        }
+        return nombre.matches("^[a-zA-ZáéíóúÁÉÍÓÚ\\s]+$");
+    }
+
+    public boolean esCedulaValida(String cedula) {
+        if (cedula == null || cedula.trim().isEmpty()) {
+            return false;
+        }
+        return cedula.matches("^[0-9]+$");
+    }
+
     // metodo guarda en el archivo JSON
     public Usuario guardarUsuario(Usuario nuevoUsuario) throws IOException {
         if (!esMayorDeEdad(nuevoUsuario.getFechaNacimiento())) {
 
             throw new IllegalArgumentException("El usuario debe ser mayor de edad (18 años) para registrarse.");
         }
+
+        if (!esNombreValido(nuevoUsuario.getNombre())) {
+            throw new IllegalArgumentException("El nombre solo debe contener letras y espacios.");
+        }
+
+        if (!esNombreValido(nuevoUsuario.getApellido())) {
+            throw new IllegalArgumentException("El apellido solo debe contener letras y espacios.");
+        }
+
+        if (!esCedulaValida(nuevoUsuario.getCedula())) {
+            throw new IllegalArgumentException("La cédula solo debe contener números.");
+        }
+
         nuevoUsuario.setRol("paciente");
         listaUsuarios.add(nuevoUsuario);
         guardarUsuariosAJson(listaUsuarios, USUARIOS_JSON_FILE);
