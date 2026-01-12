@@ -24,8 +24,6 @@ const cargando = ref<boolean>(true);
 // --- LÓGICA DE FECHAS ---
 const formatFecha = (fechaString: string | null | undefined): string => {
   if (!fechaString) return 'Fecha no disponible';
-  // Si viene como lista [1990, 1, 1], el JSON.stringify lo convierte a string o hay que manejarlo.
-  // Pero asumiendo que tu backend lo manda como string "YYYY-MM-DD" o similar:
   const parts = fechaString.split('-');
   if (parts.length !== 3) return fechaString;
   const monthNames = [
@@ -103,8 +101,29 @@ const cancelarConfirmacion = () => {
   mostrarConfirmacion.value = false;
 };
 
+// --- AQUÍ ESTÁ LA MAGIA NUEVA (Validación Edad + Error Backend) ---
 const guardarCambios = async () => {
   if (!usuarioEditado.value) return;
+
+  // 1. VALIDACIÓN VISUAL DE EDAD
+  if (usuarioEditado.value.fechaNacimiento) {
+    const fechaNac = new Date(usuarioEditado.value.fechaNacimiento);
+    const hoy = new Date();
+
+    // Cálculo exacto de edad
+    let edad = hoy.getFullYear() - fechaNac.getFullYear();
+    const mes = hoy.getMonth() - fechaNac.getMonth();
+
+    // Si no ha cumplido años todavía en este mes/día, restamos 1
+    if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
+      edad--;
+    }
+
+    if (edad < 18) {
+      alert(" Acción denegada:\nNo puedes colocar una fecha de nacimiento que indique que eres menor de edad (Menos de 18 años).");
+      return; // DETIENE TODO AQUÍ
+    }
+  }
 
   try {
     const response = await fetch("http://localhost:8080/api/usuarios", {
@@ -120,31 +139,29 @@ const guardarCambios = async () => {
       mostrarConfirmacion.value = false;
       alert("¡Perfil actualizado con éxito!");
     } else {
-      alert("Error al actualizar el perfil.");
+      // 2. LEER ERROR DEL BACKEND (Ej: Correo duplicado)
+      const mensajeError = await response.text();
+      alert(" No se pudo actualizar:\n" + mensajeError);
     }
   } catch (error) {
     console.error(error);
-    alert("No se pudo conectar con el servidor.");
+    alert("Error de conexión. No se pudo conectar con el servidor.");
   }
 };
 
-// --- LÓGICA PARA ELIMINAR PERFIL (NUEVO) ---
+// --- LÓGICA PARA ELIMINAR PERFIL ---
 const eliminarPerfil = async () => {
-  // 1. Preguntar confirmación
   if(!confirm("¿Estás SEGURO de que deseas eliminar tu cuenta? \n\nEsta acción borrará tus datos permanentemente y no se puede deshacer.")) {
     return;
   }
 
   try {
-    // 2. Hacer la petición DELETE al backend
     const response = await fetch("http://localhost:8080/api/usuarios", {
       method: 'DELETE'
     });
 
-    // 3. Verificar respuesta
     if (response.ok) {
       alert("Tu cuenta ha sido eliminada correctamente.");
-      // 4. Redirigir al Login
       window.location.href = "/";
     } else {
       const textoError = await response.text();
@@ -275,13 +292,13 @@ const eliminarPerfil = async () => {
           </p>
         </div>
         <div class="flex gap-4 mt-8">
-          <button 
+          <button
             @click="cancelarConfirmacion"
             class="flex-1 px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition-colors"
           >
             Cancelar
           </button>
-          <button 
+          <button
             @click="guardarCambios"
             class="flex-1 px-4 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition-colors shadow-md"
           >

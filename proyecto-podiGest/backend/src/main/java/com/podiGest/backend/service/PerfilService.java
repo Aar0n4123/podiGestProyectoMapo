@@ -229,7 +229,7 @@ public class PerfilService {
 
 
     // -------------------------------------------------------------------
-    // MÉTODO DEFINITIVO: ACTUALIZA DATOS (INCLUYE CONTRASEÑA) - CÉDULA FIJA
+    // MÉTODO DEFINITIVO: ACTUALIZA DATOS (CON VALIDACIONES DE EDAD Y CORREO)
     // -------------------------------------------------------------------
     public Usuario actualizarPerfil(Usuario usuarioConDatosNuevos) throws IOException {
 
@@ -240,12 +240,23 @@ public class PerfilService {
             throw new IOException("No se puede actualizar: No hay sesión activa.");
         }
 
-        // Esta es la cédula intocable. Usamos la de la sesión, no la que viene del front
         String cedulaFija = sesionActual.get().getCedula();
+        usuarioConDatosNuevos.setCedula(cedulaFija); // Protegemos la cédula
 
-        // POR SEGURIDAD: Forzamos a que el objeto nuevo tenga la cédula original.
-        // Así, aunque alguien intente trucar el frontend, el backend protege el ID.
-        usuarioConDatosNuevos.setCedula(cedulaFija);
+        // --- VALIDACIÓN 1: MAYOR DE EDAD ---
+        if (!esMayorDeEdad(usuarioConDatosNuevos.getFechaNacimiento())) {
+            throw new IllegalArgumentException("Fecha inválida: Debes ser mayor de 18 años.");
+        }
+
+        // --- VALIDACIÓN 2: CORREO DUPLICADO ---
+        // Buscamos si ALGUIEN MÁS (que no sea yo) ya tiene ese correo
+        boolean correoOcupado = listaUsuarios.stream()
+                .anyMatch(u -> u.getCorreoElectronico().equalsIgnoreCase(usuarioConDatosNuevos.getCorreoElectronico())
+                        && !u.getCedula().equals(cedulaFija)); // Importante: Que no sea mi propia cédula
+
+        if (correoOcupado) {
+            throw new IllegalArgumentException("El correo electrónico ya está registrado por otro usuario.");
+        }
 
         boolean encontrado = false;
         int indiceEncontrado = -1;
@@ -253,7 +264,6 @@ public class PerfilService {
         // 2. Buscamos al usuario en la lista general para actualizarlo
         for (int i = 0; i < listaUsuarios.size(); i++) {
             Usuario u = listaUsuarios.get(i);
-
             if (u.getCedula().equals(cedulaFija)) {
                 indiceEncontrado = i;
                 encontrado = true;
@@ -265,36 +275,27 @@ public class PerfilService {
             throw new IOException("Error: El usuario no se encuentra en la base de datos.");
         }
 
-        // 3. Reemplazamos SOLO el usuario encontrado con el nuevo
+        // 3. Reemplazamos SOLO el usuario encontrado
         listaUsuarios.set(indiceEncontrado, usuarioConDatosNuevos);
 
-        // 4. IMPORTANTE: Eliminar duplicados por cédula (en caso de haberlos)
-        // Esto previene que se creen múltiples registros con la misma cédula
+        // 4. Limpieza de duplicados por seguridad
         List<Usuario> sinDuplicados = new ArrayList<>();
         java.util.Set<String> cedulasVistas = new java.util.HashSet<>();
-        
         for (Usuario u : listaUsuarios) {
             if (!cedulasVistas.contains(u.getCedula())) {
                 sinDuplicados.add(u);
                 cedulasVistas.add(u.getCedula());
             }
         }
-        
         listaUsuarios = sinDuplicados;
 
-        // 5. Guardamos los cambios en el JSON general (sin duplicados)
+        // 5. Guardamos cambios
         guardarUsuariosAJson(listaUsuarios, USUARIOS_JSON_FILE);
-
-        // 6. Actualizamos la sesión con los datos nuevos (para que se vea el cambio al instante)
         guardarUsuarioSesion(usuarioConDatosNuevos);
-        
-        // 7. Si es un especialista, actualizar sus citas con su cedula
+
+        // 6. Actualizar citas si es especialista
         if (usuarioConDatosNuevos.getRol() != null && "especialista".equalsIgnoreCase(usuarioConDatosNuevos.getRol())) {
-            try {
-                actualizarCitasEspecialista(cedulaFija, usuarioConDatosNuevos);
-            } catch (IOException e) {
-                System.err.println("ADVERTENCIA: No se pudieron actualizar las citas del especialista: " + e.getMessage());
-            }
+            actualizarCitasEspecialista(cedulaFija, usuarioConDatosNuevos);
         }
 
         return usuarioConDatosNuevos;

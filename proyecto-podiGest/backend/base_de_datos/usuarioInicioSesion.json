@@ -1,9 +1,9 @@
 [ {
-  "cedula" : "127861",
-  "nombre" : "Elsee",
-  "apellido" : "Aguilar",
-  "fechaNacimiento" : [ 1978, 9, 27 ],
-  "correoElectronico" : "elsee@gmail.com",
-  "contrasenia" : "123",
-  "rol" : "especialista"
+  "cedula" : "127862",
+  "nombre" : "Victoria",
+  "apellido" : "Carmona",
+  "fechaNacimiento" : [ 1999, 9, 27 ],
+  "correoElectronico" : "victoria@gmail.com",
+  "contrasenia" : "v123",
+  "rol" : "paciente"
 } ]

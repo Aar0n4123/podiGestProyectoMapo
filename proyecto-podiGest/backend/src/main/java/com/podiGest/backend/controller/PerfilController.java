@@ -118,14 +118,20 @@ public class PerfilController {
 
 
     // -------------------------------------------------------------------
-    // NUEVO ENDPOINT: SPRINT 2 - MODIFICAR PERFIL
+    // NUEVO ENDPOINT: SPRINT 2 - MODIFICAR PERFIL (MEJORADO)
     // -------------------------------------------------------------------
     @PutMapping
     public ResponseEntity<?> actualizarPerfil(@RequestBody Usuario usuarioModificado) {
         try {
-            // Llamamos al servicio que acabamos de crear
             Usuario actualizado = usuarioService.actualizarPerfil(usuarioModificado);
             return ResponseEntity.ok(actualizado);
+
+        } catch (IllegalArgumentException e) {
+            // AQUÍ ATRAPAMOS LOS ERRORES DE VALIDACIÓN (Edad o Correo)
+            // Y devolvemos un código 400 (Bad Request) con el mensaje exacto
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
 
         } catch (IOException e) {
             System.err.println("Error al actualizar perfil: " + e.getMessage());
