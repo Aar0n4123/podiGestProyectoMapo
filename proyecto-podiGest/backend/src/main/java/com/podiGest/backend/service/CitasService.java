@@ -582,6 +582,11 @@ public class CitasService {
             if (citas.get(i).getId().equals(citaId)) {
                 Cita citaOriginal = citas.get(i);
 
+                // VALIDACIÓN: No se puede modificar una cita cancelada
+                if ("cancelada".equalsIgnoreCase(citaOriginal.getEstado())) {
+                    throw new IllegalStateException("No se puede modificar una cita que ya ha sido cancelada.");
+                }
+
                 // Guardar los valores anteriores para la notificación
                 String fechaAnterior = citaOriginal.getFecha();
                 String horaAnterior = citaOriginal.getHora();

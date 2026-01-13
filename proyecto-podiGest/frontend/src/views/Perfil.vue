@@ -72,6 +72,11 @@ onMounted(() => {
 
 const editando = ref(false);
 const mostrarConfirmacion = ref(false);
+const erroresValidacion = ref({
+  nombre: '',
+  apellido: ''
+});
+
 const usuarioEditado = ref<Usuario>({
   cedula: '',
   nombre: '',
@@ -82,18 +87,45 @@ const usuarioEditado = ref<Usuario>({
   rol: ''
 });
 
+const esSoloLetras = (texto: string) => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/.test(texto);
+
+const validarNombre = () => {
+  if (!esSoloLetras(usuarioEditado.value.nombre)) {
+    erroresValidacion.value.nombre = 'Los números y caracteres especiales no están permitidos';
+  } else {
+    erroresValidacion.value.nombre = '';
+  }
+};
+
+const validarApellido = () => {
+  if (!esSoloLetras(usuarioEditado.value.apellido)) {
+    erroresValidacion.value.apellido = 'Los números y caracteres especiales no están permitidos';
+  } else {
+    erroresValidacion.value.apellido = '';
+  }
+};
+
 const activarEdicion = () => {
   if (usuario.value) {
     usuarioEditado.value = { ...usuario.value };
     editando.value = true;
+    erroresValidacion.value = { nombre: '', apellido: '' };
   }
 };
 
 const cancelarEdicion = () => {
   editando.value = false;
+  erroresValidacion.value = { nombre: '', apellido: '' };
 };
 
 const confirmarGuardado = () => {
+  validarNombre();
+  validarApellido();
+  
+  if (erroresValidacion.value.nombre || erroresValidacion.value.apellido) {
+    alert("No se pueden guardar los cambios:\n" + (erroresValidacion.value.nombre || erroresValidacion.value.apellido));
+    return;
+  }
   mostrarConfirmacion.value = true;
 };
 
@@ -217,7 +249,15 @@ const eliminarPerfil = async () => {
                 <span class="font-semibold text-blue-500 w-full md:w-1/3">Nombre:</span>
                 <div class="w-full md:w-2/3">
                   <span v-if="!editando" class="text-gray-800">{{ usuario.nombre }}</span>
-                  <input v-else v-model="usuarioEditado.nombre" type="text" class="w-full p-2 border border-blue-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                  <div v-else class="w-full">
+                    <input 
+                      v-model="usuarioEditado.nombre" 
+                      @input="validarNombre" 
+                      type="text" 
+                      :class="['w-full p-2 border rounded focus:outline-none focus:ring-2', erroresValidacion.nombre ? 'border-red-500 focus:ring-red-500' : 'border-blue-300 focus:ring-blue-500']" 
+                    />
+                    <p v-if="erroresValidacion.nombre" class="text-red-500 text-xs mt-1">{{ erroresValidacion.nombre }}</p>
+                  </div>
                 </div>
               </div>
 
@@ -225,7 +265,15 @@ const eliminarPerfil = async () => {
                 <span class="font-semibold text-blue-500 w-full md:w-1/3">Apellido:</span>
                 <div class="w-full md:w-2/3">
                   <span v-if="!editando" class="text-gray-800">{{ usuario.apellido }}</span>
-                  <input v-else v-model="usuarioEditado.apellido" type="text" class="w-full p-2 border border-blue-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                  <div v-else class="w-full">
+                    <input 
+                      v-model="usuarioEditado.apellido" 
+                      @input="validarApellido" 
+                      type="text" 
+                      :class="['w-full p-2 border rounded focus:outline-none focus:ring-2', erroresValidacion.apellido ? 'border-red-500 focus:ring-red-500' : 'border-blue-300 focus:ring-blue-500']" 
+                    />
+                    <p v-if="erroresValidacion.apellido" class="text-red-500 text-xs mt-1">{{ erroresValidacion.apellido }}</p>
+                  </div>
                 </div>
               </div>
 
@@ -233,7 +281,12 @@ const eliminarPerfil = async () => {
                 <span class="font-semibold text-blue-500 w-full md:w-1/3">Correo:</span>
                 <div class="w-full md:w-2/3">
                   <span v-if="!editando" class="text-gray-800">{{ usuario.correoElectronico }}</span>
-                  <input v-else v-model="usuarioEditado.correoElectronico" type="email" class="w-full p-2 border border-blue-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                  <div v-else class="flex items-center">
+                    <span class="text-gray-800 font-bold opacity-70 cursor-not-allowed" title="El correo no se puede modificar">
+                      {{ usuario.correoElectronico }}
+                    </span>
+                    <span class="text-xs text-red-400 ml-2">(No editable)</span>
+                  </div>
                 </div>
               </div>
 
@@ -255,6 +308,9 @@ const eliminarPerfil = async () => {
 
               <div class="flex justify-end gap-4 mt-6 pt-4 border-t border-gray-200">
                 <template v-if="!editando">
+                  <button v-if="usuario.rol === 'paciente'" @click="$router.push('/mis-citas')" class="px-6 py-2 bg-green-100 text-green-600 font-semibold rounded-lg hover:bg-green-200 transition-colors">
+                    Gestionar Mis Citas
+                  </button>
                   <button @click="eliminarPerfil" class="px-6 py-2 bg-red-100 text-red-600 font-semibold rounded-lg hover:bg-red-200 transition-colors">
                     Eliminar Perfil
                   </button>

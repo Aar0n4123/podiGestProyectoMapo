@@ -548,4 +548,202 @@
   "tieneRecordatorio" : false,
   "fechaRecordatorio" : null,
   "recordatorioActivo" : false
-}]
+}, {
+  "id" : "NOTIF-1768284305556-1768284305541-kgf15mu10",
+  "fechaEnvio" : "2026-01-13T02:05:05",
+  "asunto" : "Confirmación de cita agendada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a prueba hershey,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Elsee Aguilar\nFecha: 2026-01-14\nHora: 08:00\nMotivo: lkhhkj\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
+  "correoDestinatario" : "pr@m",
+  "silenciada" : false,
+  "tieneRecordatorio" : false,
+  "fechaRecordatorio" : null,
+  "recordatorioActivo" : false
+}, {
+  "id" : "NOTIF-ESP-1768284305566-1768284305541-kgf15mu10",
+  "fechaEnvio" : "2026-01-13T02:05:05",
+  "asunto" : "Nueva cita agendada - prueba hershey",
+  "remitente" : "Sistema de Gestión de Citas",
+  "mensaje" : "Estimado/a Dr./Dra. Elsee Aguilar,\n\nSe ha agendado una nueva cita con usted:\n\nPaciente: prueba hershey\nFecha: 2026-01-14\nHora: 08:00\nMotivo de consulta: lkhhkj\nTeléfono del paciente: 999999\n\nPor favor, revise su agenda y prepárese para la consulta.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
+  "correoDestinatario" : "elsee@gmail.com",
+  "silenciada" : false,
+  "tieneRecordatorio" : false,
+  "fechaRecordatorio" : null,
+  "recordatorioActivo" : false
+}, {
+  "id" : "NOTIF-CAN-1768284345838-1768284305541-kgf15mu10",
+  "fechaEnvio" : "2026-01-13T02:05:45",
+  "asunto" : "Cancelación de cita",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a prueba hershey,\n\nLe informamos que su cita ha sido cancelada.\n\nDETALLES DE LA CITA CANCELADA:\nEspecialista: Elsee Aguilar\nFecha: 2026-01-14\nHora: 08:00\nMotivo: lkhhkj\n\nSi desea agendar una nueva cita, puede hacerlo a través de nuestro sistema.\nSi tiene alguna duda o necesita asistencia, no dude en contactarnos.\n\nGracias por su comprensión.",
+  "correoDestinatario" : "pr@m",
+  "silenciada" : false,
+  "tieneRecordatorio" : false,
+  "fechaRecordatorio" : null,
+  "recordatorioActivo" : false
+}, {
+  "id" : "NOTIF-ESP-CAN-1768284345846-1768284305541-kgf15mu10",
+  "fechaEnvio" : "2026-01-13T02:05:45",
+  "asunto" : "Cancelación de cita - prueba hershey",
+  "remitente" : "Sistema de Gestión de Citas",
+  "mensaje" : "Estimado/a Dr./Dra. Elsee Aguilar,\n\nSe ha cancelado una cita en su agenda:\n\nDETALLES DE LA CITA CANCELADA:\nPaciente: prueba hershey\nFecha: 2026-01-14\nHora: 08:00\nMotivo de consulta: lkhhkj\nTeléfono del paciente: 999999\n\nPor favor, tome nota de que esta cita ha sido eliminada de su agenda.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
+  "correoDestinatario" : "elsee@gmail.com",
+  "silenciada" : false,
+  "tieneRecordatorio" : false,
+  "fechaRecordatorio" : null,
+  "recordatorioActivo" : false
+}, {
+  "id" : "NOTIF-1768284453328-1768284453326-7yxpkveq5",
+  "fechaEnvio" : "2026-01-13T02:07:33",
+  "asunto" : "Confirmación de cita agendada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a prueba hershey,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Elsee Aguilar\nFecha: 2026-01-14\nHora: 09:00\nMotivo: jj\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
+  "correoDestinatario" : "pr@m",
+  "silenciada" : false,
+  "tieneRecordatorio" : false,
+  "fechaRecordatorio" : null,
+  "recordatorioActivo" : false
+}, {
+  "id" : "NOTIF-ESP-1768284453330-1768284453326-7yxpkveq5",
+  "fechaEnvio" : "2026-01-13T02:07:33",
+  "asunto" : "Nueva cita agendada - prueba hershey",
+  "remitente" : "Sistema de Gestión de Citas",
+  "mensaje" : "Estimado/a Dr./Dra. Elsee Aguilar,\n\nSe ha agendado una nueva cita con usted:\n\nPaciente: prueba hershey\nFecha: 2026-01-14\nHora: 09:00\nMotivo de consulta: jj\nTeléfono del paciente: 99\n\nPor favor, revise su agenda y prepárese para la consulta.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
+  "correoDestinatario" : "elsee@gmail.com",
+  "silenciada" : false,
+  "tieneRecordatorio" : false,
+  "fechaRecordatorio" : null,
+  "recordatorioActivo" : false
+}, {
+  "id" : "NOTIF-1768284905012-1768284905001-e7hokv7bv",
+  "fechaEnvio" : "2026-01-13T02:15:05",
+  "asunto" : "Confirmación de cita agendada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a prueba hershey,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Marylyn Rojas\nFecha: 2026-01-14\nHora: 08:00\nMotivo: kjkj\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
+  "correoDestinatario" : "pr@m",
+  "silenciada" : false,
+  "tieneRecordatorio" : false,
+  "fechaRecordatorio" : null,
+  "recordatorioActivo" : false
+}, {
+  "id" : "NOTIF-ESP-1768284905024-1768284905001-e7hokv7bv",
+  "fechaEnvio" : "2026-01-13T02:15:05",
+  "asunto" : "Nueva cita agendada - prueba hershey",
+  "remitente" : "Sistema de Gestión de Citas",
+  "mensaje" : "Estimado/a Dr./Dra. Marylyn Rojas,\n\nSe ha agendado una nueva cita con usted:\n\nPaciente: prueba hershey\nFecha: 2026-01-14\nHora: 08:00\nMotivo de consulta: kjkj\nTeléfono del paciente: 222\n\nPor favor, revise su agenda y prepárese para la consulta.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
+  "correoDestinatario" : "Marylyn@gmail.com",
+  "silenciada" : false,
+  "tieneRecordatorio" : false,
+  "fechaRecordatorio" : null,
+  "recordatorioActivo" : false
+}, {
+  "id" : "NOTIF-1768285283620-1768285283609-cpl8u2rd1",
+  "fechaEnvio" : "2026-01-13T02:21:23",
+  "asunto" : "Confirmación de cita agendada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a ww hershey,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Marylyn Rojas\nFecha: 2026-01-14\nHora: 09:00\nMotivo: veamos\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
+  "correoDestinatario" : "pr@m",
+  "silenciada" : false,
+  "tieneRecordatorio" : false,
+  "fechaRecordatorio" : null,
+  "recordatorioActivo" : false
+}, {
+  "id" : "NOTIF-ESP-1768285283634-1768285283609-cpl8u2rd1",
+  "fechaEnvio" : "2026-01-13T02:21:23",
+  "asunto" : "Nueva cita agendada - ww hershey",
+  "remitente" : "Sistema de Gestión de Citas",
+  "mensaje" : "Estimado/a Dr./Dra. Marylyn Rojas,\n\nSe ha agendado una nueva cita con usted:\n\nPaciente: ww hershey\nFecha: 2026-01-14\nHora: 09:00\nMotivo de consulta: veamos\nTeléfono del paciente: 11111\n\nPor favor, revise su agenda y prepárese para la consulta.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
+  "correoDestinatario" : "Marylyn@gmail.com",
+  "silenciada" : false,
+  "tieneRecordatorio" : false,
+  "fechaRecordatorio" : null,
+  "recordatorioActivo" : false
+}, {
+  "id" : "NOTIF-CAN-1768285337430-1768284453326-7yxpkveq5",
+  "fechaEnvio" : "2026-01-13T02:22:17",
+  "asunto" : "Cancelación de cita",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a prueba hershey,\n\nLe informamos que su cita ha sido cancelada.\n\nDETALLES DE LA CITA CANCELADA:\nEspecialista: Elsee Aguilar\nFecha: 2026-01-14\nHora: 09:00\nMotivo: jj\n\nSi desea agendar una nueva cita, puede hacerlo a través de nuestro sistema.\nSi tiene alguna duda o necesita asistencia, no dude en contactarnos.\n\nGracias por su comprensión.",
+  "correoDestinatario" : "pr@m",
+  "silenciada" : false,
+  "tieneRecordatorio" : false,
+  "fechaRecordatorio" : null,
+  "recordatorioActivo" : false
+}, {
+  "id" : "NOTIF-ESP-CAN-1768285337439-1768284453326-7yxpkveq5",
+  "fechaEnvio" : "2026-01-13T02:22:17",
+  "asunto" : "Cancelación de cita - prueba hershey",
+  "remitente" : "Sistema de Gestión de Citas",
+  "mensaje" : "Estimado/a Dr./Dra. Elsee Aguilar,\n\nSe ha cancelado una cita en su agenda:\n\nDETALLES DE LA CITA CANCELADA:\nPaciente: prueba hershey\nFecha: 2026-01-14\nHora: 09:00\nMotivo de consulta: jj\nTeléfono del paciente: 99\n\nPor favor, tome nota de que esta cita ha sido eliminada de su agenda.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
+  "correoDestinatario" : "elsee@gmail.com",
+  "silenciada" : false,
+  "tieneRecordatorio" : false,
+  "fechaRecordatorio" : null,
+  "recordatorioActivo" : false
+}, {
+  "id" : "NOTIF-1768285943595-1768285943585-w5r05jduh",
+  "fechaEnvio" : "2026-01-13T02:32:23",
+  "asunto" : "Confirmación de cita agendada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a jj hershey,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Elsee Aguilar\nFecha: 2026-01-15\nHora: 08:00\nMotivo: veamos x2\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
+  "correoDestinatario" : "pr@m",
+  "silenciada" : false,
+  "tieneRecordatorio" : false,
+  "fechaRecordatorio" : null,
+  "recordatorioActivo" : false
+}, {
+  "id" : "NOTIF-ESP-1768285943609-1768285943585-w5r05jduh",
+  "fechaEnvio" : "2026-01-13T02:32:23",
+  "asunto" : "Nueva cita agendada - jj hershey",
+  "remitente" : "Sistema de Gestión de Citas",
+  "mensaje" : "Estimado/a Dr./Dra. Elsee Aguilar,\n\nSe ha agendado una nueva cita con usted:\n\nPaciente: jj hershey\nFecha: 2026-01-15\nHora: 08:00\nMotivo de consulta: veamos x2\nTeléfono del paciente: 22\n\nPor favor, revise su agenda y prepárese para la consulta.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
+  "correoDestinatario" : "elsee@gmail.com",
+  "silenciada" : false,
+  "tieneRecordatorio" : false,
+  "fechaRecordatorio" : null,
+  "recordatorioActivo" : false
+}, {
+  "id" : "NOTIF-CAN-1768285955469-1768285943585-w5r05jduh",
+  "fechaEnvio" : "2026-01-13T02:32:35",
+  "asunto" : "Cancelación de cita",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a jj hershey,\n\nLe informamos que su cita ha sido cancelada.\n\nDETALLES DE LA CITA CANCELADA:\nEspecialista: Elsee Aguilar\nFecha: 2026-01-15\nHora: 08:00\nMotivo: veamos x2\n\nSi desea agendar una nueva cita, puede hacerlo a través de nuestro sistema.\nSi tiene alguna duda o necesita asistencia, no dude en contactarnos.\n\nGracias por su comprensión.",
+  "correoDestinatario" : "pr@m",
+  "silenciada" : false,
+  "tieneRecordatorio" : false,
+  "fechaRecordatorio" : null,
+  "recordatorioActivo" : false
+}, {
+  "id" : "NOTIF-ESP-CAN-1768285955478-1768285943585-w5r05jduh",
+  "fechaEnvio" : "2026-01-13T02:32:35",
+  "asunto" : "Cancelación de cita - jj hershey",
+  "remitente" : "Sistema de Gestión de Citas",
+  "mensaje" : "Estimado/a Dr./Dra. Elsee Aguilar,\n\nSe ha cancelado una cita en su agenda:\n\nDETALLES DE LA CITA CANCELADA:\nPaciente: jj hershey\nFecha: 2026-01-15\nHora: 08:00\nMotivo de consulta: veamos x2\nTeléfono del paciente: 22\n\nPor favor, tome nota de que esta cita ha sido eliminada de su agenda.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
+  "correoDestinatario" : "elsee@gmail.com",
+  "silenciada" : false,
+  "tieneRecordatorio" : false,
+  "fechaRecordatorio" : null,
+  "recordatorioActivo" : false
+}, {
+  "id" : "NOTIF-MOD-1768285985885-1768285943585-w5r05jduh",
+  "fechaEnvio" : "2026-01-13T02:33:05",
+  "asunto" : "Modificación de cita - Información actualizada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a jj hershey,\n\nLe informamos que su cita ha sido modificada.\n\nINFORMACIÓN ANTERIOR:\nFecha: 2026-01-15\nHora: 08:00\n\nNUEVA INFORMACIÓN:\nEspecialista: Elsee Aguilar\nFecha: 2026-01-15\nHora: 08:00\nMotivo: veamos x2\n\nPor favor, tome nota de los nuevos datos y llegue 10 minutos antes de su cita.\nSi tiene alguna duda o necesita realizar cambios adicionales, comuníquese con nosotros.\n\nGracias por su comprensión.",
+  "correoDestinatario" : "pr@m",
+  "silenciada" : false,
+  "tieneRecordatorio" : false,
+  "fechaRecordatorio" : null,
+  "recordatorioActivo" : false
+}, {
+  "id" : "NOTIF-ESP-MOD-1768285985895-1768285943585-w5r05jduh",
+  "fechaEnvio" : "2026-01-13T02:33:05",
+  "asunto" : "Modificación de cita - jj hershey",
+  "remitente" : "Sistema de Gestión de Citas",
+  "mensaje" : "Estimado/a Dr./Dra. Elsee Aguilar,\n\nSe ha modificado una cita en su agenda:\n\nINFORMACIÓN ANTERIOR:\nFecha: 2026-01-15\nHora: 08:00\n\nNUEVA INFORMACIÓN:\nPaciente: jj hershey\nFecha: 2026-01-15\nHora: 08:00\nMotivo de consulta: veamos x2\nTeléfono del paciente: 22\n\nPor favor, tome nota de los cambios en su agenda.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
+  "correoDestinatario" : "elsee@gmail.com",
+  "silenciada" : false,
+  "tieneRecordatorio" : false,
+  "fechaRecordatorio" : null,
+  "recordatorioActivo" : false
+} ]

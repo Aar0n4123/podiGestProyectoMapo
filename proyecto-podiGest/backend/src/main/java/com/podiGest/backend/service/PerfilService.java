@@ -241,11 +241,23 @@ public class PerfilService {
         }
 
         String cedulaFija = sesionActual.get().getCedula();
+        String correoFijo = sesionActual.get().getCorreoElectronico();
+
         usuarioConDatosNuevos.setCedula(cedulaFija); // Protegemos la cédula
+        usuarioConDatosNuevos.setCorreoElectronico(correoFijo); // El correo NO se puede modificar
 
         // --- VALIDACIÓN 1: MAYOR DE EDAD ---
         if (!esMayorDeEdad(usuarioConDatosNuevos.getFechaNacimiento())) {
             throw new IllegalArgumentException("Fecha inválida: Debes ser mayor de 18 años.");
+        }
+
+        // --- VALIDACIÓN: NOMBRE Y APELLIDO (Solo letras) ---
+        if (!esNombreValido(usuarioConDatosNuevos.getNombre())) {
+            throw new IllegalArgumentException("El nombre solo debe contener letras.");
+        }
+
+        if (!esNombreValido(usuarioConDatosNuevos.getApellido())) {
+            throw new IllegalArgumentException("El apellido solo debe contener letras.");
         }
 
         // --- VALIDACIÓN 2: CORREO DUPLICADO ---

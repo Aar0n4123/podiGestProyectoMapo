@@ -167,4 +167,69 @@
   "razonConsulta" : "sera?",
   "estado" : "pendiente",
   "fechaCreacion" : "2026-01-11T18:12:08.543Z"
-}]
+}, {
+  "id" : "CITA-1768284305541-kgf15mu10",
+  "pacienteNombre" : "prueba hershey",
+  "pacienteCorreo" : "pr@m",
+  "pacienteTelefono" : "999999",
+  "especialista" : "Elsee Aguilar",
+  "cedulaEspecialista" : "127861",
+  "especialidadBuscada" : "",
+  "fecha" : "2026-01-14",
+  "hora" : "08:00",
+  "razonConsulta" : "lkhhkj",
+  "estado" : "cancelada",
+  "fechaCreacion" : "2026-01-13T06:05:05.541Z"
+}, {
+  "id" : "CITA-1768284453326-7yxpkveq5",
+  "pacienteNombre" : "prueba hershey",
+  "pacienteCorreo" : "pr@m",
+  "pacienteTelefono" : "99",
+  "especialista" : "Elsee Aguilar",
+  "cedulaEspecialista" : "127861",
+  "especialidadBuscada" : "",
+  "fecha" : "2026-01-14",
+  "hora" : "09:00",
+  "razonConsulta" : "jj",
+  "estado" : "cancelada",
+  "fechaCreacion" : "2026-01-13T06:07:33.326Z"
+}, {
+  "id" : "CITA-1768284905001-e7hokv7bv",
+  "pacienteNombre" : "prueba hershey",
+  "pacienteCorreo" : "pr@m",
+  "pacienteTelefono" : "222",
+  "especialista" : "Marylyn Rojas",
+  "cedulaEspecialista" : "127863",
+  "especialidadBuscada" : "",
+  "fecha" : "2026-01-14",
+  "hora" : "08:00",
+  "razonConsulta" : "kjkj",
+  "estado" : "pendiente",
+  "fechaCreacion" : "2026-01-13T06:15:05.001Z"
+}, {
+  "id" : "CITA-1768285283609-cpl8u2rd1",
+  "pacienteNombre" : "ww hershey",
+  "pacienteCorreo" : "pr@m",
+  "pacienteTelefono" : "11111",
+  "especialista" : "Marylyn Rojas",
+  "cedulaEspecialista" : "127863",
+  "especialidadBuscada" : "",
+  "fecha" : "2026-01-14",
+  "hora" : "09:00",
+  "razonConsulta" : "veamos",
+  "estado" : "pendiente",
+  "fechaCreacion" : "2026-01-13T06:21:23.609Z"
+}, {
+  "id" : "CITA-1768285943585-w5r05jduh",
+  "pacienteNombre" : "jj hershey",
+  "pacienteCorreo" : "pr@m",
+  "pacienteTelefono" : "22",
+  "especialista" : "Elsee Aguilar",
+  "cedulaEspecialista" : "127861",
+  "especialidadBuscada" : "",
+  "fecha" : "2026-01-15",
+  "hora" : "08:00",
+  "razonConsulta" : "veamos x2",
+  "estado" : "cancelada",
+  "fechaCreacion" : "2026-01-13T06:32:23.585Z"
+} ]

@@ -126,6 +126,23 @@ public class CitasController {
         }
     }
 
+    @GetMapping("/paciente/propias")
+    public ResponseEntity<?> obtenerCitasPacientePropias() {
+        try {
+            Optional<Usuario> usuarioSesion = perfilService.obtenerPerfilActivo();
+
+            if (usuarioSesion.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Debe iniciar sesión para ver sus citas.");
+            }
+
+            Usuario usuario = usuarioSesion.get();
+            List<Cita> citas = citasService.obtenerCitasPorPaciente(usuario.getCorreoElectronico());
+            return ResponseEntity.ok(citas);
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().body("Error al obtener las citas del paciente.");
+        }
+    }
+
     @GetMapping("/especialista/{especialista}")
     public ResponseEntity<List<Cita>> obtenerCitasPorEspecialista(@PathVariable String especialista) {
         try {
@@ -168,6 +185,42 @@ public class CitasController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         } catch (IOException e) {
             System.err.println("Error al modificar cita: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Error al modificar la cita.");
+        }
+    }
+
+    @PutMapping("/{id}/paciente")
+    public ResponseEntity<?> modificarCitaPaciente(@PathVariable String id, @RequestBody Cita citaData) {
+        try {
+            Optional<Usuario> usuarioSesion = perfilService.obtenerPerfilActivo();
+
+            if (usuarioSesion.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Debe iniciar sesión para modificar su cita.");
+            }
+
+            Usuario usuario = usuarioSesion.get();
+            Optional<Cita> citaOpt = citasService.obtenerCitaPorId(id);
+
+            if (citaOpt.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cita no encontrada");
+            }
+
+            Cita cita = citaOpt.get();
+
+            if (!cita.getPacienteCorreo().equalsIgnoreCase(usuario.getCorreoElectronico())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tiene permiso para modificar esta cita");
+            }
+
+            if (citaData.getFecha() == null || citaData.getHora() == null) {
+                return ResponseEntity.badRequest().body("La fecha y la hora son campos requeridos.");
+            }
+
+            Cita citaActualizada = citasService.modificarCitaCompleta(id, citaData);
+            return ResponseEntity.ok(citaActualizada);
+
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (IOException e) {
             return ResponseEntity.internalServerError().body("Error al modificar la cita.");
         }
     }

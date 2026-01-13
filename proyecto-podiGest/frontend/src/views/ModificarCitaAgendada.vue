@@ -192,9 +192,11 @@ function volverALista() {
                 <div>
                   <p class="font-bold text-xl text-blue-700">Paciente: {{ cita.pacienteNombre }}</p>
                   <p class="text-gray-600 mt-1">Fecha Actual: {{ cita.fecha }} | Hora Actual: {{ cita.hora }}</p>
+                  <p v-if="cita.estado === 'cancelada'" class="text-red-500 font-semibold mt-1">Estado: CANCELADA</p>
                 </div>
                 <button @click="abrirConfirmacion(cita)"
-                  class=" ml-6 px-6 py-2 text-white font-semibold rounded-md shadow-lg bg-linear-to-r bg-blue-500 hover:bg-blue-600 hover:-translate-y-0.5 ">
+                  :disabled="cita.estado === 'cancelada'"
+                  class=" ml-6 px-6 py-2 text-white font-semibold rounded-md shadow-lg bg-linear-to-r bg-blue-500 hover:bg-blue-600 hover:-translate-y-0.5 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:transform-none ">
                   Seleccionar
                 </button>
               </article>
