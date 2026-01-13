@@ -14,6 +14,9 @@ public class RecordatorioScheduler {
     @Autowired
     private NotificacionService notificacionService;
 
+    @Autowired
+    private CitasService citasService;
+
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Scheduled(fixedRate = 30000)
@@ -24,6 +27,9 @@ public class RecordatorioScheduler {
         System.out.println("=============================================================");
         
         try {
+            // Actualizar estados de citas pasadas
+            citasService.actualizarEstadosCitas();
+            
             notificacionService.procesarRecordatoriosPendientes();
             System.out.println("✓ [SCHEDULER] Proceso completado exitosamente");
         } catch (IOException e) {

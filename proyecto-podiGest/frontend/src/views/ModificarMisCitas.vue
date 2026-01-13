@@ -19,6 +19,11 @@ const citaSeleccionada = ref<any | null>(null);
 const nuevaFecha = ref('');
 const nuevaHora = ref('');
 
+const horasPermitidas = [
+  '08:00', '09:00', '10:00', '11:00', '12:00', '13:00',
+  '14:00', '15:00', '16:00', '17:00', '18:00'
+];
+
 const estadoModal = ref<string | null>(null);
 const mensajeModal = ref('');
 const isExito = ref(false);
@@ -181,11 +186,14 @@ function volverALista() {
                 <div>
                   <p class="font-bold text-xl text-blue-700">{{ cita.especialista }}</p>
                   <p class="text-gray-600 mt-1">Fecha: {{ cita.fecha }} | Hora: {{ cita.hora }}</p>
-                  <p class="text-sm text-gray-500 mt-1">Estado: {{ cita.estado }}</p>
+                  <p v-if="cita.estado === 'cancelada' || cita.estado === 'completada'" 
+                     :class="['font-semibold mt-1', cita.estado === 'cancelada' ? 'text-red-500' : 'text-green-600']">
+                    Estado: {{ cita.estado.toUpperCase() }}
+                  </p>
                 </div>
                 <button @click="abrirConfirmacion(cita)"
-                  :disabled="cita.estado === 'cancelada'"
-                  class="ml-6 px-6 py-2 text-white font-semibold rounded-md shadow-lg bg-linear-to-r bg-blue-500 hover:bg-blue-600 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed">
+                  :disabled="cita.estado === 'cancelada' || cita.estado === 'completada'"
+                  class="ml-6 px-6 py-2 text-white font-semibold rounded-md shadow-lg bg-linear-to-r bg-blue-500 hover:bg-blue-600 hover:-translate-y-0.5 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:transform-none">
                   Modificar
                 </button>
               </article>
@@ -251,9 +259,14 @@ function volverALista() {
 
                 <div class="mb-6">
                   <label for="nuevaHora" class="block text-sm font-medium text-gray-700 mb-2">Nueva Hora</label>
-                  <input type="time" id="nuevaHora" v-model="nuevaHora"
+                  <select id="nuevaHora" v-model="nuevaHora"
                     class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    required />
+                    required>
+                    <option value="" disabled>Seleccione una hora</option>
+                    <option v-for="hora in horasPermitidas" :key="hora" :value="hora">
+                      {{ hora }}
+                    </option>
+                  </select>
                 </div>
 
                 <div class="flex justify-between space-x-3">

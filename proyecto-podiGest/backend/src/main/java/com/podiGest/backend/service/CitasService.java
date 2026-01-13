@@ -87,6 +87,10 @@ public class CitasService {
     public Cita guardarCita(Cita nuevaCita) throws IOException {
         List<Cita> citas = obtenerCitas();
         
+        if (!isHoraValida(nuevaCita.getHora())) {
+            throw new IOException("La hora seleccionada no es válida. Las citas deben ser en bloques de una hora desde las 08:00 hasta las 18:00.");
+        }
+        
         boolean citaExistente = citas.stream()
             .anyMatch(cita -> 
                 cita.getFecha().equals(nuevaCita.getFecha()) &&
@@ -582,9 +586,9 @@ public class CitasService {
             if (citas.get(i).getId().equals(citaId)) {
                 Cita citaOriginal = citas.get(i);
 
-                // VALIDACIÓN: No se puede modificar una cita cancelada
-                if ("cancelada".equalsIgnoreCase(citaOriginal.getEstado())) {
-                    throw new IllegalStateException("No se puede modificar una cita que ya ha sido cancelada.");
+                // VALIDACIÓN: No se puede modificar una cita cancelada o completada
+                if ("cancelada".equalsIgnoreCase(citaOriginal.getEstado()) || "completada".equalsIgnoreCase(citaOriginal.getEstado())) {
+                    throw new IllegalStateException("No se puede modificar una cita que ya ha sido " + citaOriginal.getEstado().toUpperCase() + ".");
                 }
 
                 // Guardar los valores anteriores para la notificación
@@ -595,6 +599,9 @@ public class CitasService {
                 String nuevaFecha = citaActualizada.getFecha();
                 String nuevaHora = citaActualizada.getHora();
 
+                if (!isHoraValida(nuevaHora)) {
+                    throw new IllegalStateException("La hora seleccionada no es válida. Las citas deben ser en bloques de una hora desde las 08:00 hasta las 18:00.");
+                }
 
                 if (!isHorarioDisponible(especialistaNombre, nuevaFecha, nuevaHora, citaId)) {
 
@@ -653,6 +660,32 @@ public class CitasService {
         return citaOcupada.isEmpty();
     }
 
+    public void actualizarEstadosCitas() throws IOException {
+        List<Cita> citas = obtenerCitas();
+        LocalDateTime ahora = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        boolean huboCambios = false;
+
+        for (Cita cita : citas) {
+            if ("pendiente".equalsIgnoreCase(cita.getEstado())) {
+                try {
+                    LocalDateTime fechaCita = LocalDateTime.parse(cita.getFecha() + " " + cita.getHora(), formatter);
+                    if (ahora.isAfter(fechaCita)) {
+                        cita.setEstado("completada");
+                        huboCambios = true;
+                        System.out.println("INFO: Cita " + cita.getId() + " marcada como COMPLETADA automáticamente.");
+                    }
+                } catch (Exception e) {
+                    System.err.println("ERROR: No se pudo procesar la fecha/hora de la cita " + cita.getId() + ": " + e.getMessage());
+                }
+            }
+        }
+
+        if (huboCambios) {
+            guardarCitasAJson(citas);
+        }
+    }
+
     public List<Cita> obtenerCitasDelEspecialista(String nombreEspecialista, String cedulaEspecialista) throws IOException {
         System.out.println("INFO: Buscando citas para especialista: " + nombreEspecialista + " (Cédula: " + cedulaEspecialista + ")");
         
@@ -668,6 +701,14 @@ public class CitasService {
         
         System.out.println("INFO: Se encontraron " + citasEspecialista.size() + " citas para el especialista");
         return citasEspecialista;
+    }
+
+    private boolean isHoraValida(String hora) {
+        if (hora == null || !hora.matches("^([01][0-9]|2[0-3]):00$")) {
+            return false;
+        }
+        int h = Integer.parseInt(hora.split(":")[0]);
+        return h >= 8 && h <= 18;
     }
 
 }
