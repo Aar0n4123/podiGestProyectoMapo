@@ -232,4 +232,17 @@
   "razonConsulta" : "veamos x2",
   "estado" : "cancelada",
   "fechaCreacion" : "2026-01-13T06:32:23.585Z"
+}, {
+  "id" : "CITA-1768287933360-qqenk07tc",
+  "pacienteNombre" : "pruebasu chorizo",
+  "pacienteCorreo" : "choripan@g",
+  "pacienteTelefono" : "999",
+  "especialista" : "Marylyn Rojas",
+  "cedulaEspecialista" : "127863",
+  "especialidadBuscada" : "",
+  "fecha" : "2026-01-14",
+  "hora" : "10:00",
+  "razonConsulta" : "waka waka eh eh",
+  "estado" : "cancelada",
+  "fechaCreacion" : "2026-01-13T07:05:33.360Z"
 } ]

@@ -746,4 +746,59 @@
   "tieneRecordatorio" : false,
   "fechaRecordatorio" : null,
   "recordatorioActivo" : false
+}, {
+  "id" : "NOTIF-1768287933380-1768287933360-qqenk07tc",
+  "fechaEnvio" : "2026-01-13T03:05:33",
+  "asunto" : "Confirmación de cita agendada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a pruebasu chorizo,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Marylyn Rojas\nFecha: 2026-01-14\nHora: 10:00\nMotivo: waka waka eh eh\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
+  "correoDestinatario" : "choripan@g",
+  "silenciada" : false,
+  "tieneRecordatorio" : true,
+  "fechaRecordatorio" : "2026-01-13T03:06",
+  "recordatorioActivo" : false
+}, {
+  "id" : "NOTIF-ESP-1768287933393-1768287933360-qqenk07tc",
+  "fechaEnvio" : "2026-01-13T03:05:33",
+  "asunto" : "Nueva cita agendada - pruebasu chorizo",
+  "remitente" : "Sistema de Gestión de Citas",
+  "mensaje" : "Estimado/a Dr./Dra. Marylyn Rojas,\n\nSe ha agendado una nueva cita con usted:\n\nPaciente: pruebasu chorizo\nFecha: 2026-01-14\nHora: 10:00\nMotivo de consulta: waka waka eh eh\nTeléfono del paciente: 999\n\nPor favor, revise su agenda y prepárese para la consulta.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
+  "correoDestinatario" : "Marylyn@gmail.com",
+  "silenciada" : false,
+  "tieneRecordatorio" : false,
+  "fechaRecordatorio" : null,
+  "recordatorioActivo" : false
+}, {
+  "id" : "REMINDER-289148b1-16a2-416a-ae14-8d7302ac4380",
+  "fechaEnvio" : "2026-01-13 03:06:03",
+  "asunto" : "[RECORDATORIO] Confirmación de cita agendada",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "RECORDATORIO: Estimado/a pruebasu chorizo,\n\nSu cita ha sido agendada exitosamente con los siguientes detalles:\n\nEspecialista: Marylyn Rojas\nFecha: 2026-01-14\nHora: 10:00\nMotivo: waka waka eh eh\n\nPor favor, llegue 10 minutos antes de su cita.\nSi necesita cancelar o reprogramar, comuníquese con nosotros con anticipación.\n\nGracias por confiar en nuestros servicios.",
+  "correoDestinatario" : "choripan@g",
+  "silenciada" : false,
+  "tieneRecordatorio" : false,
+  "fechaRecordatorio" : null,
+  "recordatorioActivo" : false
+}, {
+  "id" : "NOTIF-CAN-1768288003884-1768287933360-qqenk07tc",
+  "fechaEnvio" : "2026-01-13T03:06:43",
+  "asunto" : "Cancelación de cita",
+  "remitente" : "Clínica Podológica",
+  "mensaje" : "Estimado/a pruebasu chorizo,\n\nLe informamos que su cita ha sido cancelada.\n\nDETALLES DE LA CITA CANCELADA:\nEspecialista: Marylyn Rojas\nFecha: 2026-01-14\nHora: 10:00\nMotivo: waka waka eh eh\n\nSi desea agendar una nueva cita, puede hacerlo a través de nuestro sistema.\nSi tiene alguna duda o necesita asistencia, no dude en contactarnos.\n\nGracias por su comprensión.",
+  "correoDestinatario" : "choripan@g",
+  "silenciada" : false,
+  "tieneRecordatorio" : false,
+  "fechaRecordatorio" : null,
+  "recordatorioActivo" : false
+}, {
+  "id" : "NOTIF-ESP-CAN-1768288003884-1768287933360-qqenk07tc",
+  "fechaEnvio" : "2026-01-13T03:06:43",
+  "asunto" : "Cancelación de cita - pruebasu chorizo",
+  "remitente" : "Sistema de Gestión de Citas",
+  "mensaje" : "Estimado/a Dr./Dra. Marylyn Rojas,\n\nSe ha cancelado una cita en su agenda:\n\nDETALLES DE LA CITA CANCELADA:\nPaciente: pruebasu chorizo\nFecha: 2026-01-14\nHora: 10:00\nMotivo de consulta: waka waka eh eh\nTeléfono del paciente: 999\n\nPor favor, tome nota de que esta cita ha sido eliminada de su agenda.\n\nSaludos cordiales,\nSistema de Gestión de Citas",
+  "correoDestinatario" : "Marylyn@gmail.com",
+  "silenciada" : false,
+  "tieneRecordatorio" : false,
+  "fechaRecordatorio" : null,
+  "recordatorioActivo" : false
 } ]
